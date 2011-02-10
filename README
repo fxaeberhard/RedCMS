@@ -1,0 +1,20 @@
+1) CREDITS
+	1.1) Author
+	RedCMS has been developed by Francois-Xavier Aeberhard under BSD license
+	If you have any question, you can contact me at fx@red-agent.com
+	
+	1.2) CREDITS
+	RedCMS uses the following libraries
+	+ YUI3, PHPMailer
+	
+2) REQUIREMENT
+	2.1) Required Apache Module:
+		 mod-rewrite
+		 mod-curl
+	2.2) Optional Apache Module:
+	
+3) INSTALL
+	3.1) Create a new database called 
+	3.2) load the content of the file "db/redcms-default.sql"
+	3.3) Edit config file config.ini with your current db connection settings
+
