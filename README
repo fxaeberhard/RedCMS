@@ -6,7 +6,7 @@
 	1.2) CREDITS
 	RedCMS uses the following libraries
 	+ YUI3, PHPMailer
-	
+	+ Refresh Cl Icons by TpdkDesign.net http://www.iconarchive.com/category/system/refresh-cl-icons-by-tpdkdesign.net.html	
 2) REQUIREMENT
 	2.1) Required Apache Module:
 		 mod-rewrite

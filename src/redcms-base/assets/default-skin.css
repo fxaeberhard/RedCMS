@@ -1,0 +1,115 @@
+@CHARSET "UTF-8";
+
+/* fluid Grids layout */
+#bd {
+	padding-left: 170px; /* allow for left column (#nav) */
+}
+
+#left {
+	margin-left: -170px;
+	position: relative;
+	/* workaround for IE9 not firing mouse events on #side due to negative margin */
+	width: 170px;
+}
+
+#left .content {
+	margin-right: 10px; /* gutter between #nav and #main */
+}
+
+
+
+/* Overlay Window styles (base on YUI2) */
+.yui3-skin-sam .yui3-overlay-window {
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	font-size: 93%;
+	line-height: 2;
+}
+.yui3-skin-sam .yui3-overlay-window .yui3-widget-hd {
+	padding: 0 10px;
+	background: url(sprite.png) repeat-x 0 -200px;
+	border-bottom: solid 1px #CCC;
+}
+.yui3-skin-sam .yui3-overlay-window .yui3-widget-bd {
+	padding:10px;
+    background: white;
+}
+.yui3-skin-sam .yui3-overlay-window .yui3-overlay-close {
+	position: absolute;
+	top: 5px;
+	right: 6px;
+	width: 25px;
+	height: 15px;
+	background: url(sprite.png) no-repeat 0 -300px;
+	cursor: pointer;
+}
+
+/* Overlay Modal styles */
+.yui3-overlay-mask {
+    background: black;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+body { 
+	_height: 100%; /* better IE6 support */
+}
+
+
+/* RedCMSForm styles */
+.yui3-skin-sam .yui3-form .yui3-form-field {
+	clear:both;
+}
+.yui3-skin-sam .yui3-form .yui3-form-field .yui3-form-label {
+	float:left;
+	width: 100px;	
+}
+.yui3-skin-sam .yui3-form .yui3-form-field .yui3-form-invalid .yui3-form-label label {
+	background: transparent url(error.gif) no-repeat scroll 0 1px;
+	padding-left: 20px;
+	color: #C00E0C;
+	font-weight: bold;
+}
+.yui3-skin-sam .yui3-form .yui3-form-field input {
+	/*display:block;*/
+}
+.yui3-skin-sam .yui3-form .yui3-form-field .error {
+	/*display: block;*/
+	display:none;
+	clear: both;
+	padding-left: 100px;
+	color: red;
+}
+.yui3-skin-sam .yui3-form .yui3-submit-button {
+	padding-left: 100px;
+}
+.yui3-skin-sam .yui3-form .yui3-submit-button input {
+	padding: 3px 5px;
+}
+
+/* RedCMS MsgBox styles */
+.yui3-skin-sam .yui3-redcms-msgbox {
+	border: 1px outset gray;
+	padding: 15px 10px 10px 60px;
+	margin-bottom: 10px;
+	min-height: 33px;
+}
+.yui3-skin-sam .yui3-redcms-msgbox-error {
+	background: #F2F2F2 url(icon-error-48.png) no-repeat scroll 5px 5px;
+}
+.yui3-skin-sam .yui3-redcms-msgbox-success {
+	background: #F2F2F2 url(icon-success-48.png) no-repeat scroll 5px 5px;
+}
+.yui3-skin-sam .yui3-redcms-msgbox-warning {
+	background: #F2F2F2 url(icon-warning-48.png) no-repeat scroll 5px 5px;
+}
+.yui3-skin-sam .yui3-redcms-msgbox-hidden {
+	display:none;
+}
+
+
+/* Context menu styles */
+.yui3-skin-sam .yui3-redcms-contextmenu-hidden {
+	display:none;
+}
+
