@@ -1,6 +1,11 @@
 builder
-files
-lib
+files/smarty/template_c
+lib/FirePHPCore
+lib/phploader
+lib/phpmailer
+lib/yui
+lib/yuicompressor
+
 .project*
 .settings
 .buildpath
