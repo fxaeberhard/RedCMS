@@ -8,7 +8,9 @@ http://redcms.sourceforge.net/license.html
 
  YUI.add('redcms-form', function(Y) {
 	 
-	var HOST = 'host'
+	var Form,
+	
+		HOST = 'host',
 		BOUNDING_BOX = 'boundingBox',
 		CONTENT_BOX = 'contentBox',
 		
@@ -25,15 +27,36 @@ http://redcms.sourceforge.net/license.html
 			label : getCN(FORM, LABEL)
 		}
 		
-	Y.RedCMS.Form = Y.Base.create('redcms-form', Y.Form, [ ], {
+	Form = Y.Base.create('redcms-form', Y.Form, [ ], {
 		// *** Instance members *** //
 		_msgBox : null,
 		
-		// *** Prototype *** //
+		// *** Private methods *** //
 		_getMsgBox : function() {
 			return _msgBox;
 		},
+		/**
+		 * Overriden to use json parser as default action
+		 *
+		 * @method 	
+		 * @private
+		 * @param {Y.Node} contentBox
+		 * @description Sets the 'fields' attribute based on parsed HTML
+		 */
+		_parseFields : function (contentBox) {		
+			var form = contentBox.one('form'),
+				fields = [];
+				
+			if (form) {
+				fields = Y.JSON.parse(form.getContent());
+				form.setContent('');
+			}
+			return fields;
+		},
+		
+		//	***	Life cycle methods	***	//
 		renderUI : function () {
+			Y.log("renderUI", 'info', 'Y.RedCMS.Form');
 			_msgBox = new Y.RedCMS.MsgBox({visible:false});
 			_msgBox.render();
 			
@@ -56,7 +79,7 @@ http://redcms.sourceforge.net/license.html
 		}
 	});
 	
-	
+	Y.namespace('RedCMS').Form = Form;
 	
 	// *** HACK: use our custom implementation on top of the original one. *** //
 	Y.RedCMS.FormField = function() {

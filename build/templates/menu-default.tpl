@@ -4,7 +4,7 @@ Code licensed under the BSD License:
 http://redcms.sourceforge.net/license.html
 *}
 
-<div class="red-block" redid="{$this->id}" widget="NavMenu" requires="redcms-navmenu" id="widget1">
+<div class="red-block" redid="{$this->id}" widget="NavMenu" requires="redcms-navmenu">
 	{function name=menu level=0}
 		<div class="yui3-menu">
 			<div class="yui3-menu-content">

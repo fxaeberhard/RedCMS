@@ -5,9 +5,16 @@ http://redcms.sourceforge.net/license.html
 */
 
 YUI.add('redcms-action', function(Y) {
-	Y.RedCMS.LoginAction = Y.Base.create("redcms-openpanelaction", Y.Widget, [Y.WidgetStdMod], {
+	var LoginAction,
+		
+		CONTENTBOX = 'contentBox',
+		BODY = 'body',
+		
+		CLICK = 'click';
+
+	LoginAction = Y.Base.create("redcms-loginaction", Y.Widget, [], {
 		bindUI : function() {
-			this.get("contentBox").on('click', function(e) {
+			this.get(CONTENTBOX).on(CLICK, function(e) {
 				if ( Y.RedCMS.Config.loggedIn) {
 					Y.use('io-base', function(Y) {
 						var request = Y.io(Y.RedCMS.RedCMSManager.getLink("LoginManager"), {
@@ -15,11 +22,10 @@ YUI.add('redcms-action', function(Y) {
 							data: "action=logout",
 							on: {
 								success: function(id, o, args) {
-									console.log(id, o, args);
+									window.location.reload();									//We reload the page as the login is completed
 								}
 							}
 						});
-						window.location.reload();
 					});
 				} else {
 					Y.use('overlay', 'widget-anim', 'json', 'gallery-overlay-extras', 'redcms-overlay-window', 'redcms-form', function(Y){
@@ -43,9 +49,10 @@ YUI.add('redcms-action', function(Y) {
 						
 						/** Then fill it with a custom form */
 						var f = new Y.RedCMS.Form({
-							boundingBox: overlay.getStdModNode('body').one('div'),
+							boundingBox: overlay.getStdModNode(BODY).one('div'),
 							action : Y.RedCMS.RedCMSManager.getLink("LoginManager"),
 							method : 'post',
+							inlineValidation : true,
 							children : [
 								{name : "username", required : true, label : "User name"},
 								{name : "password", type : 'PasswordField', required : true, label : "Password"},
@@ -74,4 +81,6 @@ YUI.add('redcms-action', function(Y) {
 			});
 		}
 	}, {} );
+	
+	Y.namespace('RedCMS').LoginAction = LoginAction;
 }, '0.1.1');

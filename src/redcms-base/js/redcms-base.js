@@ -8,22 +8,25 @@ var Y = YUI({
 	charset: 'utf-8',
 	loadOptional: true,
 	filter: 'min',
+    useBrowserConsole: true,
+	debug: true,
 	//timeout: 10000,
     insertBefore: 'customstyles',
 	groups: {
 		redcms: {
 			combine: false,
-			base: '/redcms2/',
+//			base: '/redcms2/',
+			base: '../RedCMS/',
 			// comboBase: 'http://yui.yahooapis.com/combo?',
 			// root: '2.8.0r4/build/',
 			modules:  {
-				"redcms-navmenu": {
+				"redcms-menunav": {
 					path: 'src/redcms-navmenu/js/redcms-navmenu.js',
 					requires: ['node-menunav', 'widget', 'widget-parent', 'widget-child', 'widget-position']
 				},
 				"redcms-admin": {
 					path: 'src/redcms-admin/js/redcms-admin.js',
-					requires: ["widget", "widget-position", "widget-stack", "widget-position-align", "async-queue", 'json', 'redcms-navmenu', 'gallery-outside-events']
+					requires: ["widget", "widget-position", "widget-stack", "widget-position-align", "async-queue", 'json', 'redcms-menunav', 'gallery-outside-events']
 				},
 				'redcms-action': {
 					path: 'src/redcms-base/js/redcms-action.js',
@@ -40,49 +43,60 @@ var Y = YUI({
 				'redcms-form': {
 					path: 'src/redcms-form/js/redcms-form.js',
 					requires: ['gallery-form']
+				},
+				'redcms-openpanelaction': {
+					path: 'src/redcms-base/js/redcms-openpanelaction.js',
+					requires: ['overlay', 'widget-anim', 'json', 'redcms-overlay-window', 'dd-plugin', 'io-base', 'resize']
 				}
 			}
 		}
 	}  
-}).use("node", 'widget', 'widget-stdmod', 'redcms-navmenu', 'console', 'redcms-action', 'redcms-msgbox', 'redcms-admin', function (Y) {
+}).use("node", 'widget', 'widget-stdmod', 'redcms-menunav', 'console', 'redcms-action', 'redcms-msgbox', 'redcms-admin', 'redcms-openpanelaction', function (Y) {
 	var URLSEPARATOR = '/',
-	conf = Y.RedCMS.Config,
-	RedCMSManager;
+		conf = Y.RedCMS.Config,
+		RedCMSManager;
 
-	/* Render a console for debug purpose */
-	if (conf.debug) Y.use('console', function() {new Y.Console({ logSource: Y.Global }).render();	 });
+	if (conf.debug) Y.use('console', function() {
+		new Y.Console({ logSource: Y.Global }).render();						// Render a console for debug purpose
+	});
 	
 	RedCMSManager = function () {
 	    return {
 	    	getLink : function() {
-	    		console.log(Array.prototype.join.call(arguments));
 	    		return conf.path+conf.lang+URLSEPARATOR+
 	    			Array.prototype.join.call(arguments, URLSEPARATOR)+URLSEPARATOR;
-	    		
 	    	},
-	    	renderWidget : function(node) {
-				var widget = new Y.RedCMS[node.getAttribute('widget')]({
-				    contentBox: node
-				});
-				widget.render();
+	    	renderWidget : function(Y, node) {
+				try {
+				console.log(Y.RedCMS[node.getAttribute('widget')]);
+					var widget = new Y.RedCMS[node.getAttribute('widget')]({
+						contentBox: node
+					});
+					widget.render();
+				} catch (e) {
+					Y.log('Error creating widget with class: Y.RedCMS.'+node.getAttribute('widget'), 'error', 'RedCMSManager');
+				//	console.log(e.description);
+				}
 			},
-			render : function(){	
-				/* For each blocks on the page, we render them with the mentionned widget. */
-				Y.all('[widget]').some( function(node) {
-					Y.log('Rendering widget '+node.getAttribute('widget'));
-					if (node.getAttribute('requires')) {
-						Y.use(node.getAttribute('requires'), function(Y) {
-							RedCMSManager.renderWidget(node);
+			render : function(node){	
+				node.all('[widget]').some( function(node) {						// For each in the source node, 
+					var requires = node.getAttribute('requires');
+					Y.log('Rendering widget '+node.getAttribute('widget')+" requiring "+requires, 'RedCMSManager');
+					if (requires) {
+						Y.use(requires, function(Y) {
+							console.log("mmmmmooooo");
+							RedCMSManager.renderWidget(Y, node);					// we render them with the mentionned widget.
 						});
 					} else {
-						RedCMSManager.renderWidget(node);
+						RedCMSManager.renderWidget(Y, node);
 					}
 				});
 			}
 	    }
 	}();
 
-	RedCMSManager.render();
+	RedCMSManager.render(Y.one('body'));
+	
 	Y.namespace('RedCMS').RedCMSManager = RedCMSManager;
 	
 });

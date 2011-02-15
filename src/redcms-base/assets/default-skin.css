@@ -25,6 +25,7 @@
 	border-color: gray;
 	font-size: 93%;
 	line-height: 2;
+    background: white;
 }
 .yui3-skin-sam .yui3-overlay-window .yui3-widget-hd {
 	padding: 0 10px;
@@ -33,7 +34,7 @@
 }
 .yui3-skin-sam .yui3-overlay-window .yui3-widget-bd {
 	padding:10px;
-    background: white;
+	overflow:auto;
 }
 .yui3-skin-sam .yui3-overlay-window .yui3-overlay-close {
 	position: absolute;
@@ -43,6 +44,10 @@
 	height: 15px;
 	background: url(sprite.png) no-repeat 0 -300px;
 	cursor: pointer;
+}
+
+.yui3-skin-sam .yui3-dd-draggable .yui3-widget-hd {
+	cursor:move;
 }
 
 /* Overlay Modal styles */
@@ -107,9 +112,14 @@ body {
 	display:none;
 }
 
-
 /* Context menu styles */
-.yui3-skin-sam .yui3-redcms-contextmenu-hidden {
+.yui3-skin-sam .yui3-contextmenu-hidden {
 	display:none;
 }
 
+/* Loading style */
+.yui3-skin-sam .yui3-overlay-window  .yui3-redcms-loading {
+	background: lightGrey url(loading.gif) no-repeat scroll 50% 60%;
+	min-height: 30px;
+	height: 100px;
+}
