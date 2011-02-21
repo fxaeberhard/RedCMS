@@ -6,6 +6,10 @@ http://redcms.sourceforge.net/license.html
 */
 
 class PageBlock extends Block {
+	
+	function getLabel(){
+		return $this->fields['link'];
+	}
 	function render() {
 		global $redCMS;
 		
@@ -20,6 +24,7 @@ class PageBlock extends Block {
 		
 		//First render headers
 		$template = $this->getTemplate();
+		$template->assign('footerBlocks', BlockManager::getBlocksBySelect("parentId = -2"));
 		$template->display($redCMS->config['footerTemplate']);
 	}
 }

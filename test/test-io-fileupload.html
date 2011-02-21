@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html> 
+<head> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.3.0/build/cssfonts/fonts-min.css&3.3.0/build/cssreset/reset-min.css&3.3.0/build/cssgrids/grids-min.css&3.3.0/build/cssbase/base-min.css"> 
+</head> 
+	
+<body class="yui3-skin-sam"> 
+	<form id="myform" method="post">
+		<input name="cb" type="checkbox" checked="true" /> Checkbox<br />
+		<input name="ff" type="file" checked="true" /><br />
+		<input name="later" value="omg" /> Checkbox<br />
+		<input name="mysubmit" value="submit" type="submit" id="mysubmit" />
+	</form>
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui-min.js&3.3.0pr3/build/loader/loader-min.js"></script> 
+		
+	<script type="text/javascript" > 
+	YUI().use('io-upload-iframe', function(Y) {
+		function submit(e) {
+			e.halt();
+			
+			var cfg = {
+				method: 'get',
+				form: {
+					id: 'myform',
+					upload: true
+					}
+			};
+			var request = Y.io('fake.html', cfg);
+		}
+		
+		function handleResponse(id, o) {
+			//id is transaction id
+			//o is the XMLHttpRequest response
+		}
+		
+		Y.on('click', submit, '#mysubmit');
+		Y.on('io:complete', handleResponse);
+	});
+	</script>
+
+</body>
+</html>

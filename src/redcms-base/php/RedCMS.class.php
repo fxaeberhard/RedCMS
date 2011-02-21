@@ -20,7 +20,6 @@ class RedCMS {
 		'mailFooter' => '',
 		// 'cacheEnabled'=> 1,
 		// 'addingSlashServer'=> 1,
-		// 'yuiVersion' => '2.8.0r4',
 		// 'defaultPictureWidth' => 'x'
 	);
 
@@ -71,7 +70,7 @@ class RedCMS {
 	 */
 	function render() {
 		// First retrive the lang of the current page if available
-		$this->currentLang = ($this->paramManager->hasMore())?$this->paramManager->next():$this->config['defaultLang'];
+		$this->lang = ($this->paramManager->hasMore())?$this->paramManager->next():$this->config['defaultLang'];
 		// Then retrieves the page parameter 
 		$currentBlockParam = ($this->paramManager->hasMore())?$this->paramManager->next():$this->config['homePageId'];
 		

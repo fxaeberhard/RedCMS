@@ -1,7 +1,7 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 
 YUI.add('redcms-msgbox', function(Y) {
@@ -24,7 +24,7 @@ YUI.add('redcms-msgbox', function(Y) {
 		};
 	
 	
-	MsgBox = Y.Base.create(MSGBOX, Y.Widget, [Y.WidgetStdMod], {
+	MsgBox = Y.Base.create(MSGBOX, Y.Widget, [], {
 		setMessage : function(style, msg) {
 			var cb = this.get(CONTENT_BOX),
 				bb = this.get(BOUNDING_BOX);

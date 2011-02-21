@@ -6,8 +6,14 @@ http://redcms.sourceforge.net/license.html
 */
 class Action extends Block {
 	function getLabel(){
-		return $this->fields['text1'];
+		//if (isset($this->fields['text1']) && $this->fields['text1'] != ''){
+			return $this->fields['text1'];
+		//} else return 'No label available';
 	}
+	function getLink(){
+		return '#';
+	}
+
 }
 
 class LoginAction extends Action {
@@ -20,9 +26,28 @@ class LoginAction extends Action {
 		}
 	}
 }
-class PageLinkAction extends Action {
-}
 class OpenPanelAction extends Action {
+	function getLink(){
+		$target = $this->getLinkedBlock("target");
+		if ($target) return $target->getLink();
+		else return parent::getLink();
+	}
+}
+class PageLinkAction extends OpenPanelAction {
 	
+}
+class DeleteAction extends Action {
+	function render() {
+		global $_REQUEST;
+		if (isset($_REQUEST['id'])) {
+			$b = BlockManager::getBlockById($_REQUEST['id']);
+			if ($b->delete()) {
+				$ret = array('result' => 'success', 'msg'=>'Block has been deleted');
+			} else {
+				$ret = array('result' => 'error', 'msg'=>'Error deleting block');
+			}
+			echo json_encode($ret);
+		}
+	}
 }
 ?>

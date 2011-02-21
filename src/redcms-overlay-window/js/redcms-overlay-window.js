@@ -3,11 +3,33 @@ Overlay Window Plugin
 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 
  YUI.add('redcms-overlay-window', function(Y) {
-	 
+	var OverlayManager = function() {
+		return {
+			_overlays : [],
+			_bringToTop: function(overlay){
+				var ol = OverlayManager._overlays;
+
+				var highest =0;
+				for (var i = 0;i< ol.length;i++){
+					var overlayZ = ol[i].get('zIndex');
+					if (overlayZ> highest) highest = overlayZ;
+				}
+				overlay.set('zIndex', highest+1);
+			},
+			register: function(overlay) {
+				OverlayManager._overlays.push(overlay);
+				overlay.get('boundingBox').on('mousedown', Y.bind(this._bringToTop, this, overlay));
+				OverlayManager._bringToTop(overlay);
+			}
+		}
+	}();
+
+	Y.namespace('RedCMS').OverlayManager = OverlayManager;
+
 	var OverlayWindow,
 		OVERLAY_WINDOW = 'overlayWindow',
 		
@@ -79,6 +101,8 @@ http://redcms.sourceforge.net/license.html
 			bb.append(this._closeNode);
 			
 			bb.addClass(CLASSES.window);
+			
+			Y.RedCMS.OverlayManager.register(host);
 		},
 		
 		bindUI : function () {

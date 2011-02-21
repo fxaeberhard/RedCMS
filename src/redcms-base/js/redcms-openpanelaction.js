@@ -1,7 +1,7 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.comw/license.html
 */
 
 YUI.add('redcms-openpanelaction', function(Y) {
@@ -16,66 +16,80 @@ YUI.add('redcms-openpanelaction', function(Y) {
 		CLASSES = {
 			LOADING : 'yui3-redcms-loading',
 		};
+	
 
-	OpenPanelAction = Y.Base.create("redcms-openpanelaction", Y.Widget, [], {
+	OpenPanelAction = Y.Base.create("redcms-openpanelaction", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+		//	***	***	//
+		_overlay: null,
+		
+		//	***	***	//
 		initializer : function (config) {
 			this.publish('submit');
 		},
 		bindUI : function() {
-			console.log("mm", this);
-			this.get(CONTENTBOX).on(CLICK, function(e) {
-				var overlay = new Y.Overlay({												// First create an overlay window widget
-					bodyContent : '<div></div>',
-					headerContent : this.get(CONTENTBOX).one('a').getContent(),
-					//width       : '600px',
-					//height		: '100px',
-					zIndex      : 100,
-					constrain   : true,
-					render      : true,
-					visible     : true,
-					plugins     : [
-						{ fn: Y.Plugin.OverlayWindow },
-						{ fn: Y.Plugin.Drag}
-					]
-				});
-				overlay.getStdModNode(BODY).addClass(CLASSES.LOADING);
-				//overlay.get(CONTENTBOX).plug( Y.Plugin.Resize );
+			this.get(CONTENTBOX).one('a').on(CLICK, function(e) {
+
+				e.preventDefault();
 				
+				var cb = this.get(CONTENTBOX),
+					overlay = new Y.Overlay({												// First create an overlay window widget
+						bodyContent : '<div></div>',
+						headerContent : cb.one('a').getContent(),
+						zIndex      : 100,
+						constrain   : true,
+						render      : true,
+						visible     : true,
+				        align : {
+				            node: "body",
+				            points: ["tc", "tc"]
+				        },
+						plugins     : [
+							{ fn: Y.Plugin.OverlayWindow },
+							{ fn: Y.Plugin.Drag}
+						]
+					});
+				overlay.getStdModNode(BODY).addClass(CLASSES.LOADING);
+				this._overlay = overlay;
 				
 				overlay.after('render', function(e) {
-				console.log(this.getStdModNode(BODY));
 					var resize = new Y.Resize({
-						node: this.getStdModNode(BODY)
-						//node: this.get(BOUNDINGBOX)
-						//node: overlay.getStdModNode(BODY)
+						node: this.getStdModNode(BODY),
+						handles: ['b', 'r', 'br', 'bl']
 					});
-					//Get the bounding box node and plug
-					//this.get('boundingBox').plug(Y.Plugin.Drag, {
-                  //Set the handle to the header element.
-					//	handles: ['.yui-widget-hd']
-					//});
 				});
 				
-				var request = Y.io('test2.html', {		//Then request its content to the server
-					method: "POST",
-					data: "action=logout",
+				var params = new Array(),
+					paramsLit = cb.getAttribute('params');
+				if (paramsLit) params = Y.JSON.parse(paramsLit);
+				//console.log("OpenPanelAction.bindUI():", this, cb, cb.getAttribute('params'));
+				
+				var request = Y.io(cb.one('a').get('href'), {		//Then request its content to the server
+					data: params,
 					on: {
 						success: function(id, o, args) {
-							console.log(id, o, args);
-						},
-						complete: function(id, o, args) {
-							var body = this.getStdModNode(BODY);
-							//body.setContent(o.responseText);
+						//	console.log("OpenPanelAction.onRequestSuccess(): ", o.responseText)
+							var body = this._overlay.getStdModNode(BODY);
 							body.append(o.responseText);
 							body.removeClass(CLASSES.LOADING);
 							
-							Y.RedCMS.RedCMSManager.render(body);
+							Y.RedCMS.RedCMSManager.render(body, Y.bind(this._onWidgetsRendered, this));
 						}
-
 					},
-					context :overlay
+					context :this
 				});
 			}, this);
+		},
+		_onWidgetsRendered: function(widgets) {
+			var onSuccess = Y.bind(this._onSuccess, this)
+			//console.log('OpenPanelAction._onWidgetsRendered(', widgets);
+			for (var i=0;i<widgets.length;i++) {
+				widgets[i].on("success", onSuccess);
+				widgets[i].on("complete", onSuccess);
+			}
+		},
+		_onSuccess: function(){
+			this.fire("success");
+			this._overlay.destroy();
 		}
 	}, {} );
 	

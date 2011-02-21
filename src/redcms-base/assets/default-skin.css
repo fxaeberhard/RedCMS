@@ -1,4 +1,8 @@
 @CHARSET "UTF-8";
+/* Base styles */
+.redcms-clear {
+	clear:both;
+}
 
 /* fluid Grids layout */
 #bd {
@@ -17,20 +21,31 @@
 }
 
 
+/* Default fieldset view */
+fieldset {
+	border: 2px groove #CCC;
+	margin: 0.5em;
+	padding: 0.8em;
+	text-align: justify;
+}
+	
+fieldset legend {
+	font-weight: bold;
+}
 
 /* Overlay Window styles (base on YUI2) */
 .yui3-skin-sam .yui3-overlay-window {
 	border-style: solid;
 	border-width: 1px;
 	border-color: gray;
-	font-size: 93%;
-	line-height: 2;
     background: white;
 }
 .yui3-skin-sam .yui3-overlay-window .yui3-widget-hd {
 	padding: 0 10px;
 	background: url(sprite.png) repeat-x 0 -200px;
 	border-bottom: solid 1px #CCC;
+	line-height: 2;
+	font-size: 93%;
 }
 .yui3-skin-sam .yui3-overlay-window .yui3-widget-bd {
 	padding:10px;
@@ -122,4 +137,113 @@ body {
 	background: lightGrey url(loading.gif) no-repeat scroll 50% 60%;
 	min-height: 30px;
 	height: 100px;
+}
+
+
+/* Admin Menu */
+.yui3-skin-sam #ft .yui3-redcmsnavmenu {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+}
+
+/* Tree View Default skin */
+.yui3-treeview {
+    margin:0;
+    padding:0;
+    margin-left: 10px;
+    list-style:none;
+    zoom: 1;
+}
+
+.yui3-js-enabled .yui3-treeview-loading {
+    display:none;
+}
+
+.yui3-treeview .yui3-treeview {
+    border-left: 1px solid #ebebeb;
+}
+
+.yui3-toggle {
+    background-position: -6px -285px;
+    display: block;
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    bottom: 0px;
+    left: -5px;
+}
+
+.yui3-tree-collapsed .yui3-treeview-label-content {
+    background-position: -0px -81px;
+}
+
+.yui3-treeview-label-content {
+    background-position: 0px -121px;
+    display : block;
+    position : relative;
+    left : -5px;
+    padding-left : 35px;
+    top : 5px;
+}
+
+.yui3-treeview .yui3-singletree {
+    border: none;
+}
+
+.yui3-treeleaf-content,
+.yui3-treeleaf,
+.yui3-treeview .yui3-treeview-content .yui3-treeview,
+.yui3-treeview-label-content
+{
+    background-image: url(tree_view_icons_blue_01_arrow_beside_folders.gif);
+    background-repeat: no-repeat;
+}
+
+.yui3-treeview-treelabel {
+    display: block;
+    position: relative;
+    margin-left: -1px;
+    margin-top: 2px;
+    text-decoration: none;
+    color: black;
+    border-left: 1px solid #EBEBEB;
+}
+
+.yui3-treeview .yui3-tree-collapsed .yui3-treeview-content {
+    display : none;
+}
+
+.yui3-treeview .yui3-treeview-content {
+    padding-bottom: 3px;
+    margin-left: 6px;
+}
+
+.yui3-treeview .yui3-treeview-content .yui3-treeview {
+    background: none;
+}
+
+.yui3-treeview .yui3-treeleaf {
+    background-position: 0 -258px;
+    margin-bottom: -7px;
+    border: none;
+    padding-top: 10px;
+}
+
+.yui3-treeleaf-content {
+    background-position: 0 -162px;
+    padding-left: 35px;
+    margin-left: 4px;
+    text-decoration: none;
+}
+
+/* TreeView Custom Styles */
+.yui3-redcms-treeview-content {
+	padding-bottom:10px;
+}
+ul, dl {
+	margin:0;
+}
+ul li {
+	list-style: none;
 }

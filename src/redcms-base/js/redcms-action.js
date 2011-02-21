@@ -1,17 +1,45 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 
 YUI.add('redcms-action', function(Y) {
 	var LoginAction,
-		
+		DeleteAction,
 		CONTENTBOX = 'contentBox',
 		BODY = 'body',
 		
 		CLICK = 'click';
 
+	DeleteAction = Y.Base.create("redcms-deleteaction", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+		bindUI : function() {
+			this.get(CONTENTBOX).on(CLICK, function(e) {
+				e.preventDefault();
+				if (confirm('Are you sure you want to delete this field?')) {
+
+					var params = new Array(),
+						cb = this.get(CONTENTBOX),
+						paramsLit = cb.getAttribute('params');
+					if (paramsLit) params = Y.JSON.parse(paramsLit);
+					
+					var request = Y.io(cb.one('a').get('href'), {		//Then request its content to the server
+						data: params,
+						on: {
+							success: function(id, o, args) {
+								Y.log("DeleteAction.onRequestSuccess(): "+ o.responseText+ params, 'log');
+								this.fire('success');
+							}
+						},
+						context :this
+					});
+				}
+			}, this);
+		}
+	}, {} );
+	
+	Y.namespace('RedCMS').DeleteAction = DeleteAction;
+	
 	LoginAction = Y.Base.create("redcms-loginaction", Y.Widget, [], {
 		bindUI : function() {
 			this.get(CONTENTBOX).on(CLICK, function(e) {
@@ -46,7 +74,6 @@ YUI.add('redcms-action', function(Y) {
 								{ fn: Y.Plugin.OverlayWindow }
 							]
 						});
-						
 						/** Then fill it with a custom form */
 						var f = new Y.RedCMS.Form({
 							boundingBox: overlay.getStdModNode(BODY).one('div'),
@@ -61,20 +88,12 @@ YUI.add('redcms-action', function(Y) {
 								{name : 'submit', type : 'SubmitButton', value : 'Submit'}
 								]
 						});
-						f.subscribe('success', function (args) {
+						f.on('success', function (args) {
 							var ret = Y.JSON.parse(args.response.responseText);
 							if (ret.result == 'success') {
-								f.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.success, ret.msg);
 								window.location.reload();
-							} else {
-								f.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, ret.msg);
 							}
 						});
-						f.subscribe('failure', function (args) {
-							alert('Form submission failed');
-							window.location.reload();
-						});
-						
 						f.render();
 					});
 				}

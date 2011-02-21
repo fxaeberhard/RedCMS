@@ -3,33 +3,40 @@ Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
 http://redcms.sourceforge.net/license.html
 *}
-
-<div class="red-block" redid="{$this->id}" widget="NavMenu" requires="redcms-navmenu">
-	{function name=menu level=0}
-		<div class="yui3-menu">
-			<div class="yui3-menu-content">
+{$admin = $this->getLinkedBlock('admin')}
+{$admin = (isset($admin))?$admin->getMenuItems():array()}
+<div class="redcms-block" redid="{$this->id}" redadmin="{htmlspecialchars(json_encode($admin))}" widget="MenuNav" requires="redcms-menunav" >
+	
+	<div class="yui3-menu {block name=firstLevelClass}{/block}">
+		<div class="yui3-menu-content">
+			{function name=menu level=0}
 				<ul class="first-of-type">
 					{foreach $blocks as $block}
 						
-						<li class="yui3-menuitem">
-							{if $block instanceof PageLinkAction}
-								{$targetPage = $block->getLinkedBlock("target")}
-								<a class="yui3-menuitem-content" href="{$redCMS->paramManager->getLink($targetPage->fields['link'])}">{$targetPage->fields['link']}</a>
+						<li class="yui3-menuitem" redid="{$block->id}" widget="{get_class($block)}">
+						
+							{$subBlocks = $block->getChildBlocks()}
+							{$class=(!empty($subBlocks))?'yui3-menu-label':'yui3-menuitem-content'}
+							{$targetPage = $block->getLinkedBlock("target")}
+								
+							{*{if isset($targetPage)}
+							{$targetLink = $redCMS->paramManager->getLink($targetPage->fields['link'])}
 							{else}
-								<a class="yui3-menuitem-content" href="#" widget="{get_class($block)}">{$block->getLabel()}</a>
+							{$targetLink = "#"}
+							{/if}*} 
+							<a class="{$class}" href="{$block->getLink()|default:'#'}">{$block->getLabel()|default:$targetPage->getLabel()}</a>
+						
+							{if !empty($subBlocks)}
+								<div class="yui3-menu">
+									<div class="yui3-menu-content">
+		    							{call menu blocks=$subBlocks level=$level+1}
+		    					</div></div>
 							{/if}
 						</li>
-						
-						{$subBlocks = $block->getChildBlocks()}
-						{if !empty($subBlocks)}
-	    					{call menu blocks=$subBlocks level=$level+1}
-						{/if}
-						
 					{/foreach}
 				</ul>
-			</div>
+			{/function}
+			{call menu blocks=$this->getChildBlocks()}
 		</div>
-	{/function}
-	
-	{call menu blocks=$this->getChildBlocks()}
+	</div>
 </div>

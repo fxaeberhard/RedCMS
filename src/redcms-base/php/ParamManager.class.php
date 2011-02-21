@@ -37,7 +37,7 @@ class ParamManager {
 	}
 	static function &getLink($param1= null, $param2= null, $param3= null, $param4=null){
 		global $redCMS;
-		$ret = $redCMS->path.$redCMS->currentLang."/";
+		$ret = $redCMS->path.$redCMS->lang."/";
 
 		if ($param1) $ret .= Utils::url_encode($param1)."/";
 		if ($param2) $ret .= Utils::url_encode($param2)."/";

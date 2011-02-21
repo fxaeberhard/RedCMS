@@ -1,8 +1,12 @@
 <?PHP
 
 /**
- * The RedMailer extends the PHPMailer class to bridge the parameters of RedCMS to phpmailer.
- */
+RedCMS - 
+The RedMailer extends the PHPMailer class to bridge the parameters of RedCMS to phpmailer.
+Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+Code licensed under the BSD License:
+http://redcms.sourceforge.net/license.html
+*/
 class RedMailer extends PHPMailer {
 	public $to = array();
 	public $cc = array();

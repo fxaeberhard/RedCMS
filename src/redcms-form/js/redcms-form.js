@@ -3,7 +3,7 @@ RedCMS Form Widget
 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 
  YUI.add('redcms-form', function(Y) {
@@ -46,21 +46,66 @@ http://redcms.sourceforge.net/license.html
 		_parseFields : function (contentBox) {		
 			var form = contentBox.one('form'),
 				fields = [];
-				
-			if (form) {
-				fields = Y.JSON.parse(form.getContent());
-				form.setContent('');
-			}
+			try {
+				fields = Y.JSON.parse(contentBox.getContent());
+				contentBox.setContent('');
+			} catch (e) { 
+				Y.log('unreported error', 'error', 'RedCMS.Form') 
+			};
 			return fields;
 		},
 		
+		/**
+		 * @method submit
+		 * @description Submits the form using the defined method to the URL defined in the action
+		 */
+		submit : function () {
+			if (this.get('skipValidationBeforeSubmit') === true || this._runValidation()) {
+				var formAction = this.get('action'),
+					formMethod = this.get('method'),
+					submitViaIO = this.get('submitViaIO'),
+					transaction, cfg;
+
+				if (submitViaIO === true) {
+					console.log("submit!!", this.get('encodingType'));
+					cfg = {
+						method : formMethod,
+						form : {
+							id : this.get('contentBox'),
+							upload : (this.get('encodingType') === Y.Form.MULTIPART_ENCODED),
+							useDisabled : true
+						}
+					};
+		            
+					transaction = Y.io(formAction, cfg);
+					this._ioIds[transaction.id] = transaction;
+				} else {
+					this.get('contentBox').submit();
+				}
+			}
+		},
 		//	***	Life cycle methods	***	//
+		
 		renderUI : function () {
-			Y.log("renderUI", 'info', 'Y.RedCMS.Form');
+			//Y.log("renderUI", 'info', 'Y.RedCMS.Form');
 			_msgBox = new Y.RedCMS.MsgBox({visible:false});
 			_msgBox.render();
-			
 			this.get(CONTENT_BOX).appendChild(_msgBox.get(BOUNDING_BOX)); 
+			
+			this.on('complete', function (args) {
+				var ret = Y.JSON.parse(args.response.responseText);
+				if (ret.result == 'success') {
+					this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.success, ret.msg);
+				} else {
+					this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, ret.msg);
+				}
+			});
+			this.on('failure', function (args) {
+				this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, 'Error sending form content');
+			});
+			this.after('render', function(){
+				this.set('encodingType', Y.Form.MULTIPART_ENCODED);
+			});
 		}
 	}, {
 
@@ -106,7 +151,6 @@ http://redcms.sourceforge.net/license.html
 			
 			if (!labelNode || labelNode.get('for') != this.get('id')) {
 
-				console.log(LABEL_BOUNDINGBOX_TEMPLATE)
 				labelBoundingBox = Y.Node.create(LABEL_BOUNDINGBOX_TEMPLATE);
 				labelBoundingBox.addClass(CLASSES.label);
 				contentBox.appendChild(labelBoundingBox);
@@ -163,5 +207,40 @@ http://redcms.sourceforge.net/license.html
 	
 	Y.mix(Y.FormField, Y.RedCMS.FormField);
 	Y.augment(Y.FormField, Y.RedCMS.FormField, true);
+	/*
+	Y.RedCMS.CheckboxField = function(){ return {};};
+	Y.RedCMS.CheckboxField.prototype = {
+		_syncChecked : function () {
+			this._fieldNode.set('checked', this.get('checked'));
+			this.set('value', String(this.get('checked')));
+		},
 
+		initializer : function () {
+			Y.CheckboxField.superclass.initializer.apply(this, arguments);
+		},
+
+		syncUI : function () {
+			Y.CheckboxField.superclass.syncUI.apply(this, arguments);
+			this._syncChecked();
+		},
+
+		bindUI :function () {
+			Y.CheckboxField.superclass.bindUI.apply(this, arguments);
+			this.after('checkedChange', Y.bind(function(e) {
+				if (e.src != 'ui') {
+					this._fieldNode.set('checked', e.newVal);
+					this._fieldNode.set('value', String(e.newVal));
+				}
+			}, this));
+
+			this._fieldNode.after('change', Y.bind(function (e) {
+				//console.log("newVal", e.currentTarget.get('checked'),  String(e.currentTarget.get('checked')));
+				this.set('checked', e.currentTarget.get('checked'), {src : 'ui'});
+				this.set('value', String(e.currentTarget.get('checked')));
+			}, this));
+		}
+			
+	};
+	Y.augment(Y.CheckboxField, Y.RedCMS.CheckboxField, true);
+	*/
  });

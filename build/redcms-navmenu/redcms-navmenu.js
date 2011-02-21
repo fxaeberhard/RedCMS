@@ -1,11 +1,11 @@
-YUI.add('redcms-navmenu', function(Y) {
+YUI.add('redcms-menunav', function(Y) {
 
-
-Y.RedCMSNavMenu = Y.Base.create("redcms-navmenu", Y.Widget, [Y.WidgetParent, Y.WidgetChild], {
+	var NavMenu = Y.Base.create("redcms-menunav", Y.Widget, [Y.WidgetStdMod], {
+		renderUI : function() {
+			this.get("contentBox").one('.yui3-menu').plug(Y.Plugin.NodeMenuNav);
+		}
+	}, {} );
 	
-	var i = 0;
-});
-
-
-
+	Y.namespace('RedCMS').NavMenu = NavMenu;
+	console.log('Navemenu added');
 }, '@VERSION@' );
