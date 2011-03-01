@@ -1,12 +1,21 @@
-﻿#Enable directory lik file structure
+﻿#Enable directory like file structure
 <IfModule mod_rewrite.c>
 # Enable rewrites
 RewriteEngine On
 # The following two lines skip over other HTML/PHP files or resources like CSS, Javascript and image files 
-RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-f									
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^.*$ index.php [L]
 </IfModule>
+
+#Enable Force download for some file types
+<FilesMatch "\.(pdf|sql)$">
+<IfModule mod_headers.c>
+Header set Content-Disposition "attachment"
+# for older browsers
+Header set Content-Type "application/octet-stream"					
+</IfModule>
+</FilesMatch>
 
 <IfModule mod_expires.c>
 ExpiresActive On
@@ -28,14 +37,6 @@ ExpiresByType text/css   	"access plus 1 year"
 #Header set Cache-Control "max-age=290304000, public"
 #</FilesMatch>
 
-<IfModule mod_gzip.c>
-mod_gzip_on Yes
-#mod_gzip_item_exclude        file       \.(js|css)$
-mod_gzip_item_exclude         file       \.gz$
-mod_gzip_item_exclude         file       \.zip$
-#mod_gzip_item_exclude         mime       ^image/#
-</IfModule>
-
 
 #OPTIONS DE L'INDEX
 Options -Indexes
@@ -49,6 +50,13 @@ DirectoryIndex index.php
 #ErrorDocument 404 /en/PageNotFound/
 
 #activate gzip if possible
+<IfModule mod_gzip.c>
+mod_gzip_on Yes
+#mod_gzip_item_exclude        file       \.(js|css)$
+mod_gzip_item_exclude         file       \.gz$
+mod_gzip_item_exclude         file       \.zip$
+#mod_gzip_item_exclude         mime       ^image/#
+</IfModule>
 <ifModule mod_gzip.c>
   mod_gzip_on Yes
   mod_gzip_dechunk Yes

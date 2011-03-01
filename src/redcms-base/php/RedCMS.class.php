@@ -1,14 +1,23 @@
 <?php
-/* 
-Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
-Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
-*/
+/* RedCMS
+ * 
+ * Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+ * Code licensed under the BSD License:
+ * http://redcms.red-agent.com/license.html
+ */
 
+
+/**
+ * RedCMS base class
+ * Singleton
+ *
+ */
 class RedCMS {
 	var $defaultConfg = array(
 		'path' => '/',
 		'homePageId' => 3,
+		'notFoundPageId' => 22,
+		'accessRestrictedPageId' => 23,
 		'defaultLang' => 'en',
 		'headerTemplate' => 'header-default.tpl',
 		'footerTemplate' => 'footer-default.tpl',
@@ -17,13 +26,20 @@ class RedCMS {
 		'windowTitleSuffix'=>'',
 		'keywordSuffix' => '',
 		'adminMail'=>'fx@red-agent.com',
-		'mailFooter' => '',
-		// 'cacheEnabled'=> 1,
+		'mailFooter' => '<br /><br/><hr>Sent via RedCMS',
+		'publicFilePath' => 'files/public/',
+		'privateFilePath' => 'files/private/',
+		'smtpMode' => false,
+		'smtpHost' => '',
+		'smtpPort' => '',
+		'smtpAuth' => false,
+		'smtpUsername' => '',
+		'smtpPassword' => '',
+		'version' => '0.2.0',
+		'cacheEnabled'=> false,
 		// 'addingSlashServer'=> 1,
 		// 'defaultPictureWidth' => 'x'
 	);
-
-	var $version = 0.1;
 	
 	/***************************************All utilities objects *******************/
 	var $sessionManager;
@@ -49,9 +65,7 @@ class RedCMS {
 	var $_dbUser = 'redcms_user';
 	var $_dbUserXGroup = 'redcms_userxgroup';
 	
-	function RedCMS($config, $dsn, $username, $password) {
-		$GLOBALS['redCMS'] = $this;										//Instantiate a global reference to the RedCMS
-
+	function init($config, $dsn, $username, $password) {
 		$this->config = array_merge($this->defaultConfg, $config);
 	
 		$this->path = $this->config['path'];
@@ -86,5 +100,28 @@ class RedCMS {
 			die('Page Not Found');
 		}		
 	}
+	//	***	Singleton methods *** //
+	
+    private static $instance;											// Hold an instance of the class
+    
+    private function __construct() {  }									// A private constructor; prevents direct creation of object
+
+    public static function getInstance(){								// The singleton method
+        if (!isset(self::$instance)) {
+            $c = __CLASS__;
+            self::$instance = new $c;
+        }
+        return self::$instance;
+    }
+ 	public static function get(){								// The singleton method
+        if (!isset(self::$instance)) {
+            $c = __CLASS__;
+            self::$instance = new $c;
+        }
+        return self::$instance;
+    }
+    public function __clone() {											 // Prevent users to clone the instance
+        trigger_error('Clone is not allowed.', E_USER_ERROR);
+    }
 }
 ?>

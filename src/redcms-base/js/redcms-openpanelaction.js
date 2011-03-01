@@ -80,11 +80,12 @@ YUI.add('redcms-openpanelaction', function(Y) {
 			}, this);
 		},
 		_onWidgetsRendered: function(widgets) {
-			var onSuccess = Y.bind(this._onSuccess, this)
-			//console.log('OpenPanelAction._onWidgetsRendered(', widgets);
+			//console.log("OpenPanelAction._onWidgetsRendered()", widgets, arguments);
+			var onSuccess = Y.bind(this._onSuccess, this),
+				onReload = Y.bind(this._onWidgetsRendered, this);
 			for (var i=0;i<widgets.length;i++) {
 				widgets[i].on("success", onSuccess);
-				widgets[i].on("complete", onSuccess);
+				widgets[i].on("reload", onReload);					
 			}
 		},
 		_onSuccess: function(){

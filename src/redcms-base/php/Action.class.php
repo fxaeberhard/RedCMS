@@ -2,13 +2,14 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
-class Action extends Block {
+class Action extends Block {	
+	
+	var $_dbFieldsMap = array('label' => 'text1', 'action' => 'text2', 'filter' => 'text3');
+	
 	function getLabel(){
-		//if (isset($this->fields['text1']) && $this->fields['text1'] != ''){
-			return $this->fields['text1'];
-		//} else return 'No label available';
+		return $this->label;
 	}
 	function getLink(){
 		return '#';
@@ -17,30 +18,57 @@ class Action extends Block {
 }
 
 class LoginAction extends Action {
+	
+	var $_dbFieldsMap = array('loginLabel' => 'text1', 'logoutLabel' => 'text1');
+	
 	function getLabel(){
-		global $redCMS;
+		$redCMS = RedCMS::getInstance();
 		if ($redCMS->sessionManager->isLoggedIn()){
-			return $this->fields['text2'];
+			return $this->loginLabel;
 		} else {
-			return $this->fields['text1'];
+			return $this->logoutLabel;
 		}
 	}
 }
-class OpenPanelAction extends Action {
+class TargetBlockAction extends Action {
+	var $_target;
+	function getTarget() {
+		//return $this->getLinkedBlock('target');
+		if (!isset($this->_target)) {
+			$this->_target = $this->getLinkedBlock('target');
+		}
+		return $this->_target;
+	}
 	function getLink(){
-		$target = $this->getLinkedBlock("target");
+		$target = $this->getTarget();
 		if ($target) return $target->getLink();
 		else return parent::getLink();
 	}
 }
-class PageLinkAction extends OpenPanelAction {
+class OpenPanelAction extends TargetBlockAction {
 	
 }
+class AsyncRequestAction extends TargetBlockAction {
+	
+}
+class PageLinkAction extends TargetBlockAction {
+	function getLabel(){
+		$target = $this->getTarget();
+		if ($target) return $target->getLabel();
+		else return parent::getLabel();
+	}
+}
 class DeleteAction extends Action {
+	function getTargetTuple(){
+		return null;
+	}
+	function getLink() {
+		return Block::getLink();
+	}	
 	function render() {
 		global $_REQUEST;
 		if (isset($_REQUEST['id'])) {
-			$b = BlockManager::getBlockById($_REQUEST['id']);
+			$b = $this->getTargetTuple();
 			if ($b->delete()) {
 				$ret = array('result' => 'success', 'msg'=>'Block has been deleted');
 			} else {
@@ -49,5 +77,29 @@ class DeleteAction extends Action {
 			echo json_encode($ret);
 		}
 	}
+}
+class DeleteBlockAction extends DeleteAction {
+	function getTargetTuple(){
+		global $_REQUEST;
+		return BlockManager::getBlockById($_REQUEST['id']);;
+	}
+}
+class DeleteGroupAction extends DeleteAction {	
+	function getTargetTuple(){
+		global $_REQUEST;
+		return UserManager::getGroupById($_REQUEST['id']);;
+	}
+}
+class DeleteUserAction extends DeleteAction {
+	function getTargetTuple(){
+		global $_REQUEST;
+		return UserManager::getUserById($_REQUEST['id']);;
+	}
+}
+class NewWindowHrefAction extends Action {
+	
+}
+class HrefAction extends Action {
+	
 }
 ?>

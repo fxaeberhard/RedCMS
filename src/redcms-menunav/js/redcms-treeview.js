@@ -5,16 +5,48 @@ http://redcms.red-agent.com/license.html
 */
 
 YUI.add('redcms-treeview', function(Y) {
+
 	var TreeView = Y.Base.create("redcms-treeview", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+
+		// *** Instance members *** //
+		_treeview:null,
+		_tooltip:null,
+		
+		// *** Life Cycle methods *** //
 		renderUI : function() {
 			var treeNode = this.get("contentBox").one('ul');
-			var treeview = new Y.TreeView({  
+			
+			this._treeview = new Y.TreeView({  
 				srcNode: treeNode,
 				contentBox: treeNode,
 				boundingBox: treeNode,
 				type : "TreeView"
 			});
-			treeview.render();
+			this._treeview.render();
+			
+			this._tooltip = new Y.RedCMS.Tooltip({
+		        triggerNodes:".yui3-treeleaf",
+		        delegate: treeNode,
+		        shim:false,
+		        zIndex:1000,
+		        autoHideDelay:10000
+		    });
+			this._tooltip.render();
+		 
+			this._tooltip.on("triggerEnter", function(e) {
+		        var node = e.node,
+		        	tooltipContent;
+		        if (node) {
+			        tooltipContent = node.one('.redcms-tooltip-content');
+			        if (tooltipContent) {
+			            this.setTriggerContent(tooltipContent.getContent());
+			        } else e.preventDefault()
+		        } else e.preventDefault();
+		    });
+		}, 
+		destroy: function() {
+			this._tooltip.destroy();
+			this._treeview.destroy();
 		}
 	}, {} );
 	Y.namespace('RedCMS').TreeView = TreeView;

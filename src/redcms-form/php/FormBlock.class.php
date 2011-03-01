@@ -2,32 +2,43 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 
 class FormBlock extends TreeStructure {
-	var $targetBlock;
 	
+	function parseRequest(){
+		global $_REQUEST;
+		$redCMS = RedCMS::get();
+		$fields = array();
+		
+		if (isset($_REQUEST['redaction'])){
+			foreach ($this->getChildBlocks() as $b) {
+				if (isset($_REQUEST[$b->name])){
+					$newValue = $_REQUEST[$b->name];
+					
+					switch ($b->formtype) {
+						case 'PasswordField':
+							if ($newValue != '') 
+								$fields[$b->name] = $redCMS->sessionManager->generateHash($newValue);
+							break;
+						default: 
+							$fields[$b->name] = $newValue;
+					}
+				}
+			}
+		}
+		
+		return $fields;
+	}
 	function getFormFields(){
 		$fields = array();
 		
-		$fields[] = array('name'=>'id', 'type'=>'HiddenField', 'value' => ''.$this->targetBlock->id);
-		if (isset($this->targetBlock->fields['parentId'])){
-			$fields[] = array('name'=>'parentId', 'type'=>'HiddenField', 'value' => ''.$this->targetBlock->get('parentId'));
-		}
-		
 		foreach ($this->getChildBlocks() as $b) {
-			$f = array('name' => $b->get('text1'),
-				'required' => $b->get('text3') == '1',
-				'type' => $b->get('text4'),
-				'label' => $b->get('text2'));
+			$f = $b->toJSON();
 			
-			$value = $this->targetBlock->get($b->get('text1'));
-			if ($value !== null) $f['value'] = $value;
-			else $f['value'] = $b->fields['text5'];
-			
-			switch ($b->get('text4')) {
-				case 'PasswordField':											//Password fields values are never sent to the client
+			switch ($b->formtype) {
+				case 'PasswordField':										//Password fields values are never sent to the client
 					$f['value'] = '';
 					break;
 			}
@@ -35,38 +46,166 @@ class FormBlock extends TreeStructure {
 			$fields[] = $f;
 		}
 		
-		$fields[] = array('name'=>'redaction', 'type'=>'HiddenField', 'value' => 'Submit');			// Doule this field since the submit button won't be transmitted if using file upload
+		$fields[] = array('name'=>'redaction', 'type'=>'HiddenField', 'value' => 'Submit');	// Double this field since the submit button won't be transmitted if using file upload
 		$fields[] = array('name'=>'redaction', 'type'=>'SubmitButton', 'value' => 'Submit');
 		return $fields;
 	}
 	
-	function parseRequest(){
-		global $_REQUEST, $redCMS;
-		$fields = array();
+	function render() {	
+		// We parse the provided fields and merge them with the target block
+		$template = $this->getTemplate();
+		$template->assign('fields', $this->parseRequest());
+		$template->display($this->template);
+	}
+}
+
+class FormField extends Block {
+	var $_dbFieldsMap = array('redid'=>'id', 'name' => 'text1', 'label' => 'text2', 'required' => 'text3', 'formtype' => 'text4', 'defaultValue' => 'text5');	
+
+	function toJSON() {
 		
-		if (isset($_REQUEST['redaction'])){
-			foreach ($this->getChildBlocks() as $b) {
-				if (isset($_REQUEST[$b->get('text1')])){
-					$fields[$b->get('text1')] = $_REQUEST[$b->get('text1')];
-					
-				
-					switch ($b->get('text4')) {
-						case 'PasswordField':
-							if ($_REQUEST[$b->get('text1')] == '') {
-								unset($fields[$b->get('text1')]);
-							} else $fields[$b->get('text1')] = $redCMS->sessionManager->generateHash($fields[$b->get('text1')]);
-							break;
-					}
-				}
-			}
+		$ret = parent::toJSON();
+		if ($ret['label'] == '') $ret['label'] = $this->name;
+		
+		$ret['value'] = $this->defaultValue;
+		unset($ret['defaultValue']);
+		
+		$ret['type'] = $this->formtype;
+		unset($ret['formtype']);
+		
+		$ret['required'] = $this->required == '1';
+		
+		return $ret;
+	}
+}
+class GroupSelectFormField extends FormField {
+	
+	function toJSON() {
+		$ret = parent::toJSON();
+		$ret['choices'] = array();
+		foreach (UserManager::getGroups() as $g) {
+			$ret['choices'][] = array('label' => $g->name, 'value'=> ''.$g->id);
 		}
+		return $ret;
+	}
+}
+class BlockSelectFormField extends FormField {
+	
+	function toJSON() {
+		$ret = parent::toJSON();
+		$ret['choices'] = array();
+		foreach (BlockManager::getBlocksBySelect('type=\'PageBlock\'') as $b) {
+		//	print_r($b);
+			$ret['choices'][] = array('label' => $b->link, 'value'=> ''.$b->id);
+		}
+		return $ret;
+	}
+}
+
+class EditDBFormBlock extends FormBlock {
+	
+	var $_targetBlock;
+	
+	function onBlockSaved() {
+		
+	}
+	
+	function parseRequest(){
+		global $_REQUEST;
+		$fields = parent::parseRequest();
+		
 		if (isset($_REQUEST['id'])) $fields['id'] = $_REQUEST['id'];
 		
 		return $fields;
 	}
-}
-class EditDBFormBlock extends FormBlock {
+	function getFormFields(){
+		
+		$this->getTargetBlock();
 	
+		$fields = parent::getFormFields();
+		
+		foreach ($fields as &$f) {
+			$value = $this->_targetBlock->get($f['name']);
+			if ($value !== null) $f['value'] = $value;
+			
+			switch ($f['type']) {
+				case 'PasswordField':										//Password fields values are never sent to the client
+					$f['value'] = '';
+					break;
+			}
+		}
+		
+		$fields[] = array('name'=>'id', 'type'=>'HiddenField', 'value' => ''.$this->_targetBlock->id);
+		return $fields;
+	}
+	
+	function getTargetBlock(){
+		//echo 'EditDBFormBlock.getTargetBlock()';
+		return null;
+	}
+	function render() {		
+		$this->getTargetBlock();
+		$fields = $this->parseRequest();									// We parse the provided fields and merge them with the target block
+		
+		if ($this->_targetBlock) {
+			$this->_targetBlock->fields = array_merge($this->_targetBlock->fields, $fields);
+		}
+		
+		if (isset($_REQUEST['redaction'])) {								//Form has been sent for submission
+			if ($this->_targetBlock->save($fields)) {
+				$this->onBlockSaved();
+				$ret = array('result' => 'success', 'msg'=>'Changes have been made.');
+			} else {
+				$ret = array('result' => 'error', 'msg'=>'Form unsuccessfully saved.');
+			}
+			echo json_encode($ret);
+		} else {															//No action, we display the block in the regular way
+			$template = $this->getTemplate();
+			$template->display($this->template);
+		}
+	}
+}
+	
+class EditBlockFormBlock extends EditDBFormBlock {
+
+	function onBlockSaved(){
+		global $_REQUEST;
+		$red = RedCMS::get();
+		foreach ($_REQUEST as $p => $v) {
+			if (strpos($p, 'redcms_link_') !== false) {
+				$linkType = str_replace('redcms_link_', '', $p);
+				if (isset($v)) {
+					$linkStatement = $red->dbManager->query('SELECT *, redcms_block.id AS blockId'.
+					' FROM '.$red->_dbBlock.
+					' LEFT JOIN '.$red->_dbBlockXBlock.
+					' ON blockId='.$red->_dbBlock.'.id AND relationType=\''.$linkType.'\'  WHERE redcms_block.id='.$this->_targetBlock->id);
+					$linkTuple = $linkStatement->fetch(PDO::FETCH_ASSOC);
+					$linkTuple['relationType'] = $linkType;
+					$linkTuple['subBlockId'] = $v;
+					$link = new BlockXBlock($linkTuple);
+					$link->save();
+				}
+			}
+		}
+	}
+	function getFormFields(){
+	
+		$fields = parent::getFormFields();
+		
+		if ($this->_targetBlock->parentId) {
+			$fields[] = array('name'=>'parentId', 'type'=>'HiddenField', 'value' => ''.$this->_targetBlock->parentId);
+		}
+		
+		foreach ($fields as &$f) {
+			if (strpos($f['name'], 'redcms_link_') !== false) {
+				$linkType = str_replace('redcms_link_', '', $f['name']);	
+				$targetBlock = $this->_targetBlock->getLinkedBlock($linkType);
+				if ($targetBlock) $f['value'] = ''.$targetBlock->id;
+			}
+		}
+		
+		return $fields;
+	}
 	function parseRequest(){
 		global $_REQUEST;
 		$fields = parent::parseRequest();
@@ -76,123 +215,173 @@ class EditDBFormBlock extends FormBlock {
 		return $fields;
 	}
 	
-	function render() {
+	function getTargetBlock() {
 		global $_REQUEST;
-																
-		if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
-			$this->targetBlock = BlockManager::getBlockById($_REQUEST['id']);
-		} else {
-			$this->targetBlock = new Block();
-		}	
-		
-		$fields = $this->parseRequest();
-		$this->targetBlock->fields = array_merge($this->targetBlock->fields, $fields);
-		
-		if (isset($_REQUEST['redaction'])) {								//Form has been sent for submission
-			if ($this->targetBlock->save($fields)) {
-				$ret = array('result' => 'success', 'msg'=>'Changes have been made.');
+		if (!isset($this->_targetBlock)){							
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {				// If we are editing an existing block, we retrieve it
+				$this->_targetBlock = BlockManager::getBlockById($_REQUEST['id']);
 			} else {
-				$ret = array('result' => 'error', 'msg'=>'Form unsuccessfully saved.');
-			}
-			echo json_encode($ret);
-		} else {
-			$template = $this->getTemplate();
-			$template->display($this->fields['template']);
+				if (isset($_POST['type'])) {									// Otherwise we try to instantiate a block with class provided in arguments
+					//eval('$this->_targetBlock = new '.$_POST['type'].'();');	// PHP< 5.3.0
+					$this->_targetBlock = new $_POST['type']();					// PHP>=5.3.0
+				} else {														// And if no information is available we use a generic block
+					$this->_targetBlock = new Block();
+				}
+			}	
+			
 		}
+		return $this->_targetBlock;
 	}
 }
-class EditRightsFormBlock extends EditDBFormBlock {
+
+class EditGroupMembershipFormBlock extends EditDBFormBlock {
+	/**
+	 * FIXME should return groups with a corresponding class
+	 * 
+	 * @param int $blockId
+	 */
+	function getGetGroupMemberShipByUser($userId) {
+		$red = RedCMS::get();
+		$stat = $red->dbManager->query('SELECT *, redcms_group.id AS idGroup'.
+			' FROM '.$red->_dbGroup.
+			' LEFT JOIN '.$red->_dbUserXGroup.
+			' ON idGroup='.$red->_dbGroup.'.id AND idUser='.$userId);
+		return $stat->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
 	function parseRequest(){
+		//echo 'EditRightsFormBlock.parseRequest()';
 		global $_REQUEST;
 		$fields = parent::parseRequest();
-		
-		if (isset($_REQUEST['redaction'])) {
-			$fields['read'] = (isset($_REQUEST['read']))?1:0;
-			$fields['write'] = (isset($_REQUEST['write']))?1:0;
+		if (isset($_REQUEST['redaction'])) {								// Form has been sent for submission
+			
+			foreach ($this->getGetGroupMemberShipByUser($this->getTargetBlock()->id) as $g) {	// We loop through the rights to select the one corresponding to 
+				$isAMember = (isset($_REQUEST[$g['name'].'_membership']))?true:false;
+				if ($isAMember && $g['id'] == '') {
+					$g['idUser'] = $this->_targetBlock->id;					// For new tuples, we set the target id	
+					$gTuple = new UserXGroup($g);
+					$gTuple->save();
+				} else if (!$isAMember && $g['id'] != '') {
+					$gTuple = new UserXGroup($g);
+					$gTuple->delete();
+				}
+			}
 		}
 		return $fields;
 	}
 	
 	function getFormFields(){
-		global $redCMS;
+		die ("Function not yet implemented.");
+	}
+	
+	function getTargetBlock() {
+		global $_REQUEST;
+		if (!isset($this->_targetBlock)){							
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
+				$this->_targetBlock = UserManager::getUserById($_REQUEST['id']);
+			} else {
+				$this->_targetBlock = new User();
+			}	
+		}
+		return $this->_targetBlock;
+	}
+}
+
+
+class EditRightsFormBlock extends EditDBFormBlock {
+	/**
+	 * FIXME should return groups with a corresponding class
+	 * 
+	 * @param int $blockId
+	 */
+	function getRightsByGroup($blockId) {
+		$redCMS = RedCMS::get();
+		return 	$redCMS->dbManager->query('SELECT *, redcms_group.id AS idGroup '.
+			' FROM '.$redCMS->_dbGroup.
+			' LEFT JOIN '.$redCMS->_dbGroupXBlock.
+			' ON idGroup='.$redCMS->_dbGroup.'.id AND idBlock='.$blockId)->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+	function parseRequest(){
+		//echo 'EditRightsFormBlock.parseRequest()';
+		global $_REQUEST;
+		$fields = parent::parseRequest();
+		
+		if (isset($_REQUEST['redaction'])) {									// Form has been sent for submission
+			$fields['read'] = (isset($_REQUEST['read']))?1:0;
+			$fields['write'] = (isset($_REQUEST['write']))?1:0;
+			
+			foreach ($this->getRightsByGroup($this->getTargetBlock()->id) as $g) {	// We loop through the rights to select the one corresponding to 
+				$r = (isset($_REQUEST[$g['name'].'_read']))?1:0;
+				$w = (isset($_REQUEST[$g['name'].'_write']))?1:0;
+				if ($r || $w || $g['id'] != '') {
+					$g['idBlock'] = $this->_targetBlock->id;		// For new tuples, we set the target id	
+					$g['read'] = $r;
+					$g['write'] = $w;
+					$gTuple = new GroupXBlock($g);
+					$gTuple->save();
+				}
+			}
+		}
+		return $fields;
+	}
+	
+	function getFormFields(){
+		$redCMS = RedCMS::get();
 		$fields = array();
 		
-		$fields[] = array('name'=>'id', 'type'=>'HiddenField', 'value' => ''.$this->targetBlock->id);
+		$this->getTargetBlock();
 		
-		$fields[] = array('name'=>'read', 'type'=>'CheckboxField', 'label' => 'Default: read', 'checked' => $this->targetBlock->fields['read'] === 1);
-		$fields[] = array('name'=>'write', 'type'=>'CheckboxField', 'label' => 'Default: write', 'checked' => $this->targetBlock->fields['write'] === 1);
+		$fields[] = array('name'=>'id', 'type'=>'HiddenField', 'value' => ''.$this->_targetBlock->id);
+		$fields[] = array('name'=>'read', 'type'=>'CheckboxField', 'label' => 'Default: read', 'checked' => $this->_targetBlock->read === 1);
+		$fields[] = array('name'=>'write', 'type'=>'CheckboxField', 'label' => 'Default: write', 'checked' => $this->_targetBlock->write === 1);
 		
-		$rights = $redCMS->dbManager->query('SELECT * FROM '.$redCMS->_dbGroup.
-			' LEFT JOIN '.$redCMS->_dbGroupXBlock.' ON idGroup='.$redCMS->_dbGroup.'.id AND idBlock='.$this->targetBlock->id)->fetchAll(PDO::FETCH_ASSOC);
-		//print_r($rights);
-		//WHERE idBlock='.$this->targetBlock->id
-		foreach ($rights as $g) {
-			//print_r($g);
-			//we loop through the rights to select the one corresponding to 
-			if (!isset($g['read'])) $g['read'] = 0;
-			$fields[] = array('name'=>'read_'.$g['name'], 'type'=>'CheckboxField', 'label' => $g['name'].' read', 'checked' => $g['read'] === 1);
-			if (!isset($g['write'])) $g['write'] = 0;
-			$fields[] = array('name'=>'write_'.$g['name'], 'type'=>'CheckboxField', 'label' => $g['name'].' write', 'checked' => $g['write'] === 1);
+		foreach ($this->getRightsByGroup($this->_targetBlock->id) as $g) {				//we loop through the rights to select the one corresponding to 
+			if (!isset($g['read'])) { $g['read'] = 0;$g['write'] = 0; }
+			$fields[] = array('name'=>$g['name'].'_read', 'type'=>'CheckboxField', 'label' => $g['name'].' read', 'checked' => $g['read'] === 1);
+			$fields[] = array('name'=>$g['name'].'_write', 'type'=>'CheckboxField', 'label' => $g['name'].' write', 'checked' => $g['write'] === 1);
 		}
+		
 		$fields[] = array('name'=>'redaction', 'type'=>'SubmitButton', 'value' => 'Submit');
 		return $fields;
-	}	
-	function render() {
+	}
+	
+	function getTargetBlock() {
 		global $_REQUEST;
-																
-		if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
-			$this->targetBlock = BlockManager::getBlockById($_REQUEST['id']);
-		} else {
-			$this->targetBlock = new Block();
-		}	
-		
-		$fields = $this->parseRequest();
-		$this->targetBlock->fields = array_merge($this->targetBlock->fields, $fields);
-		
-		if (isset($_REQUEST['redaction'])) {								//Form has been sent for submission
-			if ($this->targetBlock->save($fields)) {
-				$ret = array('result' => 'success', 'msg'=>'Changes have been made.');
+		if (!isset($this->_targetBlock)){							
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
+				$this->_targetBlock = BlockManager::getBlockById($_REQUEST['id']);
 			} else {
-				$ret = array('result' => 'error', 'msg'=>'Form unsuccessfully saved.');
-			}
-			echo json_encode($ret);
-		} else {
-			$template = $this->getTemplate();
-			$template->display($this->fields['template']);
+				$this->_targetBlock = new Block();
+			}	
 		}
+		return $this->_targetBlock;
 	}
 }
 
-class EditUserFormBlock extends FormBlock {
-	var $targetBlock;
+class EditGroupFormBlock extends EditDBFormBlock {
 	
-	function render() {
+	function getTargetBlock() {
 		global $_REQUEST;
-																
-		if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
-			$this->targetBlock = UserManager::getUserById($_REQUEST['id']);
-		} else {
-			$this->targetBlock = new User();
-		}	
-		
-		$fields = $this->parseRequest();
-		$this->targetBlock->fields = array_merge($this->targetBlock->fields, $fields);
-		
-		if (isset($_REQUEST['redaction'])) {								//Form has been sent for submission
-			if ($this->targetBlock->save()) {
-				$ret = array('result' => 'success', 'msg'=>'Changes have been made.');
-			} else {
-				$ret = array('result' => 'error', 'msg'=>'Form unsuccessfully saved.');
-			}
-			echo json_encode($ret);
-		} else {
-			$template = $this->getTemplate();
-			$template->display($this->fields['template']);
+		if (!isset($this->_targetBlock)){
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '')
+				$this->_targetBlock = UserManager::getGroupById($_REQUEST['id']);
+			else $this->_targetBlock = new Group();
 		}
+		return $this->_targetBlocks;
+	}
+}
+class EditUserFormBlock extends EditDBFormBlock {
+	
+	function getTargetBlock() {
+		global $_REQUEST;
+		if (!isset($this->_targetBlock)){
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '')
+				$this->_targetBlock = UserManager::getUserById($_REQUEST['id']);
+			else $this->_targetBlock = new User();
+		}
+		return $this->_targetblock;
 	}
 }
 
-class FormField extends Block {
-	
-}
 ?>

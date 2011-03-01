@@ -1,27 +1,33 @@
 {* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 *}
-{$admin = $this->getLinkedBlock('admin')}
-{$admin = (isset($admin))?$admin->getMenuItems():array()}
-<div class="redcms-block" redid="{$this->id}" redadmin="{htmlspecialchars(json_encode($admin))}" 
+<div class="redcms-block" redid="{$this->id}" redadmin="{htmlspecialchars(json_encode($this->getAdminJSON()))}" 
 	widget="TreeView" requires="redcms-treeview" rootBlock="true" >
 
 	{function name=menu level=0}
 		<ul>
 			{foreach $blocks as $block}
-				<li redid="{$block->id}" {*widget="{get_class($block)}"*}>
+				<li redid="{$block->id}" widget="{get_class($block)}" >
+					{$link = $block->getLink()}
+					<a href="{$link}" target="_blank">{$block->getLabel()}</a>
+					
+					<div class="redcms-tooltip-content">
+					
+						{$relPath = str_replace($redCMS->path, '', $link)}
+						{if file_exists($relPath)}
+							{$ext = Utils::file_extension($link)}
+							{if $ext == 'jpg' OR $ext == 'jpeg' OR $ext == 'png' OR $ext == 'gif'}
+								<img src="{$link}" /><br />
+							{/if}
+							{round( filesize( $relPath )/ (1024), 2)}KB
+						{else}
+							Target file is missing
+						{/if}
+					</div>
 				
 					{$subBlocks = $block->getChildBlocks()}
-					{if isset($block->fields['link'])}
-						{$targetLink = $block->getLink()}
-					{else}
-						{$targetLink = '#'}
-					{/if}
-						
-					<a href="{$targetLink}">{$block->getLabel()}</a>
-				
 					{if !empty($subBlocks)}
     					{call menu blocks=$subBlocks level=$level+1}
 					{/if}

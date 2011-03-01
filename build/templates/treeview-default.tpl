@@ -1,30 +1,21 @@
 {* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 *}
-{$admin = $this->getLinkedBlock('admin')}
-{$admin = (isset($admin))?$admin->getMenuItems():array()}
-<div class="redcms-block" redid="{$this->id}" redadmin="{htmlspecialchars(json_encode($admin))}" 
+<div class="redcms-block" redid="{$this->id}" redadmin="{htmlspecialchars(json_encode($this->getAdminJSON()))}" 
 	widget="TreeView" requires="redcms-treeview" >
 
 	{function name=menu level=0}
 		<ul>
 			{foreach $blocks as $block}
-				<li redid="{$block->id}" {*widget="{get_class($block)}"*}>
-				
+				<li redid="{$block->id}" widget="{get_class($block)}">
+					<a href="{$block->getLink()|default:'#'}">{$block->getLabel()}</a>
+					{*
 					{$subBlocks = $block->getChildBlocks()}
-					{if isset($block->fields['link'])}
-						{$targetLink = $block->getLink()}
-					{else}
-						{$targetLink = '#'}
-					{/if}
-						
-					<a href="{$targetLink}">{$block->getLabel()}</a>
-				
 					{if !empty($subBlocks)}
     					{call menu blocks=$subBlocks level=$level+1}
-					{/if}
+					{/if}*}
 				</li>
 			{/foreach}
 		</ul>

@@ -5,7 +5,8 @@ lib/phploader
 lib/phpmailer
 lib/yui
 lib/yuicompressor
-
+test/*
+files/*
 .project*
 .settings
 .buildpath

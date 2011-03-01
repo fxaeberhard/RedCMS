@@ -17,17 +17,19 @@ http://redcms.red-agent.com/license.html
 		FORM = 'form',
 		LABEL = 'label',
 		INVALID = 'invalid',
+		INPUT = 'input',
 		
-		LABEL_BOUNDINGBOX_TEMPLATE = '<div />',
+		LABEL_BOUNDINGBOX_TEMPLATE = '<div ></div>',
 		
 		getCN = Y.ClassNameManager.getClassName,
 		
 		CLASSES = {
 			invalid	: getCN(FORM, INVALID),
-			label : getCN(FORM, LABEL)
-		}
-		
-	Form = Y.Base.create('redcms-form', Y.Form, [ ], {
+			label : getCN(FORM, LABEL),
+			input : getCN(FORM, INPUT)
+		},
+	
+	Form = Y.Base.create('redcms-form', Y.Form, [ Y.RedCMS.RedCMSWidget ], {
 		// *** Instance members *** //
 		_msgBox : null,
 		
@@ -44,46 +46,21 @@ http://redcms.red-agent.com/license.html
 		 * @description Sets the 'fields' attribute based on parsed HTML
 		 */
 		_parseFields : function (contentBox) {		
-			var form = contentBox.one('form'),
-				fields = [];
+			var fields = [];
 			try {
 				fields = Y.JSON.parse(contentBox.getContent());
 				contentBox.setContent('');
 			} catch (e) { 
-				Y.log('unreported error', 'error', 'RedCMS.Form') 
+				Y.log('_parseFields():Unable to parse form content.', 'log', 'RedCMS.Form');
 			};
 			return fields;
 		},
 		
-		/**
-		 * @method submit
-		 * @description Submits the form using the defined method to the URL defined in the action
-		 */
 		submit : function () {
-			if (this.get('skipValidationBeforeSubmit') === true || this._runValidation()) {
-				var formAction = this.get('action'),
-					formMethod = this.get('method'),
-					submitViaIO = this.get('submitViaIO'),
-					transaction, cfg;
-
-				if (submitViaIO === true) {
-					console.log("submit!!", this.get('encodingType'));
-					cfg = {
-						method : formMethod,
-						form : {
-							id : this.get('contentBox'),
-							upload : (this.get('encodingType') === Y.Form.MULTIPART_ENCODED),
-							useDisabled : true
-						}
-					};
-		            
-					transaction = Y.io(formAction, cfg);
-					this._ioIds[transaction.id] = transaction;
-				} else {
-					this.get('contentBox').submit();
-				}
-			}
+			this.fire('submit');
+			Y.RedCMS.Form.superclass.submit.apply(this);
 		},
+		
 		//	***	Life cycle methods	***	//
 		
 		renderUI : function () {
@@ -91,7 +68,6 @@ http://redcms.red-agent.com/license.html
 			_msgBox = new Y.RedCMS.MsgBox({visible:false});
 			_msgBox.render();
 			this.get(CONTENT_BOX).appendChild(_msgBox.get(BOUNDING_BOX)); 
-			
 			this.on('complete', function (args) {
 				var ret = Y.JSON.parse(args.response.responseText);
 				if (ret.result == 'success') {
@@ -104,7 +80,17 @@ http://redcms.red-agent.com/license.html
 				this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, 'Error sending form content');
 			});
 			this.after('render', function(){
-				this.set('encodingType', Y.Form.MULTIPART_ENCODED);
+				this.set('resetAfterSubmit', false);
+				this.get(CONTENT_BOX).setStyle('display', 'block');
+				this.set('validateInline', true);								// In RedCMS inline validation is activated by default
+				this.each(function (f) {										// We loop through the fields to see if one is a FileField,
+					if (f instanceof Y.FileField){
+						this.set('encodingType', Y.Form.MULTIPART_ENCODED);		// which requires multipart encoding
+						this.on('complete', function(){
+							this.fire('success');
+						});
+					}
+				}, this);
 			});
 		}
 	}, {
@@ -126,14 +112,21 @@ http://redcms.red-agent.com/license.html
 	
 	Y.namespace('RedCMS').Form = Form;
 	
-	// *** HACK: use our custom implementation on top of the original one. *** //
+	// *** HACK: use our custom implementation on top of the original one. *** //	
 	Y.RedCMS.FormField = function() {
 	    return {
 	    	LABEL_BOUNDINGBOX_TEMPLATE : '<div />',
-	        CLASSES : CLASSES
+	        CLASSES : CLASSES,
+
+			ATTRS : {
+				redid : {
+					validator : Y.Lang.isNumber,
+					writeOnce : true
+				}
+			}
 	    }
 	};
-	
+
 	Y.RedCMS.FormField.prototype =  {
 		/**
 		 * This method is overriden to
@@ -147,12 +140,17 @@ http://redcms.red-agent.com/license.html
 		 */
 		_renderLabelNode : function () {
 			var contentBox = this.get('contentBox'),
-				labelNode = contentBox.one('label');
+				labelNode = contentBox.one('label'),
+				labelBoundingBox;
 			
 			if (!labelNode || labelNode.get('for') != this.get('id')) {
 
 				labelBoundingBox = Y.Node.create(LABEL_BOUNDINGBOX_TEMPLATE);
 				labelBoundingBox.addClass(CLASSES.label);
+				labelBoundingBox.addClass('yui3-u');
+				contentBox.addClass('yui3-g');
+				contentBox.setAttribute('redid', this.get('redid') );
+				contentBox.setAttribute('widget', 'FormField' );
 				contentBox.appendChild(labelBoundingBox);
 				
 				labelNode = Y.Node.create(Y.FormField.LABEL_TEMPLATE);
@@ -162,6 +160,38 @@ http://redcms.red-agent.com/license.html
 			}
 			
 			this._labelNode = labelNode;	 
+		},
+		_syncLabelNode : function () {
+			if (this._labelNode) {
+				prefix = (this.get('required'))?'*':'';
+				this._labelNode.setAttrs({
+					innerHTML : prefix+this.get('label')+':'
+				});
+				this._labelNode.setAttribute('for', this.get('id') + Y.FormField.FIELD_ID_SUFFIX);
+			}
+		},
+		/**
+		 * @method _renderFieldNode
+		 * @protected
+		 * @description Draws the field node into the contentBox
+		 */
+		_renderFieldNode : function () {
+			var contentBox = this.get('contentBox'),
+				field = contentBox.one('#' + this.get('id')),
+				fieldBoundingBox;
+					
+			if (!field) {
+
+				fieldBoundingBox = Y.Node.create(LABEL_BOUNDINGBOX_TEMPLATE);
+				fieldBoundingBox.addClass(CLASSES.input);
+				fieldBoundingBox.addClass('yui3-u');
+				contentBox.appendChild(fieldBoundingBox);
+				
+				field = Y.Node.create(Y.FormField.INPUT_TEMPLATE);
+				fieldBoundingBox.appendChild(field);
+			}
+
+			this._fieldNode = field;
 		},
 		/**
 		 * 
@@ -204,9 +234,46 @@ http://redcms.red-agent.com/license.html
 			}
 		},
 	};
-	
-	Y.mix(Y.FormField, Y.RedCMS.FormField);
+	Y.mix(Y.FormField, Y.RedCMS.FormField(), true, [], 0, true);
 	Y.augment(Y.FormField, Y.RedCMS.FormField, true);
+	Y.ChoiceField.prototype._renderLabelNode = Y.RedCMS.FormField.prototype._renderLabelNode;
+	
+	Y.TextareaField.prototype._renderFieldNode = function () {
+	        var contentBox = this.get('contentBox'),
+	            field = contentBox.one('#' + this.get('id'));
+	                
+	        if (!field) {
+				fieldBoundingBox = Y.Node.create(LABEL_BOUNDINGBOX_TEMPLATE);
+				fieldBoundingBox.addClass(CLASSES.input);
+				fieldBoundingBox.addClass('yui3-u');
+				contentBox.appendChild(fieldBoundingBox);
+				contentBox.setAttribute('redid', this.get('redid') );
+	        	
+	            field = Y.Node.create(Y.TextareaField.NODE_TEMPLATE);
+	            field.setAttrs({
+	                name : this.get('name'), 
+	                innerHTML : this.get('value')
+	            });
+	            fieldBoundingBox.appendChild(field);
+	        }
+
+			field.setAttribute('tabindex', Y.FormField.tabIndex);
+			Y.FormField.tabIndex++;
+	        
+	        this._fieldNode = field;
+	    }
+	
+	
+	/*: function () {
+        var contentBox = this.get('contentBox'),
+            titleNode = Y.Node.create('<span></span>');
+        
+        titleNode.set('innerHTML', this.get('label'));
+        contentBox.appendChild(titleNode);
+        
+        this._labelNode = titleNode;
+    },*/
+	
 	/*
 	Y.RedCMS.CheckboxField = function(){ return {};};
 	Y.RedCMS.CheckboxField.prototype = {
@@ -243,4 +310,36 @@ http://redcms.red-agent.com/license.html
 	};
 	Y.augment(Y.CheckboxField, Y.RedCMS.CheckboxField, true);
 	*/
- });
+	var SimpleForm;
+	
+	SimpleForm = Y.Base.create("redcms-simpleform", Y.Widget, [ ], {
+
+		//	***	Life cycle methods	***	//
+		renderUI: function() {
+			this.get(CONTENT_BOX).one("form").on('submit', Y.bind( function(e) {
+				e.halt();
+				//e.preventDefault();
+				//console.log(e, e.target);
+				
+				var f = this.get(CONTENT_BOX).one('form');
+
+				Y.io(f.get('action'), {
+					method : f.get('method'),
+					form : {
+						id : f
+					},
+					on: {
+						success: function(id, o, args) {
+							Y.log("SimpleForm.onRequestSuccess(): "+ o.responseText, 'info');
+							//FIXME here we should handle failure scenario
+							this.fire('success');
+						}
+					},
+					context :this
+				})
+			}, this));
+		}
+	}, {} );
+	Y.namespace('RedCMS').SimpleForm = SimpleForm;
+	
+});

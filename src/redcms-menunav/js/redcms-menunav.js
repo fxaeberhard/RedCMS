@@ -7,7 +7,12 @@ http://redcms.red-agent.com/license.html
 YUI.add('redcms-menunav', function(Y) {
 	Y.RedCMS.MenuNav = Y.Base.create("redcmsnavmenu", Y.Widget, [Y.WidgetStdMod, Y.RedCMS.RedCMSWidget], {
 		renderUI : function() {
-			this.get("contentBox").one('.yui3-menu').plug(Y.Plugin.NodeMenuNav);
+			var menuNode = this.get("contentBox").one('.yui3-menu');
+			menuNode.plug(Y.Plugin.NodeMenuNav);
+			menuNode.removeClass('redcms-hidden');
+		},
+		destroy : function() {
+			this.get("contentBox").one('.yui3-menu').unplug(Y.Plugin.NodeMenuNav);
 		}
 	}, {} );
 }, '0.1.1');

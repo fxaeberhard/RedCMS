@@ -2,7 +2,7 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 
 class ParamManager {
@@ -13,7 +13,8 @@ class ParamManager {
 		$this->init();	
 	}
 	function init() {	
-		global $redCMS, $_SERVER;
+		global $_SERVER;
+		$redCMS = RedCMS::getInstance();
 		if (isset($_SERVER['REDIRECT_URL'])) {					// REDIRECT_URL is provided by Apache when a URL has been rewritten
 			$redirUrl = $_SERVER['REDIRECT_URL'];
 			if ($redCMS->path != '/') $redirUrl = str_replace($redCMS->path, '', $redirUrl);
@@ -36,9 +37,9 @@ class ParamManager {
 		return array_shift($this->parameters);
 	}
 	static function &getLink($param1= null, $param2= null, $param3= null, $param4=null){
-		global $redCMS;
-		$ret = $redCMS->path.$redCMS->lang."/";
-
+		$redCMS = RedCMS::getInstance();
+		$ret = $redCMS->path;
+		if ($param1 || $redCMS->config['defaultLang'] != $redCMS->lang) $ret .= $redCMS->lang."/";
 		if ($param1) $ret .= Utils::url_encode($param1)."/";
 		if ($param2) $ret .= Utils::url_encode($param2)."/";
 		if ($param3) $ret .= Utils::url_encode($param3)."/";

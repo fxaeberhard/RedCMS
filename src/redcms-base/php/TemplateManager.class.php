@@ -2,11 +2,11 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 class TemplateManager {
 	static function &getTemplate(){
-		global $redCMS;
+		$redCMS = RedCMS::getInstance();
 
 		$smarty = new Smarty();
 		$smarty->template_dir = $redCMS->fullpath."build/templates";

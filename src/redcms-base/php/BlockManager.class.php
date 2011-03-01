@@ -2,10 +2,13 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 
 class BlockManager {
+	
+	//var $_blockCache = array();
+	
 	static function getBlockById($blockId) {
 		$blocks = BlockManager::getBlocksBySelect('id=?', array($blockId));
 		return $blocks[0];
@@ -17,19 +20,18 @@ class BlockManager {
 	}
 	
 	static function getBlocksBySelect($select, $values = array()) {
-		global $redCMS;
+		$redCMS = RedCMS::getInstance();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM '.$redCMS->_dbBlock.' WHERE '.$select);
 		return BlockManager::getBlockByStatement($statement, $values);
 	}
 	
 	static function getLinkedBlocks($blockId, $relationType) {
-		global $redCMS;
+		$redCMS = RedCMS::getInstance();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM '.$redCMS->_dbBlockXBlock.' JOIN '.$redCMS->_dbBlock
 			." ON ".$redCMS->_dbBlock.".id = subBlockId"
 			.' WHERE blockId=? AND relationType=?' );
 		return BlockManager::getBlockByStatement($statement, array($blockId, $relationType));
 	}
-	
 	static function getBlockByStatement($statement, $values){
 		if ($statement->execute($values)) {	
 			$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -44,8 +46,14 @@ class BlockManager {
 	static function &getBlocksByFields($fields) {
 		$blocks = array();
 		foreach( $fields as &$field){
-			eval('$block = new '.$field['type'].'($field);');
-			if (isset($block)) $blocks[] = $block;
+			
+			//eval('$block = new '.$field['type'].'($field);');				//PHP >=5.3.0
+			$block = new $field['type']($field);							//PHP < 5.3.0
+			
+			if (isset($block)) {
+				//if ($block->id != '') $_blockCache[$block->id] = $block;
+				$blocks[] = $block;
+			}
 		}
 		return $blocks;
 	}

@@ -5,13 +5,46 @@ http://redcms.red-agent.com/license.html
 */
 
 YUI.add('redcms-action', function(Y) {
-	var LoginAction,
+	var Block,
+		LoginAction,
 		DeleteAction,
+		AsyncRequestAction,
 		CONTENTBOX = 'contentBox',
 		BODY = 'body',
 		
 		CLICK = 'click';
 
+	Block = Y.Base.create("redcms-block", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+	}, {} );
+	Y.namespace('RedCMS').Block = Block;
+	
+	/*
+	Y.extend(Block, Y.Base, {
+		_cb: null,
+		
+		_setCB: function(cb) {
+			this._cb= cb;
+		},
+		
+		render : function(node) {
+			this.renderUI();
+			this.bindUI();
+		},
+		renderUI : function() {},
+		bindUI : function() {},
+		destroy : function() {
+			
+		}
+	}, {
+		ATTRS : {
+			CONTENTBOX : {
+		    //valueFn:"_defaultCB",
+		    setter: "_setCB",
+		    writeOnce: TRUE
+		};
+	});
+	Y.namespace('RedCMS').Block = Block;*/
+	
 	DeleteAction = Y.Base.create("redcms-deleteaction", Y.Widget, [Y.RedCMS.RedCMSWidget], {
 		bindUI : function() {
 			this.get(CONTENTBOX).on(CLICK, function(e) {
@@ -27,7 +60,7 @@ YUI.add('redcms-action', function(Y) {
 						data: params,
 						on: {
 							success: function(id, o, args) {
-								Y.log("DeleteAction.onRequestSuccess(): "+ o.responseText+ params, 'log');
+								//Y.log("DeleteAction.onRequestSuccess(): "+ o.responseText+ params, 'log');
 								this.fire('success');
 							}
 						},
@@ -37,9 +70,74 @@ YUI.add('redcms-action', function(Y) {
 			}, this);
 		}
 	}, {} );
-	
 	Y.namespace('RedCMS').DeleteAction = DeleteAction;
+	Y.namespace('RedCMS').DeleteBlockAction = DeleteAction;
+	Y.namespace('RedCMS').DeleteGroupAction = DeleteAction;
+	Y.namespace('RedCMS').DeleteUserAction = DeleteAction;
 	
+	/**
+	 * NewWindowOpenAction
+	 */
+	NewWindowHrefAction = Y.Base.create("redcms-newwindowrefction", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+		bindUI : function() {
+			this.get(CONTENTBOX).on(CLICK, function(e) {
+				e.preventDefault();
+				var tmpWindow,
+					cb = this.get(CONTENTBOX);
+				
+				tmpWindow = window.open(cb.one('a').get('href'), '_blank');//,'_blank','left=10000,screenX=10000');
+				//tmpWindow.blur();
+				//window.focus();
+			}, this);
+		}
+	}, {} );
+	Y.namespace('RedCMS').NewWindowHrefAction = NewWindowHrefAction;
+	/**
+	 * HrefAction
+	 */
+	HrefAction = Y.Base.create("redcms-hrefaction", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+		bindUI : function() {
+			this.get(CONTENTBOX).on(CLICK, function(e) {
+				e.preventDefault();
+				var	cb = this.get(CONTENTBOX);
+				
+				window.location = cb.one('a').get('href');
+			}, this);
+		}
+	}, {} );
+	Y.namespace('RedCMS').HrefAction = HrefAction;
+	
+	/**
+	 * ForceDownloadAction
+	 */
+	AsyncRequestAction = Y.Base.create("redcms-asyncrequestaction", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+		bindUI : function() {
+			console.log("AsyncRequestAction.bindUI(", this.get(CONTENTBOX));
+			this.get(CONTENTBOX).on(CLICK, function(e) {
+				e.preventDefault();
+				var params = new Array(),
+					cb = this.get(CONTENTBOX),
+					paramsList = cb.getAttribute('params');
+				if (paramsList) params = Y.JSON.parse(paramsList);
+				console.log("AsyncRequestAction.onClick("+cb.one('a').get('href'));
+				var request = Y.io(cb.one('a').get('href'), {		//Then request its content to the server
+					data: params,
+					on: {
+						success: function(id, o, args) {
+							Y.log("AsyncRequestAction.onRequestSuccess(): "+ o.responseText+ params, 'log');
+							this.fire('success');
+						}
+					},
+					context :this
+				});
+			}, this);
+		}
+	}, {} );
+	Y.namespace('RedCMS').AsyncRequestAction = AsyncRequestAction;
+	
+	/**
+	 * 
+	 */
 	LoginAction = Y.Base.create("redcms-loginaction", Y.Widget, [], {
 		bindUI : function() {
 			this.get(CONTENTBOX).on(CLICK, function(e) {

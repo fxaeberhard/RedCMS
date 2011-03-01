@@ -2,7 +2,7 @@
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
-http://redcms.sourceforge.net/license.html
+http://redcms.red-agent.com/license.html
 */
 class SessionManager {
 	var $currentUser;
@@ -14,7 +14,8 @@ class SessionManager {
 	function SessionManager() {
 		session_start();
 		
-		global $_COOKIE;
+		global $_COOKIE, $_SESSION;
+		
 		if (isset($_SESSION['currentUser'])) {									// If the user is stored in the session var, we load it
 			$this->currentUser = $_SESSION['currentUser'];
 		//} else if (isset($_COOKIE['redcms'])) {								// or if there is a cookie, we log using it
@@ -32,11 +33,11 @@ class SessionManager {
 		return $this->currentUser;
 	}
 	function login($username, $password){
-		global $redCMS;
+		$redCMS = RedCMS::getInstance();
 		$select = (strpos($username, '@') === false)?'userName=?':'email=?';
 		$user = UserManager::getUserBySelect($select, array($username));
-		if ($user && strcmp($user->fields['password'],
-			$this->generateHash($password, $user->fields['password'])) == 0) {
+		if ($user && strcmp($user->password,
+			$this->generateHash($password, $user->password)) == 0) {
 
 			$this->currentUser = $_SESSION['currentUser'] = $user;
 
@@ -87,11 +88,11 @@ class SessionManager {
 	
 	/*
 	function isRoot() {
-		return $this->getCurrentUser()->get("name") == "root";
+		return $this->getCurrentUser()->name == "root";
 	}
 	function resetPassword($email){
 
-		global $redCMS;
+		$redCMS = RedCMS::getInstance();
 		$user = $this->getUserByEmail($email);
 		//		print_r($user);
 		if ( $user ){
@@ -117,23 +118,5 @@ class SessionManager {
 	}
 	
 */
-
-	/*
-	 * OLD FUNCTIONS
-	 */
-	/**
-	 * TODO: only check the users connected since the 3 last hours,
-	 * could check if logout, timeout, etc.
-	 *
-	 * @return unknown an array with logged in users
-	 */
-	/*
-	function whosOnline(){
-		global $CURRENTUC;
-		return $CURRENTUC->DBManager->getQuery('DISTINCT(uc_users.id) AS id, userName, name, surname',
-		array('uc_users', 'uc_log'),
-		"idUser=uc_users.id AND uc_log.dateAdded > SUBDATE(NOW(), INTERVAL 3 HOUR) GROUP BY uc_users.id");
-	}
-	*/
 }
 ?>

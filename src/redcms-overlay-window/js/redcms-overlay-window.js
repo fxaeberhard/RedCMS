@@ -89,7 +89,8 @@ http://redcms.red-agent.com/license.html
 		},
 		
 		destructor : function () {
-			this.get(HOST).get(BOUNDING_BOX).removeClass(CLASSES.window);
+			var bb = this.get(HOST).get(BOUNDING_BOX);
+			if (bb._node) bb.removeClass(CLASSES.window);
 		},
 		
 		renderUI : function () {

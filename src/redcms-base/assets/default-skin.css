@@ -1,25 +1,37 @@
 @CHARSET "UTF-8";
 /* Base styles */
+input[type=submit] {
+	padding: 3px 5px;
+}
+
+/* CSS shortcuts for RedCMS */
 .redcms-clear {
 	clear:both;
 }
-
-/* fluid Grids layout */
-#bd {
+.redcms-center {
+	text-align:center;
+}
+.redcms-hidden {
+	display:none;	
+}
+/* Fluid Grids layout */
+#redcms-layout {
 	padding-left: 170px; /* allow for left column (#nav) */
 }
 
-#left {
+#redcms-left {
 	margin-left: -170px;
 	position: relative;
 	/* workaround for IE9 not firing mouse events on #side due to negative margin */
 	width: 170px;
 }
 
-#left .content {
+#redcms-left .content {
 	margin-right: 10px; /* gutter between #nav and #main */
 }
-
+#redcms-bd {
+	width:100%;
+}
 
 /* Default fieldset view */
 fieldset {
@@ -77,21 +89,35 @@ body {
 
 
 /* RedCMSForm styles */
+/*
 .yui3-skin-sam .yui3-form .yui3-form-field {
 	clear:both;
+}*/
+
+.yui3-skin-sam .yui3-form .yui3-form-field .yui3-g {
+    padding-left:100px; /* "left col" width */ 
 }
 .yui3-skin-sam .yui3-form .yui3-form-field .yui3-form-label {
-	float:left;
-	width: 100px;	
+    margin-left:-100px; /* "left col" width */
+    width:100px;
+	text-align: right;
+	/*margin-right: 3px;*/
+}
+.yui3-skin-sam .yui3-form .yui3-hidden-field {
+	display:none;
+}
+.yui3-skin-sam .yui3-form .yui3-textarea-field textarea{
+	width:100%;
+	height: 80px;
+}
+.yui3-skin-sam .yui3-form .yui3-form-field .yui3-form-input {
+	width:100%;
 }
 .yui3-skin-sam .yui3-form .yui3-form-field .yui3-form-invalid .yui3-form-label label {
 	background: transparent url(error.gif) no-repeat scroll 0 1px;
 	padding-left: 20px;
 	color: #C00E0C;
 	font-weight: bold;
-}
-.yui3-skin-sam .yui3-form .yui3-form-field input {
-	/*display:block;*/
 }
 .yui3-skin-sam .yui3-form .yui3-form-field .error {
 	/*display: block;*/
@@ -102,9 +128,6 @@ body {
 }
 .yui3-skin-sam .yui3-form .yui3-submit-button {
 	padding-left: 100px;
-}
-.yui3-skin-sam .yui3-form .yui3-submit-button input {
-	padding: 3px 5px;
 }
 
 /* RedCMS MsgBox styles */
@@ -131,8 +154,8 @@ body {
 .yui3-skin-sam .yui3-contextmenu-hidden {
 	display:none;
 }
-
 /* Loading style */
+.yui3-skin-sam .yui3-redcms-loading,
 .yui3-skin-sam .yui3-overlay-window  .yui3-redcms-loading {
 	background: lightGrey url(loading.gif) no-repeat scroll 50% 60%;
 	min-height: 30px;
@@ -143,7 +166,8 @@ body {
 /* Admin Menu */
 .yui3-skin-sam #ft .yui3-redcmsnavmenu {
 	position: fixed;
-	top: 0px;
+	top: 0;
+	left: 0;
 	width: 100%;
 }
 
@@ -246,4 +270,81 @@ ul, dl {
 }
 ul li {
 	list-style: none;
+}
+
+/** ToolTip Styles **/
+.redcms-tooltip-content {
+	display:none;
+}
+.yui3-redcms-tooltip {
+	position:absolute;
+}
+.yui3-redcms-tooltip-content {
+	border: groove 1px;
+	padding: 3px;
+	background: lightGrey;
+}
+.yui3-redcms-tooltip img {
+	max-width: 200px;
+}
+.yui3-redcms-tooltip-hidden {
+	visibility:hidden;
+}
+/** MenuNav styles */
+.yui3-skin-sam .yui3-menuitem-content, 
+.yui3-skin-sam .yui3-menu .yui3-menu .yui3-menuitem-content {
+	cursor:pointer;
+}
+
+/** YUI2 Editor styles **/
+.yui-skin-sam .yui-toolbar-container .yui-toolbar-titlebar {
+	display:none;	
+}
+
+
+/** RedCMS Conversation styles */
+.redcms-conversation {
+	width: 99%;
+	margin: 10px 0;
+	background: white;
+	border: 2px groove gray;
+}
+.redcms-conversation .redcms-conversation-title {
+	background-color: #D1D8DF;
+}
+.redcms-conversation .redcms-conversation-title h2 {
+	margin: 0;
+	color: black;
+	font-weight: normal;
+	font-style: italic;
+	font-size: inherit;
+}
+.redcms-conversation .redcms-conversation-title h1 {
+	margin: 0;
+	font-weight: bolder;
+	font-size: 18px;
+	color: #1C5AA9;
+}
+.redcms-conversation .redcms-icon span {
+	background: transparent url(conversation-sprite.png) no-repeat scroll 0 0;
+	width: 48px;
+	height: 46px;
+	margin: 7px 5px 0;
+	float: left;
+}
+.redcms-conversation .redcms-conversation-topicfield .redcms-icon span {
+	background: transparent url(conversation-sprite.png) no-repeat scroll 0 -180px;
+}
+.redcms-conversation .redcms-conversation-newsfield .redcms-icon span {
+	background: transparent url(conversation-sprite.png) no-repeat scroll 0 -121px;
+}
+.redcms-conversation .redcms-conversation-replyfield .redcms-icon span {
+	background: transparent url(conversation-sprite.png) no-repeat scroll 0 -61px;
+}
+.redcms-conversation > .redcms-conversation-fragment {
+	border-bottom: 1px solid gray;
+	padding-bottom: 5px;
+}
+.redcms-conversation .redcms-conversation-fragment .redcms-conversation-fragment {
+	margin: 10px 0 10px 40px;
 }

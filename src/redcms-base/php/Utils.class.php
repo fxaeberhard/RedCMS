@@ -23,9 +23,8 @@ class Utils {
 	static function date_toyear($date){
 		return ((date('Y', $date) - 1970) * 12 )+date( 'n', $date);
 	}
-	static function sizeof($arr){
-		return sizeof($arr);
-	}
+	
+	// *** File Functions *** //
 	
 	static function file_extension($filename){
 		return end(explode(".", $filename));
@@ -45,6 +44,36 @@ class Utils {
 				$val *= 1024;
 		}
 		return $val;
+	}
+	static function file_isImage($file){
+		switch (Utils::file_extension($file)){
+			case 'jpg':
+			case 'jpeg':
+			case 'bmp':
+			case 'gif':
+			case 'png':
+				return true;
+				break;
+			default: return false;
+		}
+	}
+	static function file_getMimeType($ext){
+		$ext = Utils::file_extension($ext);
+		switch ($ext){
+			case 'jpg':
+			case 'jpeg':
+			case 'jpe': return'image/jpg';
+			case 'png': return'image/png';
+			case 'gif': return 'image/gif';
+			case 'js': return 'application/x-javascript';
+			case 'css': return 'text/css';
+			case "mp3": return "audio/mpeg";
+			case "mpg": return "video/mpeg";
+			case "avi": return "video/x-msvideo";
+			case "wmv": return "video/x-ms-wmv";
+			case "wma": return "audio/x-ms-wma";
+			default: return "application/force-download";
+		}
 	}
 }
 ?>
