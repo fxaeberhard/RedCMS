@@ -19,25 +19,20 @@ class Action extends Block {
 
 class LoginAction extends Action {
 	
-	var $_dbFieldsMap = array('loginLabel' => 'text1', 'logoutLabel' => 'text1');
+	var $_dbFieldsMap = array('loginLabel' => 'text1', 'logoutLabel' => 'text2');
 	
 	function getLabel(){
 		$redCMS = RedCMS::getInstance();
 		if ($redCMS->sessionManager->isLoggedIn()){
-			return $this->loginLabel;
-		} else {
 			return $this->logoutLabel;
+		} else {
+			return $this->loginLabel;
 		}
 	}
 }
 class TargetBlockAction extends Action {
-	var $_target;
 	function getTarget() {
-		//return $this->getLinkedBlock('target');
-		if (!isset($this->_target)) {
-			$this->_target = $this->getLinkedBlock('target');
-		}
-		return $this->_target;
+		return $this->getLinkedBlock('target');
 	}
 	function getLink(){
 		$target = $this->getTarget();
@@ -53,9 +48,13 @@ class AsyncRequestAction extends TargetBlockAction {
 }
 class PageLinkAction extends TargetBlockAction {
 	function getLabel(){
+		
+		if ($this->label) return $this->label;
+		
 		$target = $this->getTarget();
 		if ($target) return $target->getLabel();
-		else return parent::getLabel();
+		
+		return parent::getLabel();
 	}
 }
 class DeleteAction extends Action {

@@ -50,9 +50,9 @@ YUI.add('redcms-admin', function(Y) {
 				if (targetNode && targetAdminNodes.size() > 0) {
 					e.halt();	
 					this.show();
-					this.move(e.clientX, e.clientY);
+					this.move(e.clientX + Y.DOM.docScrollX(), e.clientY + Y.DOM.docScrollY());
 					menuCB.setContent(this._getMenuMarkupFromAdminNodesList(targetNode, targetAdminNodes));
-					//Y.RedCMS.RedCMSManager.render(menuCB, Y.bind(this._onContextMenuItemsRendered, this, targetNode));
+					Y.RedCMS.RedCMSManager.render(menuCB, Y.bind(this._onContextMenuItemsRendered, this, targetNode));
 				};
 			}, this);
 		}, 

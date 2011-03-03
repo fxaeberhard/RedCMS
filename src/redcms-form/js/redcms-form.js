@@ -48,11 +48,11 @@ http://redcms.red-agent.com/license.html
 		_parseFields : function (contentBox) {		
 			var fields = [];
 			try {
-				fields = Y.JSON.parse(contentBox.getContent());
-				contentBox.setContent('');
+				fields = Y.JSON.parse(Y.RedCMS.RedCMSManager.urldecode(contentBox.getContent()));
 			} catch (e) { 
 				Y.log('_parseFields():Unable to parse form content.', 'log', 'RedCMS.Form');
 			};
+			contentBox.setContent('');
 			return fields;
 		},
 		
@@ -81,7 +81,6 @@ http://redcms.red-agent.com/license.html
 			});
 			this.after('render', function(){
 				this.set('resetAfterSubmit', false);
-				this.get(CONTENT_BOX).setStyle('display', 'block');
 				this.set('validateInline', true);								// In RedCMS inline validation is activated by default
 				this.each(function (f) {										// We loop through the fields to see if one is a FileField,
 					if (f instanceof Y.FileField){
@@ -91,6 +90,7 @@ http://redcms.red-agent.com/license.html
 						});
 					}
 				}, this);
+				this.get(CONTENT_BOX).removeClass('redcms-hidden');
 			});
 		}
 	}, {

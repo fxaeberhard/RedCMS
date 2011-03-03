@@ -1,8 +1,8 @@
 {* 
-Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
-Code licensed under the BSD License:
-http://redcms.red-agent.com/license.html
-*}
+ * Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+ * Code licensed under the BSD License:
+ * http://redcms.red-agent.com/license.html
+ *}
 
 <div redid="{$this->id}" widget="SimpleForm" requires="redcms-form" rootBlock="true" 
 	redadmin="{htmlspecialchars(json_encode($this->getAdminJSON()))}" style="min-width: 200px;">
@@ -28,10 +28,10 @@ http://redcms.red-agent.com/license.html
 			<div class="yui3-g">
 				<div class="yui3-u-1-2" >{$g['name']}</div>
 				<div class="yui3-u-1-4 redcms-center">
-					<input name="{$g['name']}_read" type="checkbox" {if $g['read'] === 1}checked{/if} />
+					<input name="read_{$g['idGroup']}" type="checkbox" {if $g['read'] === 1}checked{/if} />
 				</div>
 				<div class="yui3-u-1-4 redcms-center">
-					<input name="{$g['name']}_write" type="checkbox" {if $g['write'] === 1}checked{/if} />
+					<input name="write_{$g['idGroup']}" type="checkbox" {if $g['write'] === 1}checked{/if} />
 				</div>
 			</div>
 		{/foreach}

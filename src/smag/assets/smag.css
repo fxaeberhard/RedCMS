@@ -1,0 +1,179 @@
+body {
+	padding: 0 0;
+	margin: 4px 4px;
+	font-family: Arial;
+	font-size: 10pt;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: normal;
+	font-size-adjust: none;
+	font-stretch: normal;
+}
+
+a {
+	color: #2662AD;
+}
+
+a:hover {
+	color: black;
+}
+
+h1 {
+	font-weight: bolder;
+	font-size: 18px;
+	color: #1C5AA9;
+}
+
+h2 {
+	font-weight: bold;
+	font-size: 15px;
+	color: #1C5AA9;
+}
+
+h3 {
+	font-weight: bold;
+	font-size: 13px;
+	color: #4989E0;
+}
+
+
+/** Layout Styles */
+.redcms-layout {
+	padding-left: 287px; /* allow for left column (#nav) */
+}
+.redcms-left {
+	margin-left: -287px;
+	position: relative;
+	/* workaround for IE9 not firing mouse events on #side due to negative margin */
+	width: 287px;
+}
+.redcms-bd {
+	margin-left: 2px;
+	background-color: #E3EBF4;
+}
+.redcms-bd .redcms-content {
+	min-height: 251px;
+	padding: 8px;
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+}
+
+/** Menu Styles */
+.redcms-left .yui3-menu-bd {
+	background: transparent url(smag-menu-title-principal.gif);
+	height: 48px;
+}
+
+.redcms-left .smag-members .yui3-menu-bd {
+	background: transparent url(smag-menu-title-membres.gif);
+}
+.yui3-skin-sam .redcms-left .yui3-menu-ft {
+	background: transparent url(smag-menu-back.gif);
+	height: 19px;
+}
+.yui3-skin-sam .redcms-left .yui3-menu-content {
+	background: transparent url(smag-menu-foot.gif);
+}
+.yui3-skin-sam .redcms-left .yui3-menu-content, .yui3-skin-sam  .redcms-left .yui3-menu .yui3-menu .yui3-menu-content {
+	border: none;
+}
+.yui3-skin-sam .redcms-left .yui3-menu-label, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-label {
+	background: none;
+}
+.yui3-skin-sam .redcms-left .yui3-menu-label-active,
+.yui3-skin-sam .redcms-left .yui3-menu-label-menuvisible,
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label-active,
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label-menuvisible {
+	background-color:white;
+	background: white url(smart-clipart-syringue-2-i.gif) no-repeat scroll -8px -1px;
+}
+.yui3-skin-sam .redcms-left .yui3-menuitem-active .yui3-menuitem-content,
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-active .yui3-menuitem-content {
+	background: white url(smart-clipart-syringue-2-i.gif) no-repeat scroll -8px -1px;
+}
+.yui3-skin-sam .redcms-left .yui3-menu-label, 
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label, 
+.yui3-skin-sam .redcms-left .yui3-menuitem-content, 
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-content {
+	padding: 0 20px 0 35px;
+}
+/** Header */
+.smag-header {
+	padding: 5px;
+	border: 2px solid black;
+	border-bottom: none;
+}
+.smag-header > div {
+	background: transparent url(sprite-smag.png) repeat scroll 0 -100px;
+}
+.smag-header .smag-header-left {
+	float: left;
+	display: block;
+	height: 63px;
+	width: 95px;
+	background: transparent url(smag-banner-logo.gif);
+}
+.smag-header .smag-header-right {
+	float: right;
+	display: block;
+	height: 63px;
+	width: 485px;
+	background: transparent url(smag-banner-img.jpg);
+}
+/* Footer */
+.smag-footer {
+	border-left: 2px solid black;
+}
+.smag-footer-content {
+	float: right;
+}
+.smag-footer-left {
+	float: left;
+	width: 20px;
+	height: 16px;
+	background: transparent url(sprite-smag.png) no-repeat scroll 0 -60px;
+}
+.smag-footer-center {
+	float: left;
+	height: 15px;
+	background: transparent url(sprite-smag.png) repeat scroll 0 -80px;
+	font-size: 11px;
+	font-style: italic;
+	padding-right: 5px;
+	padding-top: 1px;	
+}
+
+.smag-subfooter {
+	border: 2px solid black;
+	border-top: none;
+	height: 6px;
+}
+
+/* Hierarchy */
+.redcms-bd-title {
+	border-right: 2px solid black;
+}
+.redcms-bd-title-content {
+	background: transparent url(sprite-smag.png) repeat scroll 0 -30px;
+	float: left;
+}
+.redcms-bd-title-item {
+	float: left;
+	height: 20px;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: bold;
+	padding: 6px 3px 0px;
+}
+.redcms-bd-title-separator {
+	float: left;
+	width: 20px;
+	height: 26px;
+	background: transparent url(sprite-smag.png) no-repeat scroll 0 0;
+}
+.redcms-bd-title-right {
+	float: left;
+	width: 20px;
+	height: 26px;
+	background: transparent url(sprite-smag.png) no-repeat scroll 0 0;
+}

@@ -83,9 +83,14 @@ class Block extends Tuple {
 		$redCMS = RedCMS::getInstance();
 		return BlockManager::getLinkedBlocks( $this->id, $relationType );
 	}
+	var $_linkedBlocks = array();
 	function &getLinkedBlock($relationType){
-		$blocks = $this->getLinkedBlocks( $relationType );
-		return $blocks[0];
+		if (!isset($this->_linkedBlocks[$relationType])) {
+			$blocks = $this->getLinkedBlocks( $relationType );
+			if (!empty($blocks)) $this->_linkedBlocks[$relationType] = $blocks[0];
+			else $this->_linkedBlocks[$relationType] = null;
+		}
+		return $this->_linkedBlocks[$relationType];
 	}
 	function getTemplate() {
 		$redCMS = RedCMS::getInstance();
@@ -109,6 +114,9 @@ class Block extends Tuple {
 		else $admin = array();
 		return $admin;
 	}
+	function renderAdminJSON() {
+		return htmlspecialchars(json_encode($this->getAdminJSON()));
+	}
 	function getParamsJSON(){
 		global $_REQUEST;
 		return $_REQUEST;
@@ -116,6 +124,54 @@ class Block extends Tuple {
 	function render() {
 		$template = $this->getTemplate();
 		$template->display($this->template);
+	}
+	
+	// *** Rights Managment *** //
+	var $_rights;
+	function getRights(){
+		if (!isset($this->_rights)){
+			$redCMS = RedCMS::get();
+			if ($redCMS->sessionManager->currentUser->belongsToAnyGroup()) {
+				$stat = $redCMS->dbManager->prepare('SELECT max(`read`) as `read`, max(`write`) as `write` from redcms_groupxblock'.
+					' WHERE idBlock=? AND idGroup in '.$redCMS->sessionManager->currentUser->getGroupsQuery());
+				if ($stat->execute(array($this->id))) {
+					$this->_rights = $stat->fetch(PDO::FETCH_ASSOC);
+				} else $this->_rights = array('read'=>'0', 'write'=>'0');
+			} else $this->_rights = array('read'=>'0', 'write'=>'0');
+		}
+		return $this->_rights;
+	}
+	
+	function canRead(){
+		if ($this->read == '1') return true;
+		else {
+			$this->getRights();
+			return $this->_rights['read'] == '1';
+		}
+	}
+	function canWrite(){
+		if ($this->write == '1') return true;
+		else {
+			$this->getRights();
+			return $this->_rights['write'] == '1';
+		}
+	}
+}
+
+class WrapperBlock extends Block {
+	var $_wrappedBlock;
+	function getWrappedBlock(){
+		if (!isset($this->_wrappedBlock)){
+			$targetBlock = $this->getLinkedBlock('target');
+			$newFields = json_decode($this->longtext1, true);
+			$newFields = array_merge($targetBlock->fields, $newFields);
+			$blocks = BlockManager::getBlocksByFields(array($newFields));
+			$this->_wrappedBlock = $blocks[0];
+		}
+		return $this->_wrappedBlock;
+	}
+	function render() {
+		$this->getWrappedBlock()->render();
 	}
 }
 class Group extends Tuple {

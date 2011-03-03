@@ -3,8 +3,8 @@ Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 *}
-<div class="redcms-block" redid="{$this->id}" redadmin="{htmlspecialchars(json_encode($this->getAdminJSON()))}" 
-	widget="TreeView" requires="redcms-treeview" >
+<div class="redcms-block redcms-hidden" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" 
+	widget="TreeView" requires="redcms-treeview">
 
 	{function name=menu level=0}
 		<ul>

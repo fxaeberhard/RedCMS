@@ -8,40 +8,28 @@ http://redcms.red-agent.com/license.html
 class PageBlock extends Block {
 	
 	function getLabel(){
-		return $this->link;
+		if ($this->link) return $this->link;
+		else return parent::getLabel();
 	}
 	function getLink(){
 		$redCMS = RedCMS::get();
 		if ($this->id === $redCMS->config['homePageId']) return ParamManager::getLink();
 		else return parent::getLink();
 	}
+	function getSiteBlocks(){
+		return  BlockManager::getBlocksBySelect("parentId = -1");	
+	}
+	function getFooterBlocks(){
+		return BlockManager::getBlocksBySelect("parentId = -2");
+	}
 	function render() {
 		$redCMS = RedCMS::get();
 		global $_REQUEST;
 		
-		if (!isset($_REQUEST['redreload'])){
-			//First render headers
-			$template = $this->getTemplate();
-			$template->display($redCMS->config['headerTemplate']);
-			
-			//Render page content
-			$template = $this->getTemplate();
-			$template->assign('reload', false);
-			$template->assign('siteBlocks', BlockManager::getBlocksBySelect("parentId = -1"));
-			$template->display($this->template);
-			
-			//First render headers
-			$template = $this->getTemplate();
-			$template->assign('footerBlocks', BlockManager::getBlocksBySelect("parentId = -2"));
-			$template->display($redCMS->config['footerTemplate']);
-		}else {
-			
-			//Render page content
-			$template = $this->getTemplate();
-			$template->assign('reload', true);
-			$template->assign('siteBlocks', BlockManager::getBlocksBySelect("parentId = -1"));
-			$template->display($this->template);
-		}
+		//Render page content
+		$template = $this->getTemplate();
+		$template->assign('reload', isset($_REQUEST['redreload']));
+		$template->display($this->template);
 	}
 }
 ?>

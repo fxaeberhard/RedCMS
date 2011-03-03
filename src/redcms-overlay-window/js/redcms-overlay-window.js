@@ -108,7 +108,12 @@ http://redcms.red-agent.com/license.html
 		
 		bindUI : function () {
 			this._closeNode.on('click', function(e) {
-				this.get(HOST).destroy();
+				try {
+					this.get(HOST).destroy();
+				} catch(e) {
+					// FIXME Need to find a way to destroy overlay without triggering dd error
+					//Y.log("OverlayWindow._closeNode.onClick(): Uncaught error destroying plugin host", "error");
+				}
 			}, this);
 		},
 		

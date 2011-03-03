@@ -26,7 +26,7 @@ class SessionManager {
 	}
 
 	function isLoggedIn(){
-		return !($this->currentUser instanceof Guest);
+		return ($this->currentUser instanceof LoggedUser);
 	}
 
 	function getCurrentUser(){

@@ -14,18 +14,21 @@ var Y = YUI({
 	//debug: true,
 	//timeout: 10000,
     insertBefore: 'customstyles',
-    gallery: 'gallery-2011.01.03-18-30',
+    gallery: 'gallery-2011.02.18-23-10',
 	groups: {
 		redcms: {
-			//combine: true,
-			combine: false,
-			base: '/redcms2/',
-			comboBase: '/redcms2/combo/?',
+			combine: true,
+			base: '/RedCMS2/',
+			comboBase: '/RedCMS2/combo/?',
 			root: '/',
 			modules:  {
 				"redcms-menunav": {
 					path: 'src/redcms-menunav/js/redcms-menunav.js',
 					requires: ['node-menunav', 'widget', 'widget-parent', 'widget-child', 'widget-position']
+				},
+				"redcms-accordion": {
+					path: 'src/redcms-menunav/js/redcms-accordion.js',
+					requires: ['node', 'transition']
 				},
 				"redcms-treeview": {
 					path: 'src/redcms-menunav/js/redcms-treeview.js',
@@ -33,15 +36,16 @@ var Y = YUI({
 				},
 				"redcms-admin": {
 					path: 'src/redcms-admin/js/redcms-admin.js',
-					requires: ["widget", "widget-position", "widget-stack", "widget-position-align", "async-queue", 'json', 'redcms-menunav', 'gallery-outside-events']
+					requires: ["widget", "widget-position", "widget-stack", "widget-position-align", "async-queue", 
+					           'json', 'redcms-menunav', 'gallery-outside-events', 'redcms-openpanelaction']
 				},
 				'redcms-action': {
 					path: 'src/redcms-base/js/redcms-action.js',
-					requires: ['widget', 'widget-parent', 'widget-child', 'widget-position']
+					requires: ['widget', 'widget-parent', 'widget-child', 'widget-position', 'io-base']
 				},
 				'redcms-widget': {
 					path: 'src/redcms-base/js/redcms-widget.js',
-					requires: []
+					requires: ["node", 'widget', 'widget-stdmod']
 				},
 				'redcms-msgbox': {
 					path: 'src/redcms-base/js/redcms-msgbox.js',
@@ -53,7 +57,8 @@ var Y = YUI({
 				},
 				'redcms-form': {
 					path: 'src/redcms-form/js/redcms-form.js',
-					requires: ['gallery-form', 'io-upload-iframe', 'io-form', 'node','attribute','widget', 'redcms-form-editor']
+					requires: ['gallery-form', 'io-upload-iframe', 'io-form', 'node','attribute',
+					           'widget', 'redcms-form-editor', 'redcms-msgbox', 'json']
 				},
 				'redcms-form-editor': {
 					path: 'src/redcms-form/js/redcms-form-editor-field.js',
@@ -75,8 +80,7 @@ var Y = YUI({
 			}
 		}
 	}  
-}).use("node", 'widget', 'io-base', 'widget-stdmod', 'redcms-widget', 'redcms-menunav', 
-		'redcms-action', 'redcms-msgbox', 'redcms-admin', 'redcms-openpanelaction', function (Y) {
+}).use( 'redcms-widget', 'redcms-menunav', 'redcms-action', function (Y) {
 	
 	var URLSEPARATOR = '/',
 		conf = Y.RedCMS.Config,
@@ -88,6 +92,12 @@ var Y = YUI({
 	
 	RedCMSManager = function () {
 	    return {
+	    	urldecode : function(psEncodeString) {
+				// Create a regular expression to search all +s in the string
+				var lsRegExp = /\+/g;
+				// Return the decoded string
+				return unescape(String(psEncodeString).replace(lsRegExp, " "));
+			},
 	    	escapeAttribute: function(text) {
     	        if(text) {
     	        	text += "";

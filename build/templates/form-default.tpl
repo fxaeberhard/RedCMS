@@ -7,4 +7,4 @@ http://redcms.red-agent.com/license.html
 <form action="{$this->getLink()}" method="post" widget="Form" requires="redcms-form" redid="{$this->id}"
 	redadmin="{htmlspecialchars(json_encode($this->getAdminJSON()))}" 
 	redparams="{htmlspecialchars(json_encode($this->getParamsJSON()))}"
-	class="" style="display:none;">{json_encode($this->getFormFields())}</form>
+	class="redcms-hidden">{urlencode(json_encode($this->getFormFields()))}</form>

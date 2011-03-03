@@ -14,22 +14,22 @@ input[type=submit] {
 .redcms-hidden {
 	display:none;	
 }
+
+
 /* Fluid Grids layout */
-#redcms-layout {
+.redcms-layout {
 	padding-left: 170px; /* allow for left column (#nav) */
 }
-
-#redcms-left {
+.redcms-left {
 	margin-left: -170px;
 	position: relative;
-	/* workaround for IE9 not firing mouse events on #side due to negative margin */
-	width: 170px;
+	width: 170px;	/* workaround for IE9 not firing mouse events on #side due to negative margin */
 }
-
-#redcms-left .content {
-	margin-right: 10px; /* gutter between #nav and #main */
-}
-#redcms-bd {
+/*
+.redcms-left .redcms-content {
+	margin-right: 10px; /* gutter between #nav and #main 
+}*/
+.redcms-bd {
 	width:100%;
 }
 
@@ -153,6 +153,19 @@ body {
 /* Context menu styles */
 .yui3-skin-sam .yui3-contextmenu-hidden {
 	display:none;
+}
+.yui3-menu-shadow {			
+	position: absolute;
+	z-index: -1;		
+	top: 2px;
+	left: -3px;
+	background-color: #000;
+	opacity: .12;
+	filter: alpha(opacity=12);	/*	For IE since it doesn't implement the CSS3 "opacity" property. */
+	padding: 1px 3px 0 3px;
+	width: 100%;
+	height: 100%;
+
 }
 /* Loading style */
 .yui3-skin-sam .yui3-redcms-loading,
@@ -301,6 +314,38 @@ ul li {
 	display:none;	
 }
 
+/** RedCMS Accordion styles */
+.yui3-redcms-accordion-item {
+	height:0;
+	overflow: hidden;
+}
+.yui3-redcms-accordion-bd {
+	font-weight: bolder;
+	border-bottom: 2px groove grey;	
+	padding: 4px;
+	padding-left: 60px;
+}
+.yui3-redcms-accordion-title {
+	cursor: pointer;
+	background: url(sprite.png) no-repeat scroll 0 -345px;
+}
+.yui3-redcms-accordion-toggled {
+	background: url(sprite.png) no-repeat scroll 0 -395px;
+}
+.yui3-redcms-accordion-item {
+	border-bottom: 2px groove #CCC;
+}
+.yui3-redcms-accordion-title .yui3-g {
+	padding: 4px;
+	padding-left: 60px;
+}
+.yui3-redcms-accordion-title .redcms-icon-user {
+	background: transparent url(file-icons.png) 0 -350px no-repeat;
+	width: 30px;
+	height: 20px;
+	float: left;
+	margin-left: -30px;
+}
 
 /** RedCMS Conversation styles */
 .redcms-conversation {
@@ -347,4 +392,18 @@ ul li {
 }
 .redcms-conversation .redcms-conversation-fragment .redcms-conversation-fragment {
 	margin: 10px 0 10px 40px;
+}
+
+/** RedCMS Icon Styles */
+.redcms-icon span {
+	float: left;
+	height: inherit;
+}
+.redcms-icon-email {
+	height: 25px;
+}
+.redcms-icon-email span {
+	background: transparent url(redcms-sprite.png) 0 -350px no-repeat;
+	width: 25px;
+	margin: 0 5px 0 0;
 }

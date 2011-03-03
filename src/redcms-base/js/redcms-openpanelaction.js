@@ -90,7 +90,13 @@ YUI.add('redcms-openpanelaction', function(Y) {
 		},
 		_onSuccess: function(){
 			this.fire("success");
-			this._overlay.destroy();
+
+			try {
+				this._overlay.destroy();
+			} catch(e) {
+				// FIXME Need to find a way to destroy overlay without triggering dd error
+				//Y.log("OverlayWindow._closeNode.onClick(): Uncaught error destroying plugin host", "error");
+			}
 		}
 	}, {} );
 	

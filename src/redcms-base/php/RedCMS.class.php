@@ -19,8 +19,6 @@ class RedCMS {
 		'notFoundPageId' => 22,
 		'accessRestrictedPageId' => 23,
 		'defaultLang' => 'en',
-		'headerTemplate' => 'header-default.tpl',
-		'footerTemplate' => 'footer-default.tpl',
 		'charset' => 'UTF-8',
 		'debugMode' => false,
 		'windowTitleSuffix'=>'',
@@ -83,15 +81,23 @@ class RedCMS {
 	 *	
 	 */
 	function render() {
-		// First retrive the lang of the current page if available
-		$this->lang = ($this->paramManager->hasMore())?$this->paramManager->next():$this->config['defaultLang'];
-		// Then retrieves the page parameter 
-		$currentBlockParam = ($this->paramManager->hasMore())?$this->paramManager->next():$this->config['homePageId'];
+		$cParam = $this->paramManager->next();
 		
-		if (is_numeric($currentBlockParam)) {							// If the parameter is a number, use it as an id
-			$this->currentBlock = BlockManager::getBlockById($currentBlockParam);
+		// First retrive the lang of the current page if available
+		if ($cParam && ($cParam == 'fr' || $cParam == 'en')) {
+			$this->lang	= $cParam;
+			$cParam = $this->paramManager->next();
+		} else {
+			$this->lang = $this->config['defaultLang'];
+		}
+		
+		// Then retrieves the page parameter 
+		if ($cParam == null) $cParam = $this->config['homePageId'];
+		
+		if (is_numeric($cParam)) {										// If the parameter is a number, use it as an id
+			$this->currentBlock = BlockManager::getBlockById($cParam);
 		} else {														// Otherwise use the link
-			$this->currentBlock = BlockManager::getBlockBySelect('link = ?', array($currentBlockParam));
+			$this->currentBlock = BlockManager::getBlockBySelect('link = ?', array($cParam));
 		}
 		
 		if (isset($this->currentBlock)) {								// If the block was correctly pulled

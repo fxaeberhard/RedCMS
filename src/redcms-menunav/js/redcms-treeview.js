@@ -14,7 +14,8 @@ YUI.add('redcms-treeview', function(Y) {
 		
 		// *** Life Cycle methods *** //
 		renderUI : function() {
-			var treeNode = this.get("contentBox").one('ul');
+			var cb = this.get("contentBox"),
+				treeNode = cb.one('ul');
 			
 			this._treeview = new Y.TreeView({  
 				srcNode: treeNode,
@@ -43,6 +44,8 @@ YUI.add('redcms-treeview', function(Y) {
 			        } else e.preventDefault()
 		        } else e.preventDefault();
 		    });
+			
+			cb.removeClass('redcms-hidden');
 		}, 
 		destroy: function() {
 			this._tooltip.destroy();

@@ -14,8 +14,20 @@ class ComboBlock extends FileProxyBlock {
 		
 		$queryString = getenv('QUERY_STRING') ? urldecode(getenv('QUERY_STRING')) : '';
 		$files = explode("&", $queryString);
-		$contentType = strpos($queryString, ".js") ? 'application/x-javascript' : ' text/css';
-		Header("content-type: ".$contentType);
+		$contentType = strpos($queryString, ".js") ? 'application/x-javascript' : 'text/css';
+		
+		// Send header with righ cache controle
+		$expires = 60*60*24*14;
+		header("Content-Type: ".$contentType);
+		header("Pragma: public");
+		header("Cache-Control: maxage=".$expires);
+		header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
+		header("Last-Modified: ". gmdate('D, d M Y H:i:s', time()+$expires) ." GMT");
+		
+   		//header("Expires: 0"); 
+    	//header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
+    	//header("Cache-Control: private",false); // required for certain browsers 
+    	
 		//Detect and load the required components now
 		$yuiComponents = array();
 		foreach ($files as $f) {

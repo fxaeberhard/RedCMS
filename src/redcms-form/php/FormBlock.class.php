@@ -1,8 +1,8 @@
 <?php
-/* 
-Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
-Code licensed under the BSD License:
-http://redcms.red-agent.com/license.html
+/** 
+* Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+* Code licensed under the BSD License:
+* http://redcms.red-agent.com/license.html
 */
 
 class FormBlock extends TreeStructure {
@@ -94,9 +94,9 @@ class BlockSelectFormField extends FormField {
 	function toJSON() {
 		$ret = parent::toJSON();
 		$ret['choices'] = array();
-		foreach (BlockManager::getBlocksBySelect('type=\'PageBlock\'') as $b) {
+		foreach (BlockManager::getBlocksBySelect('type=\'PageBlock\' ORDER BY link') as $b) {
 		//	print_r($b);
-			$ret['choices'][] = array('label' => $b->link, 'value'=> ''.$b->id);
+			$ret['choices'][] = array('label' => $b->getLabel(), 'value'=> ''.$b->id);
 		}
 		return $ret;
 	}
@@ -120,6 +120,7 @@ class EditDBFormBlock extends FormBlock {
 	}
 	function getFormFields(){
 		
+		$redCMS = RedCMS::get();
 		$this->getTargetBlock();
 	
 		$fields = parent::getFormFields();
@@ -132,9 +133,17 @@ class EditDBFormBlock extends FormBlock {
 				case 'PasswordField':										//Password fields values are never sent to the client
 					$f['value'] = '';
 					break;
+				/*case 'EditorField':
+					$f['type'] = 'TextareaField';
+					if (!mb_detect_encoding($value, $redCMS->config['charset'], true)) {
+						$value = iconv("ISO-8859-1", "UTF-8", $value);
+					}
+					$f['value'] = str_replace(
+					array('Ã©', 'Ã¨', 'Ãª', 'Å?', 'Ã ', 'Ã?', 'Ã¹', 'Ã¢', 'â??', 'Ã®', 'Ã?', 'Â«', 'Â»', 'Ã¯', 'Ã»', 'ÃÂ´', 'Â§', 'Ã´'),
+					array('é',  'è',  'ê',  'œ',  'à',  'À',  'ù',  'â',  '\'',  'î',  'Î',  '«',  '»',  'ï',  'û',  'ô',   'ç',  'ô'),
+					$value);*/
 			}
 		}
-		
 		$fields[] = array('name'=>'id', 'type'=>'HiddenField', 'value' => ''.$this->_targetBlock->id);
 		return $fields;
 	}
@@ -250,13 +259,12 @@ class EditGroupMembershipFormBlock extends EditDBFormBlock {
 	}
 	
 	function parseRequest(){
-		//echo 'EditRightsFormBlock.parseRequest()';
 		global $_REQUEST;
 		$fields = parent::parseRequest();
 		if (isset($_REQUEST['redaction'])) {								// Form has been sent for submission
 			
 			foreach ($this->getGetGroupMemberShipByUser($this->getTargetBlock()->id) as $g) {	// We loop through the rights to select the one corresponding to 
-				$isAMember = (isset($_REQUEST[$g['name'].'_membership']))?true:false;
+				$isAMember = (isset($_REQUEST['membership_'.$g['idGroup']]));
 				if ($isAMember && $g['id'] == '') {
 					$g['idUser'] = $this->_targetBlock->id;					// For new tuples, we set the target id	
 					$gTuple = new UserXGroup($g);
@@ -312,12 +320,12 @@ class EditRightsFormBlock extends EditDBFormBlock {
 			$fields['write'] = (isset($_REQUEST['write']))?1:0;
 			
 			foreach ($this->getRightsByGroup($this->getTargetBlock()->id) as $g) {	// We loop through the rights to select the one corresponding to 
-				$r = (isset($_REQUEST[$g['name'].'_read']))?1:0;
-				$w = (isset($_REQUEST[$g['name'].'_write']))?1:0;
+				$r = (isset($_REQUEST['read_'.$g['idGroup']]));
+				$w = (isset($_REQUEST['write_'.$g['idGroup']]));
 				if ($r || $w || $g['id'] != '') {
-					$g['idBlock'] = $this->_targetBlock->id;		// For new tuples, we set the target id	
-					$g['read'] = $r;
-					$g['write'] = $w;
+					$g['idBlock'] = $this->_targetBlock->id;					// For new tuples, we set the target id	
+					$g['read'] = ($r)?'1':'0';
+					$g['write'] = ($w)?'1':'0';
 					$gTuple = new GroupXBlock($g);
 					$gTuple->save();
 				}
@@ -383,5 +391,14 @@ class EditUserFormBlock extends EditDBFormBlock {
 		return $this->_targetblock;
 	}
 }
-
+class EditCurrentUserFormBlock extends EditUserFormBlock {
+	
+	function getTargetBlock() {
+		if (!isset($this->_targetBlock)){
+			$redCMS = RedCMS::get();
+			$this->_targetBlock = $redCMS->sessionManager->getCurrentUser();
+		}
+		return $this->_targetblock;
+	}
+}
 ?>

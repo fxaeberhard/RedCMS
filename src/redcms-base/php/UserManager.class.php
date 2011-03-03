@@ -41,9 +41,26 @@ class UserManager {
 	static function &getUserByFields($fields) {
 		$users = array();
 		foreach( $fields as &$field){
-			$users[] = new User($field);
+			$users[] = new LoggedUser($field);
 		}
 		return $users;
+	}
+	/*static function getGroupsBySelect($select, $values){
+		$redCMS = RedCMS::get();
+		$stat = $redCMS->dbManager->prepare('SELECT * FROM '.$redCMS->_dbGroup.' WHERE '.$select);
+		if ($stat->execute( $values ){
+			$g = UserManager::getGroupsByFields($stat->fetchAll(PDO::FETCH_ASSOC));
+			return $g[0];
+		} else return null;
+	}*/
+	static function getGroupsByUserId($userId) {
+		$redCMS = RedCMS::get();
+		$stat = $redCMS->dbManager->prepare('SELECT *, idGroup as id FROM '.$redCMS->_dbGroup.
+			' JOIN '.$redCMS->_dbUserXGroup.' on redcms_group.id = idGroup AND idUser =?');
+		if ($stat->execute(array($userId))) {
+			$g = UserManager::getGroupsByFields($stat->fetchAll(PDO::FETCH_ASSOC));
+			return $g;
+		} else return array();
 	}
 	static function getGroupById($id){
 		$redCMS = RedCMS::get();
@@ -67,7 +84,7 @@ class UserManager {
 }
 class UserManagerBlock extends TreeStructure {	
 	function getChildBlocks(){
-		return UserManager::getUsersBySelect('1', array());
+		return UserManager::getUsersBySelect('1 ORDER BY name', array());
 	}
 }
 class GroupManagerBlock extends TreeStructure {	
