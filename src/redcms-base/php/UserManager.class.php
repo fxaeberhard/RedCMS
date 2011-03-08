@@ -7,8 +7,12 @@ http://redcms.red-agent.com/license.html
 */
 class UserManager {
 	static function getUserById($blockId) {
+		if ($blockId == '0'){
+			return new Guest();
+		}
 		$users = UserManager::getUsersBySelect('id=?', array($blockId));
-		return $users[0];
+		if (!empty($users)) return $users[0];
+		else return null;
 	}
 	static function getUsersByGroupId($groupId) {
 		$redCMS = RedCMS::get();
@@ -84,7 +88,22 @@ class UserManager {
 }
 class UserManagerBlock extends TreeStructure {	
 	function getChildBlocks(){
-		return UserManager::getUsersBySelect('1 ORDER BY name', array());
+		$redCMS = RedCMS::get();
+		if ($redCMS->paramManager->hasMore()){
+			$userId = $redCMS->paramManager->next();
+			$users = UserManager::getUsersBySelect('id=? ORDER BY name', array($userId));
+			// FIXME This does not work since hierarchy is already displayed
+			$redCMS->currentHierarchy[] = $users[0];
+			return $users;
+		} else {
+			return UserManager::getUsersBySelect('1 ORDER BY name', array());
+		}
+	}
+}
+class CurrentUserManagerBlock extends TreeStructure {	
+	function getChildBlocks(){
+		$redCMS = RedCMS::get();
+		return array($redCMS->sessionManager->getCurrentUser());
 	}
 }
 class GroupManagerBlock extends TreeStructure {	

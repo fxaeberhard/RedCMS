@@ -30,8 +30,6 @@ http://redcms.red-agent.com/license.html
 			//input : getCN(FORM, INPUT)
 		};
 	
-	console.log("YUI.EDITOR", YAHOO.widget.Editor);
-	
 	var editor = new YAHOO.widget.Editor('myEditor', {
 		//dompath: true,
 		//height: '400px',

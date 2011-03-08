@@ -15,24 +15,57 @@ input[type=submit] {
 	display:none;	
 }
 
+/* CSS BASE CLASSES FOR REDCMS */
+.redcms-small {
+	color: gray;
+	font-size: 13px;
+	font-style: italic;
+	font-weight: normal;
+}
 
 /* Fluid Grids layout */
 .redcms-layout {
-	padding-left: 170px; /* allow for left column (#nav) */
+	padding-left: 200px; /* allow for left column (#nav) */
+	padding-right: 10px;
 }
 .redcms-left {
-	margin-left: -170px;
-	position: relative;
-	width: 170px;	/* workaround for IE9 not firing mouse events on #side due to negative margin */
+	margin-left: -200px;
+	width: 200px;	/* workaround for IE9 not firing mouse events on #side due to negative margin */
 }
-/*
+
 .redcms-left .redcms-content {
-	margin-right: 10px; /* gutter between #nav and #main 
-}*/
+	margin: 0 10px;
+}
 .redcms-bd {
 	width:100%;
 }
 
+.redcms-hd {
+	border: 1px solid gray;
+	padding: 4px;
+	margin: 10px 8px 5px 10px;
+}
+.redcms-bd .redcms-bd-content {	
+	border: solid 1px gray;
+}
+.redcms-bd .redcms-bd-title {
+	padding: 4px;
+	background:#D1D8DF;
+	border: solid 1px gray;
+	border-bottom: none;
+}
+.redcms-bd .redcms-bd-content {
+	padding: 5px;
+	min-height: 280px;
+}
+.redcms-ft .redcms-ft-content {
+	text-align: center;
+	font-size: 8pt;
+	font-style: italic;
+}
+.redcms-ft .redcms-ft-content hr {
+	margin: 10px 10px 0;
+}
 /* Default fieldset view */
 fieldset {
 	border: 2px groove #CCC;
@@ -62,6 +95,8 @@ fieldset legend {
 .yui3-skin-sam .yui3-overlay-window .yui3-widget-bd {
 	padding:10px;
 	overflow:auto;
+	max-height: 700px;
+	max-width: 900px;
 }
 .yui3-skin-sam .yui3-overlay-window .yui3-overlay-close {
 	position: absolute;
@@ -87,6 +122,65 @@ body {
 	_height: 100%; /* better IE6 support */
 }
 
+/** RedCMS Buttons (base on YUI2 Buttons for styling) */
+
+.yui3-redcms-button {
+	display: inline-block;
+	vertical-align: text-bottom;
+	border-width: 1px 0;
+	border-style: solid;
+	border-color: gray;
+	background: url(sprite.png) repeat-x 0 0;
+	margin: auto .25em;
+	cursor:pointer;
+}
+.yui3-redcms-button span {
+	border-width: 0 1px;
+	border-style: solid;
+	border-color: gray;
+	margin: 0 -1px;
+	display: block;
+	_margin: 0;
+}
+.yui3-redcms-button span a {
+	padding: 0 10px;
+	font-size: 93%;
+	line-height: 2.4;
+	min-height: 2em;
+	color: black;
+	text-decoration: none;
+}
+.yui3-redcms-button span a.yui3-redcms-button-add {
+	padding: 3px 10px;
+	padding-left: 2.5em;
+	background: url(redcms-sprite.png) no-repeat scroll 9px -59px;
+}
+.yui3-redcms-button:hover {
+	border-color: #7D98B8;
+	background-position: 0 -1300px;	
+}
+/* Loading style */
+.yui3-skin-sam .yui3-redcms-loading,
+.yui3-skin-sam .yui3-overlay-window  .yui3-redcms-loading {
+	background: lightGrey url(loading.gif) no-repeat scroll 50% 60%;
+	min-height: 100px;
+	min-width: 100px;
+}
+
+.yui3-redcms-loading-overlay {
+	position:relative;
+}
+.yui3-redcms-loading-overlay div{
+	position: absolute;
+	width: 100%;
+	background: rgb(211, 211, 211);/* Fallback for web browsers that doesn't support RGBa */
+	background: rgba(211, 211, 211, 0.4); /* RGBa with 0.6 opacity */
+	background-image:url('loading.gif');
+	background-repeat:no-repeat;
+	background-position:center; 
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300); /* For IE 5.5 - 7*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300)"; /* For IE 8*/
+}
 
 /* RedCMSForm styles */
 /*
@@ -167,24 +261,19 @@ body {
 	height: 100%;
 
 }
-/* Loading style */
-.yui3-skin-sam .yui3-redcms-loading,
-.yui3-skin-sam .yui3-overlay-window  .yui3-redcms-loading {
-	background: lightGrey url(loading.gif) no-repeat scroll 50% 60%;
-	min-height: 30px;
-	height: 100px;
-}
+
 
 
 /* Admin Menu */
-.yui3-skin-sam #ft .yui3-redcmsnavmenu {
+.yui3-skin-sam .redcms-ft .yui3-redcmsnavmenu {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 }
 
-/* Tree View Default skin */
+
+/* Tree View: Default skin */
 .yui3-treeview {
     margin:0;
     padding:0;
@@ -285,6 +374,26 @@ ul li {
 	list-style: none;
 }
 
+
+/* Tree View: Custom Icons */
+.yui3-treeview .yui3-redcms-icon-jpg,
+.yui3-treeview .yui3-redcms-icon-gif,
+.yui3-treeview .yui3-redcms-icon-jpeg,
+.yui3-treeview .yui3-redcms-icon-png {
+	background: url(file-icons.png) no-repeat scroll 14px -240px;
+}
+.yui3-treeview .yui3-redcms-icon-pdf {
+	background: url(file-icons.png) no-repeat scroll 14px -272px;
+}
+.yui3-treeview .yui3-redcms-icon-sql {
+	background: url(file-icons.png) no-repeat scroll 14px -440px;
+}
+.yui3-treeview .yui3-redcms-icon-user {
+	background: url(file-icons.png) no-repeat scroll 14px -350px;
+}
+.yui3-treeview .yui3-redcms-icon-html {
+	background: url(file-icons.png) no-repeat scroll 14px -320px;
+}
 /** ToolTip Styles **/
 .redcms-tooltip-content {
 	display:none;
@@ -349,10 +458,7 @@ ul li {
 
 /** RedCMS Conversation styles */
 .redcms-conversation {
-	width: 99%;
 	margin: 10px 0;
-	background: white;
-	border: 2px groove gray;
 }
 .redcms-conversation .redcms-conversation-title {
 	background-color: #D1D8DF;
@@ -370,6 +476,21 @@ ul li {
 	font-size: 18px;
 	color: #1C5AA9;
 }
+.redcms-conversation .redcms-conversation-content {
+	padding-left:56px;	
+}
+.redcms-conversation .redcms-conversation-footer {
+	padding-left: 2px;
+	margin-top: 5px;
+	font-size: 11px;
+	border-top: 1px groove lightgray;
+}
+.redcms-conversation .redcms-conversation-footer a {
+	text-decoration: none;
+}
+.redcms-conversation .redcms-conversation-footer a:hover {
+	text-decoration: underline;
+}
 .redcms-conversation .redcms-icon span {
 	background: transparent url(conversation-sprite.png) no-repeat scroll 0 0;
 	width: 48px;
@@ -378,32 +499,72 @@ ul li {
 	float: left;
 }
 .redcms-conversation .redcms-conversation-topicfield .redcms-icon span {
-	background: transparent url(conversation-sprite.png) no-repeat scroll 0 -180px;
+	background-position: 0 -180px;
 }
 .redcms-conversation .redcms-conversation-newsfield .redcms-icon span {
-	background: transparent url(conversation-sprite.png) no-repeat scroll 0 -121px;
+	background-position: 0 -121px;
 }
 .redcms-conversation .redcms-conversation-replyfield .redcms-icon span {
-	background: transparent url(conversation-sprite.png) no-repeat scroll 0 -61px;
+	background-position: 0 -61px;
 }
 .redcms-conversation > .redcms-conversation-fragment {
-	border-bottom: 1px solid gray;
+	border: 1px solid #646464;
+	background: white;
+	margin-bottom: 10px;
 	padding-bottom: 5px;
 }
+
+.redcms-conversation .redcms-conversation-hd {
+	background: #D1D8DF; 
+}
 .redcms-conversation .redcms-conversation-fragment .redcms-conversation-fragment {
-	margin: 10px 0 10px 40px;
+	margin: 10px 20px 10px 40px;
 }
 
+/** Redcms Conversation Styles: reader */
+.yui3-redcms-conversation-reader {
+	border: 1px solid gray;
+	margin: 0;
+}
+.yui3-redcms-conversation-reader-hd {
+	font-weight: bolder;
+	padding: 5px;
+	background: #D1D8DF;
+	/*border-bottom: 1px solid #646464;*/
+}
+
+/** RedCMS Conversation styles :small icons */
+.yui3-redcms-conversation-reader .redcms-icon span {
+	background-image: url(conversation-sprite-small.png);
+	height: 31px;
+	width: 25px;
+	margin: 0 0 0 4px;
+}
 /** RedCMS Icon Styles */
 .redcms-icon span {
 	float: left;
-	height: inherit;
 }
 .redcms-icon-email {
-	height: 25px;
 }
 .redcms-icon-email span {
 	background: transparent url(redcms-sprite.png) 0 -350px no-repeat;
 	width: 25px;
+	height: 25px;
 	margin: 0 5px 0 0;
 }
+
+/** RedCMS Hierarchy display */
+.redcms-bd-title {
+	font-weight:bold;
+}
+.redcms-bd-title .redcms-bd-title-item {
+	float:left;
+}
+.redcms-bd-title .redcms-bd-title-separator {
+	float:left;
+}
+.redcms-bd-title .redcms-bd-title-separator:after {
+	content:"//";
+	padding:0 3px;
+}
+.

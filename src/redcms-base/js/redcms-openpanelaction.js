@@ -6,7 +6,7 @@ http://redcms.red-agent.comw/license.html
 
 YUI.add('redcms-openpanelaction', function(Y) {
 	var OpenPanelAction,
-		
+		BlockReloadOpenPanelAction, 
 		CONTENTBOX = 'contentBox',
 		BOUNDINGBOX = 'boundingBox',
 		BODY = 'body',
@@ -28,7 +28,6 @@ YUI.add('redcms-openpanelaction', function(Y) {
 		},
 		bindUI : function() {
 			this.get(CONTENTBOX).one('a').on(CLICK, function(e) {
-
 				e.preventDefault();
 				
 				var cb = this.get(CONTENTBOX),
@@ -39,10 +38,7 @@ YUI.add('redcms-openpanelaction', function(Y) {
 						constrain   : true,
 						render      : true,
 						visible     : true,
-				        align : {
-				            node: "body",
-				            points: ["tc", "tc"]
-				        },
+						centered : "body",
 						plugins     : [
 							{ fn: Y.Plugin.OverlayWindow },
 							{ fn: Y.Plugin.Drag}
@@ -56,6 +52,7 @@ YUI.add('redcms-openpanelaction', function(Y) {
 						node: this.getStdModNode(BODY),
 						handles: ['b', 'r', 'br', 'bl']
 					});
+					this.set('centered', 'body');
 				});
 				
 				var params = new Array(),
@@ -67,11 +64,9 @@ YUI.add('redcms-openpanelaction', function(Y) {
 					data: params,
 					on: {
 						success: function(id, o, args) {
-						//	console.log("OpenPanelAction.onRequestSuccess(): ", o.responseText)
 							var body = this._overlay.getStdModNode(BODY);
 							body.append(o.responseText);
-							body.removeClass(CLASSES.LOADING);
-							
+							this._overlay.set('centered', 'body');
 							Y.RedCMS.RedCMSManager.render(body, Y.bind(this._onWidgetsRendered, this));
 						}
 					},
@@ -80,13 +75,14 @@ YUI.add('redcms-openpanelaction', function(Y) {
 			}, this);
 		},
 		_onWidgetsRendered: function(widgets) {
-			//console.log("OpenPanelAction._onWidgetsRendered()", widgets, arguments);
 			var onSuccess = Y.bind(this._onSuccess, this),
 				onReload = Y.bind(this._onWidgetsRendered, this);
 			for (var i=0;i<widgets.length;i++) {
 				widgets[i].on("success", onSuccess);
 				widgets[i].on("reload", onReload);					
 			}
+			this._overlay.getStdModNode(BODY).removeClass(CLASSES.LOADING);
+			this._overlay.set('centered', 'body');
 		},
 		_onSuccess: function(){
 			this.fire("success");
@@ -101,4 +97,22 @@ YUI.add('redcms-openpanelaction', function(Y) {
 	}, {} );
 	
 	Y.namespace('RedCMS').OpenPanelAction = OpenPanelAction;
+	
+	BlockReloadOpenPanelAction = Y.Base.create("redcms-blockreloadopenpanelaction", Y.RedCMS.OpenPanelAction, [], {
+		//	***	***	//
+		_reloadWidget : function() {
+			var targetAdmin = this.get(CONTENTBOX).ancestor(function(n) {
+					return (n.getAttribute('redadmin') != '')
+				}, true);
+				targetAdminWidget = Y.Widget.getByNode(targetAdmin);
+				
+			Y.RedCMS.RedCMSManager.reloadWidget(targetAdminWidget);
+		},
+		bindUI : function() {
+			BlockReloadOpenPanelAction.superclass.bindUI.apply(this, arguments);
+			this.on('success', this._reloadWidget);
+		}
+	}, {} );
+	Y.namespace('RedCMS').BlockReloadOpenPanelAction = BlockReloadOpenPanelAction;
+
 }, '0.1.1');

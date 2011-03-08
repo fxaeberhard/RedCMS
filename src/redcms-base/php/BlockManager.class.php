@@ -11,12 +11,14 @@ class BlockManager {
 	
 	static function getBlockById($blockId) {
 		$blocks = BlockManager::getBlocksBySelect('id=?', array($blockId));
-		return $blocks[0];
+		if (!empty($blocks)) return $blocks[0];
+		else return null;
 	}
 	
-	static function &getBlockBySelect($select, $values = array()) {
+	static function getBlockBySelect($select, $values = array()) {
 		$blocks = BlockManager::getBlocksBySelect($select, $values);
-		return $blocks[0];
+		if (!empty($blocks)) return $blocks[0];
+		else return null;
 	}
 	
 	static function getBlocksBySelect($select, $values = array()) {
@@ -25,6 +27,13 @@ class BlockManager {
 		return BlockManager::getBlockByStatement($statement, $values);
 	}
 	
+	static function getLinkerBlocks($blockId, $relationType) {
+		$redCMS = RedCMS::getInstance();
+		$statement = $redCMS->dbManager->prepare('SELECT * FROM '.$redCMS->_dbBlockXBlock.' JOIN '.$redCMS->_dbBlock
+			." ON ".$redCMS->_dbBlock.".id = blockId"
+			.' WHERE subBlockId=? AND relationType=?' );
+		return BlockManager::getBlockByStatement($statement, array($blockId, $relationType));
+	}
 	static function getLinkedBlocks($blockId, $relationType) {
 		$redCMS = RedCMS::getInstance();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM '.$redCMS->_dbBlockXBlock.' JOIN '.$redCMS->_dbBlock

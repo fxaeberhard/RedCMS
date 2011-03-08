@@ -16,14 +16,16 @@ class ComboBlock extends FileProxyBlock {
 		$files = explode("&", $queryString);
 		$contentType = strpos($queryString, ".js") ? 'application/x-javascript' : 'text/css';
 		
-		// Send header with righ cache controle
-		$expires = 60*60*24*14;
 		header("Content-Type: ".$contentType);
-		header("Pragma: public");
-		header("Cache-Control: maxage=".$expires);
-		header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
-		header("Last-Modified: ". gmdate('D, d M Y H:i:s', time()+$expires) ." GMT");
 		
+		// Send header with right cache controle
+		$expires = 60*60*24*14;
+		//header("Pragma: public");
+		//header("Cache-Control: maxage=".$expires);
+		//header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
+		//header("Last-Modified: ". gmdate('D, d M Y H:i:s', time()+$expires) ." GMT");
+		
+		//old
    		//header("Expires: 0"); 
     	//header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
     	//header("Cache-Control: private",false); // required for certain browsers 

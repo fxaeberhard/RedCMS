@@ -4,7 +4,9 @@ Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 */
-$root = $_SERVER['DOCUMENT_ROOT'].str_replace('index.php', '', $_SERVER['PHP_SELF']);
+//print_r($_SERVER);
+//$root = $_SERVER['DOCUMENT_ROOT'].str_replace('index.php', '', $_SERVER['PHP_SELF']);
+$root = str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']);
 
 require($root.'lib/Smarty/libs/Smarty.class.php');
 require($root.'lib/phpmailer/class.phpmailer.php');

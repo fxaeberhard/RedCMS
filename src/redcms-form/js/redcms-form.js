@@ -57,8 +57,11 @@ http://redcms.red-agent.com/license.html
 		},
 		
 		submit : function () {
-			this.fire('submit');
-			Y.RedCMS.Form.superclass.submit.apply(this);
+			if (this.get('skipValidationBeforeSubmit') === true || this._runValidation()) {
+				this.fire('submit');
+				this.showReloadOverlay();
+				Y.RedCMS.Form.superclass.submit.apply(this);
+			}
 		},
 		
 		//	***	Life cycle methods	***	//
@@ -69,6 +72,7 @@ http://redcms.red-agent.com/license.html
 			_msgBox.render();
 			this.get(CONTENT_BOX).appendChild(_msgBox.get(BOUNDING_BOX)); 
 			this.on('complete', function (args) {
+				this.hideReloadOverlay();
 				var ret = Y.JSON.parse(args.response.responseText);
 				if (ret.result == 'success') {
 					this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.success, ret.msg);
@@ -77,6 +81,7 @@ http://redcms.red-agent.com/license.html
 				}
 			});
 			this.on('failure', function (args) {
+				this.hideReloadOverlay();
 				this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, 'Error sending form content');
 			});
 			this.after('render', function(){

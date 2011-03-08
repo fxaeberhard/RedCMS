@@ -22,7 +22,10 @@ http://redcms.red-agent.com/license.html
 							
 							{$liClass=(empty($subBlocks))?'class="yui3-menuitem"':''}
 							{$aClass=(empty($subBlocks))?'yui3-menuitem-content':'yui3-menu-label'}
-							<li {$liClass} redid="{$block->id}" widget="{get_class($block)}">
+							{*<li {$liClass} redid="{$block->id}" widget="{get_class($block)}">
+								
+								*}
+							<li {$liClass} redid="{$block->id}"  widget="{get_class($block)}">
 								<a class="{$aClass}" href="{$block->getLink()|default:'#'}">{$block->getLabel()|default:'No label provided'}</a>
 								
 								{if !empty($subBlocks)}

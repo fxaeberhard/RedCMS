@@ -24,7 +24,24 @@ YUI.add('redcms-widget', function(Y) {
 	};
 	
 	RedCMSWidget.prototype = {
-	    
+		_overlay: null,
+		
+		hideReloadOverlay: function(){
+	    	this._overlay.hide();
+		},
+			
+	    showReloadOverlay: function(){
+	    	var bb = this.get('boundingBox'),
+	    		overlayContent;
+	    	
+	    	if (!this._overlay) {
+	    		this._overlay = Y.Node.create('<div class="yui3-redcms-loading-overlay"><div></div></div>');
+	    		bb.prepend(this._overlay);
+	    	}
+    		var overlayContent = this._overlay.one('div');
+	    	overlayContent.setStyle('height', bb.getComputedStyle('height'));
+	    	this._overlay.show();
+	    }
 	};
 	
 	Y.namespace('RedCMS').RedCMSWidget = RedCMSWidget;

@@ -18,8 +18,10 @@ class RedCMS {
 		'homePageId' => 3,
 		'notFoundPageId' => 22,
 		'accessRestrictedPageId' => 23,
+		'defaultPageTemplate' => 'page-default.tpl',
 		'defaultLang' => 'en',
-		'charset' => 'UTF-8',
+		'availableLang' => array('en'),
+		'charset' => 'utf-8',
 		'debugMode' => false,
 		'windowTitleSuffix'=>'',
 		'keywordSuffix' => '',
@@ -34,18 +36,14 @@ class RedCMS {
 		'smtpUsername' => '',
 		'smtpPassword' => '',
 		'version' => '0.2.0',
-		'cacheEnabled'=> false,
-		// 'addingSlashServer'=> 1,
-		// 'defaultPictureWidth' => 'x'
+		'cacheEnabled'=> false
 	);
 	
 	/***************************************All utilities objects *******************/
 	var $sessionManager;
 	var $dbManager;
 	var $paramManager;
-	var $headerManager;
-	//var $cacheManager;
-	var $logger;
+	//var $logger;
 	
 	/***************************************Working variables*************************/
 	var $config;
@@ -53,6 +51,7 @@ class RedCMS {
 	var $path;
 	var $fullpath;
 	var $currentBlock;
+	var $currentHierarchy = array();
 	
 	/***************************************DATABASE TABLE DECLARATION ****************/
 	var $_dbBlock = 'redcms_block';
@@ -68,11 +67,35 @@ class RedCMS {
 	
 		$this->path = $this->config['path'];
 		$this->fullpath = $_SERVER['DOCUMENT_ROOT'].$this->path;
+		$this->fullpath =  str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']);
 		$this->host = 'http://'.$_SERVER['HTTP_HOST'];
 		
 		$this->dbManager = new DBManager( $dsn, $username, $password );
 		$this->paramManager = new ParamManager();
 		$this->sessionManager = new SessionManager();
+	
+		
+		$cParam = $this->paramManager->next();
+		
+		if ($cParam && ($cParam == 'fr' || $cParam == 'en')) {				// First retrive the lang of the current page if available
+			$this->lang	= $cParam;
+			$cParam = $this->paramManager->next();							// Then retrieves the page parameter 
+		} else {
+			$this->lang = $this->config['defaultLang'];
+		}
+		
+		if ($cParam == null) $cParam = $this->config['homePageId'];			// If there is no param available, we use the homepage id instead
+		
+		if (is_numeric($cParam)) {											// If the parameter is a number, use it as an id
+			$this->currentBlock = BlockManager::getBlockById($cParam);
+		} else {															// Otherwise use the link
+			$this->currentBlock = BlockManager::getBlockBySelect('link = ?', array($cParam));
+		}
+		$this->currentHierarchy[] = $this->currentBlock;
+	}
+	
+	function headers() {
+		header("Content-Type: text/html; charset=".$this->config['charset']);
 	}
 	
 	/**
@@ -81,52 +104,37 @@ class RedCMS {
 	 *	
 	 */
 	function render() {
-		$cParam = $this->paramManager->next();
 		
-		// First retrive the lang of the current page if available
-		if ($cParam && ($cParam == 'fr' || $cParam == 'en')) {
-			$this->lang	= $cParam;
-			$cParam = $this->paramManager->next();
-		} else {
-			$this->lang = $this->config['defaultLang'];
-		}
+		$this->headers();
 		
-		// Then retrieves the page parameter 
-		if ($cParam == null) $cParam = $this->config['homePageId'];
-		
-		if (is_numeric($cParam)) {										// If the parameter is a number, use it as an id
-			$this->currentBlock = BlockManager::getBlockById($cParam);
-		} else {														// Otherwise use the link
-			$this->currentBlock = BlockManager::getBlockBySelect('link = ?', array($cParam));
-		}
-		
-		if (isset($this->currentBlock)) {								// If the block was correctly pulled
-			$this->currentBlock->render();		 						// we render it
+		if (isset($this->currentBlock)) {									// If the block was correctly pulled
+			$this->currentBlock->render();		 							// we render it
 		} else {
 			die('Page Not Found');
 		}		
 	}
-	//	***	Singleton methods *** //
 	
-    private static $instance;											// Hold an instance of the class
+	
+	//	***	Singleton methods *** //
+    private static $instance;												// Hold an instance of the class
     
-    private function __construct() {  }									// A private constructor; prevents direct creation of object
+    private function __construct() {  }										// A private constructor; prevents direct creation of object
 
-    public static function getInstance(){								// The singleton method
+    public static function getInstance(){									// The singleton method
         if (!isset(self::$instance)) {
             $c = __CLASS__;
             self::$instance = new $c;
         }
         return self::$instance;
     }
- 	public static function get(){								// The singleton method
+ 	public static function get(){											// The singleton method
         if (!isset(self::$instance)) {
             $c = __CLASS__;
             self::$instance = new $c;
         }
         return self::$instance;
     }
-    public function __clone() {											 // Prevent users to clone the instance
+    public function __clone() {											 	// Prevent users to clone the instance
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 }

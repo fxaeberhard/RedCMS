@@ -13,7 +13,7 @@ class ParamManager {
 		$this->init();	
 	}
 	function init() {	
-		global $_SERVER;
+		global $_SERVER, $_REQUEST;
 		$redCMS = RedCMS::getInstance();
 		if (isset($_SERVER['REDIRECT_URL'])) {					// REDIRECT_URL is provided by Apache when a URL has been rewritten
 			$redirUrl = $_SERVER['REDIRECT_URL'];
@@ -26,6 +26,9 @@ class ParamManager {
 				}
 			}
 		}
+		if (isset($_REQUEST['p1'])) {
+			$this->parameters[] = Utils::url_decode($_REQUEST['p1']);
+		}
 	}
 	function hasMore(){
 		return count($this->parameters) > 0;
@@ -33,13 +36,22 @@ class ParamManager {
 	function &current(){
 		return $this->parameters[0];
 	}
+	function currentStackJSON($startIndex = 1){
+		$ret = array();
+		foreach ($this->parameters as $p) {
+			$ret['p'.$startIndex] = Utils::url_encode($p);
+			++$startIndex;
+		}
+		return $ret;
+	}
 	function next(){
 		return array_shift($this->parameters);
 	}
 	static function &getLink($param1= null, $param2= null, $param3= null, $param4=null){
 		$redCMS = RedCMS::getInstance();
 		$ret = $redCMS->path;
-		if ($param1 || $redCMS->config['defaultLang'] != $redCMS->lang) $ret .= $redCMS->lang."/";
+		//echo $redCMS->config['defaultLang']."**".$redCMS->lang;
+		if ($param1 && $redCMS->config['defaultLang'] != $redCMS->lang) $ret .= $redCMS->lang."/";
 		if ($param1) $ret .= Utils::url_encode($param1)."/";
 		if ($param2) $ret .= Utils::url_encode($param2)."/";
 		if ($param3) $ret .= Utils::url_encode($param3)."/";

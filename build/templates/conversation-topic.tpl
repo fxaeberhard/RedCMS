@@ -5,6 +5,18 @@
  *}
 
 <div {$this->renderBlockAttributes()} widget="Block" >
+	
+	{$childBlocks=$this->getChildBlocks()}
+	{$params = ['parentId' => $childBlocks[0]->id]}
+	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-openpanelaction" 
+		params="{htmlspecialchars(json_encode($params))}">
+		<span>
+			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('290')}" >
+				Répondre
+			</a>
+		</span>
+	</span>
+	
 	<div class="redcms-conversation">
 	{function name=conversation level=0}
 		{foreach $blocks as $block}
@@ -13,9 +25,8 @@
 			<div class="redcms-conversation-fragment redcms-conversation-{get_class($block)|lower}" redid="{$block->id}" widget="{get_class($block)}">
 				<div class="redcms-icon" ><span /></div>
 				<div class="redcms-conversation-title">
-					
+				
 					<img src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=30&d=mm" style="float: left;margin: 3px 2px 0 0;border:1px solid gray"/>
-					
 					<h2>par <a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>, 
 					posté {Utils::date_formatduration($block->dateadded)} 
 					</h2>
@@ -28,21 +39,18 @@
 				<div class="redcms-conversation-footer">
 					{$params = ['parentId' => $block->id]}
 					<span widget="BlockReloadOpenPanelAction" params="{htmlspecialchars(json_encode($params))}">
-						<a href="{ParamManager::getLink('290')}">Commenter</a>
+						<a href="{ParamManager::getLink('290')}">Répondre</a>
 					</span>
 				</div>	
-				{call conversation blocks=$block->getChildBlocks('dateadded') level=$level+1}
+				{call conversation blocks=$block->getChildBlocks("dateadded") level=$level+1}
 			</div>
 		{/foreach}
 	{/function}
 	
-	{$childBlocks=$this->getChildBlocks('dateadded DESC')}
 	{if sizeof($childBlocks)>0} 
 		{call conversation blocks=$childBlocks}
 	{else}
-		<div class="redcms-conversation-fragment">
-			<center><em>There are no elements available.</em></center>
-		</div>
+		<center><em>There are no elements available.</em></center>
 	{/if}
 	</div>
 </div>

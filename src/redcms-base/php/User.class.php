@@ -8,7 +8,7 @@ class User extends Tuple {
 	var $_dbTable = 'redcms_user';
 	
 	function getLabel() {
-		if ($this->name) return $this->name.' '.$this->surname;
+		if ($this->name) return $this->surname.' '.$this->name;
 		else return $this->userName;
 	}
 	function getGroups() {
@@ -44,6 +44,7 @@ class Guest extends User {
 	function Guest() {
 		parent::__construct();
 		$this->fields['userName'] = 'Guest';
+		$this->fields['id'] = '0';
 		$this->_groups = array();
 	}
 }

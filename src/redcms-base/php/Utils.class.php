@@ -1,6 +1,6 @@
 <?php
 class Utils {
-	
+	// *** URL Encoding methods *** //
 	static function url_encode($str){
 		return urlencode(str_replace(array('/', '&'), array('%2F', 'AND'), $str));
 	}
@@ -8,6 +8,7 @@ class Utils {
 		return str_replace(array( '%2F', 'AND'),array( '/','&'), urldecode($str));
 	}
 
+	// *** Date methods *** //
 	static function date_tomin($date){
 		return floor($date/ (60));
 	}
@@ -22,6 +23,41 @@ class Utils {
 	}
 	static function date_toyear($date){
 		return ((date('Y', $date) - 1970) * 12 )+date( 'n', $date);
+	}
+	static function date($dateFormat, $date= null){
+		if ($date == null) $date = time();
+		if (!is_numeric($date)) $date = strtotime($date);
+		$redCMS = RedCMS::get();
+		$dico = array(
+			"fr" => array("Lundi", "Mardi", "Mercredi","Jeudi", "Vendredi", "Samedi", "Dimanche", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre","Octobre","Novembre","Décembre"),
+			"en" => array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",  "January", "Febrary", "March", "April", "May", "June", "July", "August", "September", "October","November","December")
+		);
+		return str_replace($dico['en'],$dico[$redCMS->lang],date($dateFormat, $date));
+	}
+
+	static function date_formatinterval($date1, $date2, $dateFormat="d F Y"){
+		$date1 = strtotime($date1);
+		$date2 = strtotime($date2);
+		if (Utils::date_todays($date1) === Utils::date_todays($date2)){
+			return 'le '. Utils::date('j F Y, \d\e H:i', $date1).' à '.date('H:i', $date2);
+		}else{
+			return 'du '.Utils::date('j F à H:i', $date1).' au '. Utils::date('j F Y à H:i', $date2);
+		}
+	}
+	static function date_formatduration($date){
+		$now = time();
+		$date = strtotime($date);
+		$prefix = ($date > $now)?'dans ':'il y a ';
+		$diff = abs(($now - $date)/60);
+		if ($diff < 60){
+			return $prefix.round($diff).' minutes';
+		}elseif ($diff < (24*60)){
+			return $prefix.floor($diff/60).' heures et '.round($diff % 60) .' minutes';
+			//		}elseif ($diff < 2*24){
+			//			return 'aujourd\'hui, à '. date('H:i', $date);
+		}elseif ($diff < (2*24*60)){
+			return (($date > $now)?'demain':'hier').', à '. date('H:i', $date);
+		} else return Utils::date('\l\e j F Y à H:i', $date);
 	}
 	
 	// *** File Functions *** //
@@ -74,6 +110,12 @@ class Utils {
 			case "wma": return "audio/x-ms-wma";
 			default: return "application/force-download";
 		}
+	}
+	
+	// *** SQL FUNCTION *** //
+	static function sql_date($date = null){
+		if(!$date) $date = time();
+		return date('Y-m-d H:i', $date);
 	}
 }
 ?>

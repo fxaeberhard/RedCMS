@@ -6,10 +6,11 @@ http://redcms.red-agent.com/license.html
 */
 
 class TreeStructure extends Block {
+	var $_dbFieldsMap = array('orderBy' => 'text1');
 	
 }
 class MenuBlock extends TreeStructure {
-
+	
 	function toJSON0($node) {
 		$ret = array();
 		if (get_class($node) == 'Action' || $node instanceof  TreeStructure) {	// This optim allows to look for child nodes only when required
@@ -29,6 +30,22 @@ class MenuBlock extends TreeStructure {
 		return $ret;
 	}
 	
+	function getChildBlocks($orderBy=null) {
+		$childs = parent::getChildBlocks($orderBy);
+		$val ="[2611, 2604]";
+		$indexes = json_decode($val);
+		for ($i = 0, $l = sizeof($childs);$i<$l;$i++ ) {
+			$cIndex = array_search($childs[$i]->id, $indexes);
+			if ($cIndex !== false){
+				$t = $childs[$cIndex];
+				$childs[$cIndex] = $childs[$i];
+				$childs[$i] = $t;
+				
+			}
+		}
+		return $childs;
+		
+	}
 	function toJSON() {
 		return $this->toJSON0($this);
 	}

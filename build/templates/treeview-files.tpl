@@ -9,15 +9,15 @@ http://redcms.red-agent.com/license.html
 	{function name=menu level=0}
 		<ul>
 			{foreach $blocks as $block}
+				{$link = $block->getLink()}
+				{$ext = Utils::file_extension($link)}
+			
 				<li redid="{$block->id}" widget="{get_class($block)}" >
-					{$link = $block->getLink()}
-					<a href="{$link}" target="_blank">{$block->getLabel()}</a>
+					<a href="{$link}" class="yui3-redcms-icon-{$ext}" target="_blank">{$block->getLabel()}</a>
 					
 					<div class="redcms-tooltip-content">
-					
-						{$relPath = str_replace($redCMS->path, '', $link)}
+						{$relPath = substr( $link, strlen($redCMS->path))}
 						{if file_exists($relPath)}
-							{$ext = Utils::file_extension($link)}
 							{if $ext == 'jpg' OR $ext == 'jpeg' OR $ext == 'png' OR $ext == 'gif'}
 								<img src="{$link}" /><br />
 							{/if}
@@ -27,7 +27,7 @@ http://redcms.red-agent.com/license.html
 						{/if}
 					</div>
 				
-					{$subBlocks = $block->getChildBlocks()}
+					{$subBlocks = $block->getChildBlocks('text1')}
 					{if !empty($subBlocks)}
     					{call menu blocks=$subBlocks level=$level+1}
 					{/if}
@@ -36,7 +36,7 @@ http://redcms.red-agent.com/license.html
 		</ul>
 	{/function}
 	
-	{$childs = $this->getChildBlocks()}
+	{$childs = $this->getChildBlocks('text1')}
 	{if sizeof($childs) == 0}
 		<center><em>There are no files in this library.</em></center>
 	{else}

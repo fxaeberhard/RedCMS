@@ -6,17 +6,31 @@
 
 <div redid="{$this->id}" widget="SimpleForm" requires="redcms-form" style="min-width: 200px;"
 	redadmin="{$this->renderAdminJSON()}" >
-	<form action="{$this->getLink()}" method="post" class="yui3-redcms-form-content" >
+	
+	<style type="text/css">
+		.redcms-form-editgroups > .yui3-g {
+			padding-right:60px;
+		}
+		.redcms-form-editgroups .right {
+			margin-right: -60px;
+			width: 60px;
+		}
+		
+		.redcms-form-editgroups .left {
+			width:100%;
+		}
+	</style>
+	<form action="{$this->getLink()}" method="post" class="yui3-redcms-form-content redcms-form-editgroups" >
 		<input name="id" type="hidden" value="{$this->_targetBlock->id}">
 		<div class="yui3-g">
-				<div class="yui3-u-2-3" ></div>
-				<div class="yui3-u-1-3 redcms-center"><b>Member</b></div>
+				<div class="yui3-u left" ></div>
+				<div class="yui3-u right redcms-center"><b>Member</b></div>
 		</div>
 		<hr />
 		{foreach $this->getGetGroupMemberShipByUser($this->_targetBlock->id) as $g}
 			<div class="yui3-g">
-				<div class="yui3-u-2-3" >{$g['name']}</div>
-				<div class="yui3-u-1-3 redcms-center">
+				<div class="yui3-u left" >{$g['name']}</div>
+				<div class="yui3-u right redcms-center">
 					<input name="membership_{$g['idGroup']}" type="checkbox" {if $g['idUser']}checked{/if} />
 				</div>
 			</div>

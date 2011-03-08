@@ -20,10 +20,11 @@
 					<div class="yui3-g">
 						<div class="yui3-u-1-3">
 						<span class="redcms-icon-user"></span>
-							{$block->getLabel()}
+							{$block->name} {$block->surname}
 						</div>
 						<div class="yui3-u-1-3">{$block->text1}</div>
-						<div class="yui3-u-1-3">{if $block->isAMember(10)}Membre du comité{else}Membre de la SMAG{/if}</div>
+						<div class="yui3-u-1-3">{if $block->isAMember(10)}Membre du comité{else}
+						{if $block->isAMember(11)}Membre de la SMAG{/if}{/if}</div>
 					</div>
 				</div> 
 				<div class="yui3-redcms-accordion-item">

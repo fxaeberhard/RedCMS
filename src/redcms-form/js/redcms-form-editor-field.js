@@ -15,7 +15,6 @@
 			Y.use('yui2-editor', Y.bind( function(Y) {
 				var YAHOO = Y.YUI2;
 				//this = that;
-				console.log("inside", this, this._fieldNode);
 				var editor = new YAHOO.widget.Editor(this._fieldNode._node, {
 					//dompath: true,
 					height: '200px',
@@ -36,70 +35,8 @@
 				
 				this._editor = editor;
 			}, this));
-		},
-	/*	bindUI : function () {
-			this._fieldNode.on('change', Y.bind(function (e) {
-				this.set('value', this._fieldNode.get('value'), {src : 'ui'});
-				this.fire('change', e);
-			}, this));
-			
-			this.on('valueChange', Y.bind(function (e) {
-				if (e.src != 'ui') {
-					this._fieldNode.set('value', e.newVal);
-				}			
-			}, this));
-
-			this._fieldNode.on('blur', Y.bind(function (e) {
-				this.set('value', this._fieldNode.get('value'), {src : 'ui'});
-				this.fire('blur', e);
-			}, this));
-
-			this._fieldNode.on('focus', Y.bind(function(e) {
-				this.fire('focus', e);
-			}, this));
-			
-			this.on('errorChange', Y.bind(function (e) {
-				if (e.newVal) {
-					this._showError(e.newVal);
-				} else {
-					this._clearError();
-				}
-			}, this));
-
-			this.on('validateInlineChange', Y.bind(function (e) {
-				if (e.newVal === true) {
-					this._enableInlineValidation();
-				} else {
-					this._disableInlineValidation();
-				}
-			}, this));
-			
-			this.on('disabledChange', Y.bind(function (e) {
-			    this._syncDisabled();
-			}, this));
-		},*/
-	/*	_renderFieldNode : function () {
-			console.log("mmmm", this);
-			
-			var contentBox = this.get('contentBox'),
-	            field = contentBox.one('#' + this.get('id'));
-	                
-	        if (!field) {
-	            field = Y.Node.create(Y.TextareaField.NODE_TEMPLATE);
-	            field.setAttrs({
-	                name : this.get('name'), 
-	                innerHTML : this.get('value')
-	            });
-	            contentBox.appendChild(field);
-	        }
-	
-			field.setAttribute('tabindex', Y.FormField.tabIndex);
-			Y.FormField.tabIndex++;
-	        
-	        this._fieldNode = field;
-	    }*/
+		}
 	}, {
-	   // NODE_TEMPLATE : '<textarea></textarea>'
 	});
 	
  });

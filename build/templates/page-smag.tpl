@@ -34,3 +34,5 @@
 </div>
 <div class="smag-subfooter"></div>
 {/block}
+
+{block name='ft-content'} {/block}

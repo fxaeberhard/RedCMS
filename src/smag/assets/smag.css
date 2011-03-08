@@ -51,7 +51,7 @@ h3 {
 	margin-left: 2px;
 	background-color: #E3EBF4;
 }
-.redcms-bd .redcms-content {
+.redcms-bd .redcms-bd-content {
 	min-height: 251px;
 	padding: 8px;
 	border-left: 2px solid black;
@@ -176,4 +176,18 @@ h3 {
 	width: 20px;
 	height: 26px;
 	background: transparent url(sprite-smag.png) no-repeat scroll 0 0;
+}
+
+/** RedCMS Conversation styles */
+.redcms-conversation {
+	width: 99%;
+}
+
+/** Redcms Conversation Styles: reader */
+.yui3-redcms-conversation-reader {
+	border: 2px solid black;
+	margin: 0;
+}
+.yui3-redcms-conversation-reader-hd {
+	background: lightgray;
 }

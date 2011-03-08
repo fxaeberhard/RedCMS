@@ -112,14 +112,13 @@ YUI.add('redcms-action', function(Y) {
 	 */
 	AsyncRequestAction = Y.Base.create("redcms-asyncrequestaction", Y.Widget, [Y.RedCMS.RedCMSWidget], {
 		bindUI : function() {
-			console.log("AsyncRequestAction.bindUI(", this.get(CONTENTBOX));
 			this.get(CONTENTBOX).on(CLICK, function(e) {
 				e.preventDefault();
 				var params = new Array(),
 					cb = this.get(CONTENTBOX),
 					paramsList = cb.getAttribute('params');
 				if (paramsList) params = Y.JSON.parse(paramsList);
-				console.log("AsyncRequestAction.onClick("+cb.one('a').get('href'));
+				
 				var request = Y.io(cb.one('a').get('href'), {		//Then request its content to the server
 					data: params,
 					on: {
@@ -148,7 +147,7 @@ YUI.add('redcms-action', function(Y) {
 							data: "action=logout",
 							on: {
 								success: function(id, o, args) {
-									window.location.reload();									//We reload the page as the login is completed
+									window.location = Y.RedCMS.Config.path;									//We reload the page as the login is completed
 								}
 							}
 						});

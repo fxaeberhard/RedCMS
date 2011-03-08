@@ -20,7 +20,8 @@
 		{*<meta name="expires" content="never" /> *}
 		
 		{block name="stylesheets"}
-			<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.3.0/build/cssfonts/fonts-min.css&3.3.0/build/cssreset/reset-min.css&3.3.0/build/cssgrids/grids-min.css&3.3.0/build/cssbase/base-min.css" charset="utf-8" />
+			<link rel="stylesheet" type="text/css" 
+			href="http://yui.yahooapis.com/combo?3.3.0/build/cssfonts/fonts-min.css&3.3.0/build/cssreset/reset-min.css&3.3.0/build/cssgrids/grids-min.css&3.3.0/build/cssbase/base-min.css&3.3.0pr3/build/widget/assets/skins/sam/widget.css&3.3.0pr3/build/node-menunav/assets/skins/sam/node-menunav.css&" charset="utf-8" />
 			<meta id="customstyles" />
 			<link rel="stylesheet" type="text/css" href="{$redCMS->path}src/redcms-base/assets/default-skin.css" />
 		{/block}
@@ -38,7 +39,7 @@
 	
 	{block name='header'}
 	<div class="redcms-hd">
-		<h1>RedCMS-v0.2</h1>
+		RedCMS-v0.2
 	</div>
 	{/block}
 
@@ -59,27 +60,34 @@
 			{block name='currentPagePath'}
 				<div class="redcms-bd-title">
 					<div class="redcms-bd-title-content">
-						<div class="redcms-bd-title-item">Page d'accueil</div>
-						<div class="redcms-bd-title-separator"></div>
-						<div class="redcms-bd-title-item">Page d'accueil</div>
+						{foreach $redCMS->currentHierarchy as $b name='hierarchy'}
+							<div class="redcms-bd-title-item">
+								{$b->getLabel()}
+							</div>
+							{if NOT $smarty.foreach.hierarchy.last}
+								<div class="redcms-bd-title-separator"></div>
+							{/if}
+						{/foreach}
 						<div class="redcms-clear"></div>
 					</div>
 					<div class="redcms-bd-title-right"></div>
-						<div class="redcms-clear"></div>
+					<div class="redcms-clear"></div>
 				</div>
 			{/block}
 			
 {/if}
-
-			<div class="redcms-content" redid="{$this->id}" widget="Block" redadmin="{$this->renderAdminJSON()}" >
-				{$this->longtext1}
-				<div class="redcms-clear"></div>
-				{foreach $this->getChildBlocks() as $b}
-					{if $b->canRead()}
-						{$b->render()}
-					{/if}
-				{/foreach}
-			</div>
+			{block name="bd"}
+				<div class="redcms-bd-content" widget="Block" {$this->renderBlockAttributes()} >
+					{$this->longtext1}
+					<div class="redcms-clear"></div>
+					{foreach $this->getChildBlocks() as $b}
+						{if $b->canRead()}
+							<br />
+							{$b->render()}
+						{/if}
+					{/foreach}
+				</div>
+			{/block}
 		
 {if !$reload}
 			{block name='bd-footer'}{/block}
@@ -87,7 +95,13 @@
 	</div>
 
 
-	<div id="ft">
+	<div class="redcms-ft">
+		<div class="redcms-ft-content">
+			{block name='ft-content'}
+				<hr />
+				Powered by <a href="http://redcms.red-agent.com">RedCMS</a> | Version {$redCMS->config['version']} | &copy; Francois-Xavier Aeberhard, 2011
+			{/block}
+		</div>
 		{foreach $this->getFooterBlocks() as $b}
 			{if $b->canRead()}
 				{$b->render()}
@@ -97,17 +111,16 @@
 
 	{* YUI Seed *}
 	<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui-min.js&3.3.0pr3/build/loader/loader-min.js"></script>
-	<script type="text/javascript" src="{$redCMS->path}src/redcms-base/js/redcms-bootstrap.js"></script>
 	
 	<script type="text/javascript" > 
-	var Config = {
-		path : "{$redCMS->path}",
-		loggedIn : {json_encode($redCMS->sessionManager->isLoggedIn())},
-		lang : '{$redCMS->lang}',
-		debug : {json_encode($redCMS->config['debugMode'])},
-	};
-	Y.namespace('RedCMS').Config = Config;
+		var Config = {
+			path : "{$redCMS->path}",
+			loggedIn : {json_encode($redCMS->sessionManager->isLoggedIn())},
+			lang : '{$redCMS->lang}',
+			debug : {json_encode($redCMS->config['debugMode'])},
+		};
 	</script>
+	<script type="text/javascript" src="{$redCMS->path}src/redcms-base/js/redcms-bootstrap.js"></script>
 </body></html>
 {/if}
 

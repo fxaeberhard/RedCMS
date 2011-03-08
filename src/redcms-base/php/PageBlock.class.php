@@ -29,7 +29,11 @@ class PageBlock extends Block {
 		//Render page content
 		$template = $this->getTemplate();
 		$template->assign('reload', isset($_REQUEST['redreload']));
-		$template->display($this->template);
+		if ($this->template) {
+			$template->display($this->template);
+		} else {
+			$template->display($redCMS->config['defaultPageTemplate']);
+		}
 	}
 }
 ?>

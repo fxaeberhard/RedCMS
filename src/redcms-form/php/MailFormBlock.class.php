@@ -28,6 +28,12 @@ class MailFormBlock extends FormBlock {
 		if (isset($_REQUEST['redaction'])) {
 			$ret = true;
 			$mail = new RedCMSMailer();
+			$user = $redCMS->sessionManager->getCurrentUser();
+			if ($user->email) {
+				$mail->From = $user->email;
+				$mail->FromName = $user->getLabel();
+			}
+			
 			$mail->Subject = '['.$_SERVER['HTTP_HOST'].']'.$_REQUEST['msg_title'];
 			$mail->Body = $_REQUEST['msg_content'];
 			

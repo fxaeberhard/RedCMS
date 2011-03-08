@@ -16,6 +16,10 @@ class Tuple {
 		$this->fields = $fields;
 	}
 	// *** Fields managment methods *** //
+	function set($f, $v){
+		$this->fields[$f] = $v;
+	}
+	
 	function get($f) {
 		if (isset($this->fields[$f])) return $this->fields[$f];
 		return null;
@@ -45,14 +49,17 @@ class Tuple {
 		if (is_numeric($this->fields['id'])){
 			$query = 'UPDATE '.$this->_dbTable.' SET '.implode(',', $updateCols).' WHERE id = '.$this->id;
 			$statement = $redCMS->dbManager->prepare($query);
-			return $statement->execute($values);
+			$r = $statement->execute($values);
+			if ($r) {
+				return true;
+			}else return $statement;
 		} else {
 			$statement = $redCMS->dbManager->prepare('INSERT INTO '.$this->_dbTable.' ('.implode(',', $insertCols1).') VALUES ('.implode(',', $insertCols2).')');
 			$r = $statement->execute($values);
 			if ($r) {
 				$this->fields['id'] = $redCMS->dbManager->lastInsertId();
-			}
-			return $r;
+				return true;
+			}else return $statement;
 		}
 	}
 	function delete() {
@@ -70,20 +77,28 @@ class Tuple {
 	}
 }
 class Block extends Tuple {
-	var $_dbFields = array('parentId', 'type', 'text1', 'text2', 'text3', 'text4', 'text5', 'longtext1', 'template', 'link', 'read', 'write' );
+	var $_dbFields = array('parentId', 'type', 'text1', 'text2', 'text3', 'text4', 'text5', 'date1', 'date2', 'longtext1', 
+			'template', 'link', 'read', 'write', 'dateadded', 'dateupdated', 'owner', 'publicread', 'publicwrite');
 	var $_dbTable = 'redcms_block';
 	
+	var $_parent;
+	var $_linkedBlocks = array();
+	var $_childBlocks;
+	
 	// *** Hierarchy and linked blocks managment methods *** //
-	function getChildBlocks(){
-		$redCMS = RedCMS::getInstance();
-		$ret = BlockManager::getBlocksBySelect('parentId='.$this->id);
-		return $ret;
+	function getChildBlocks($orderBy = null){
+		if (!isset($this->_childBlocks)) {
+			$orderBy = ($orderBy)?' ORDER BY '.$orderBy:'';
+			$this->_childBlocks = BlockManager::getBlocksBySelect('parentId='.$this->id.$orderBy);
+			foreach ($this->_childBlocks as &$b) {
+				$b->_parent = $this;
+			}
+		}
+		return $this->_childBlocks;
 	}
 	function getLinkedBlocks($relationType){
-		$redCMS = RedCMS::getInstance();
 		return BlockManager::getLinkedBlocks( $this->id, $relationType );
 	}
-	var $_linkedBlocks = array();
 	function &getLinkedBlock($relationType){
 		if (!isset($this->_linkedBlocks[$relationType])) {
 			$blocks = $this->getLinkedBlocks( $relationType );
@@ -92,8 +107,26 @@ class Block extends Tuple {
 		}
 		return $this->_linkedBlocks[$relationType];
 	}
+	function getLinkerBlocks($relationType){
+		return BlockManager::getLinkerBlocks( $this->id, $relationType );
+	}
+	function parentBlock() {
+		if (!isset($this->_parent)) {
+			$this->_parent = BlockManager::getBlockById($this->parentId);
+		}
+		return $this->_parent;
+	}
+	function ancestor($class){
+		$a = $this->parentBlock();
+		while (!($a instanceof $class)) {
+			$a = $a->parentBlock();
+			if (!$a) return null;
+		}
+		return $a;
+	}
+	
+	// *** Template managment methods *** //
 	function getTemplate() {
-		$redCMS = RedCMS::getInstance();
 		$tpl = TemplateManager::getTemplate();
 		$tpl->assign("this", $this);
 		return $tpl;
@@ -107,26 +140,17 @@ class Block extends Tuple {
 		if ($this->link) return ParamManager::getLink($this->link);
 		else return ParamManager::getLink($this->id);
 	}
-	function getAdminJSON(){
-		$redCMS = RedCMS::get();
-		$admin = $this->getLinkedBlock('admin');
-		if (isset($admin)) $admin = $admin->toJSON();
-		else $admin = array();
-		return $admin;
-	}
-	function renderAdminJSON() {
-		return htmlspecialchars(json_encode($this->getAdminJSON()));
-	}
-	function getParamsJSON(){
-		global $_REQUEST;
-		return $_REQUEST;
-	}
+	
 	function render() {
 		$template = $this->getTemplate();
 		$template->display($this->template);
 	}
 	
 	// *** Rights Managment *** //
+	function getOwner(){
+		return UserManager::getUserById($this->owner);
+	}
+	
 	var $_rights;
 	function getRights(){
 		if (!isset($this->_rights)){
@@ -143,18 +167,67 @@ class Block extends Tuple {
 	}
 	
 	function canRead(){
-		if ($this->read == '1') return true;
+		$redCMS = RedCMS::get();
+		if ($this->publicread == '1') return true;
+		else if ($this->read == '1' && $redCMS->sessionManager->isLoggedIn()) return true;
 		else {
 			$this->getRights();
 			return $this->_rights['read'] == '1';
 		}
 	}
 	function canWrite(){
-		if ($this->write == '1') return true;
+		if ($this->publicwrite == '1') return true;
+		else if ($this->write == '1' && $redCMS->sessionManager->isLoggedIn()) return true;
 		else {
 			$this->getRights();
 			return $this->_rights['write'] == '1';
 		}
+	}
+	function save() {
+		$redCMS = RedCMS::getInstance();
+		//Could be useful
+		//if (!$this->type) $this->set('type', get_class($this));
+		if (!is_numeric($this->fields['id'])){
+			$this->set('owner', $redCMS->sessionManager->getCurrentUser()->id);
+			$this->set('dateadded', Utils::sql_date());	
+		}
+		$this->set('dateupdated', Utils::sql_date());	
+		return parent::save();
+	}
+	
+	// *** Admin Menu Managment *** //
+	function getAdminJSON(){
+		$admin = $this->getLinkedBlock('admin');
+		if (isset($admin)) $admin = $admin->toJSON();
+		else $admin = array();
+		return $admin;
+	}
+	function renderAdminJSON() {
+		return htmlspecialchars(json_encode($this->getAdminJSON()));
+	}
+	
+	// *** Parameters Stack Managment *** //
+	
+	var $paramsStack = array();
+	function nextParam() {
+		$redCMS = RedCMS::get();
+		if ($redCMS->paramManager->hasMore()) {
+			$param = $redCMS->paramManager->next();
+			$this->paramsStack['p1'] = $param;
+			return $param;
+		} else return null;
+	}
+	function getParamsJSON(){
+		global $_REQUEST;
+		$redCMS = RedCMS::get();
+		return array_merge($_REQUEST, $this->paramsStack, $redCMS->paramManager->currentStackJSON());
+	}
+	function renderParamsJSON(){
+		return htmlspecialchars(json_encode($this->getParamsJSON()));
+	}
+	
+	function renderBlockAttributes() {
+		echo 'redid="', $this->id,'" redparams="', $this->renderParamsJSON(),'" redadmin="', $this->renderAdminJSON(),'"';
 	}
 }
 

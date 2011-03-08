@@ -17,14 +17,17 @@ var Y = YUI({
     gallery: 'gallery-2011.02.18-23-10',
 	groups: {
 		redcms: {
-			combine: true,
-			base: '/RedCMS2/',
-			comboBase: '/RedCMS2/combo/?',
+		//	combine: true,
+			base: Config.path,
+			comboBase: Config.path+'combo/?',
 			root: '/',
 			modules:  {
 				"redcms-menunav": {
 					path: 'src/redcms-menunav/js/redcms-menunav.js',
-					requires: ['node-menunav', 'widget', 'widget-parent', 'widget-child', 'widget-position']
+					requires: ['node-menunav', 'widget', 'widget-parent', 'widget-child', 'widget-position', 
+					           'dd-delegate', 'dd-drop-plugin',
+					           'dd-constrain', 'dd-proxy', 'dd-drop',
+					           'sortable']
 				},
 				"redcms-accordion": {
 					path: 'src/redcms-menunav/js/redcms-accordion.js',
@@ -58,10 +61,14 @@ var Y = YUI({
 				'redcms-form': {
 					path: 'src/redcms-form/js/redcms-form.js',
 					requires: ['gallery-form', 'io-upload-iframe', 'io-form', 'node','attribute',
-					           'widget', 'redcms-form-editor', 'redcms-msgbox', 'json']
+					           'widget', 'redcms-form-editor', 'redcms-msgbox', 'json', 'redcms-form-date']
 				},
 				'redcms-form-editor': {
 					path: 'src/redcms-form/js/redcms-form-editor-field.js',
+					requires: ['node','attribute','widget']
+				},	
+				'redcms-form-date': {
+					path: 'src/redcms-form/js/redcms-form-date-field.js',
 					requires: ['node','attribute','widget']
 				},
 				'redcms-openpanelaction': {
@@ -81,6 +88,8 @@ var Y = YUI({
 		}
 	}  
 }).use( 'redcms-widget', 'redcms-menunav', 'redcms-action', function (Y) {
+	
+	Y.namespace('RedCMS').Config = Config;
 	
 	var URLSEPARATOR = '/',
 		conf = Y.RedCMS.Config,
@@ -119,7 +128,7 @@ var Y = YUI({
 						bParams = Y.JSON.parse(cb.getAttribute('redparams'));
 						requestData = Y.merge( requestData, bParams);
 					}
-				
+					widget.showReloadOverlay();
 					request = Y.io(Y.RedCMS.RedCMSManager.getLink(cb.getAttribute("redid")), {
 						data: requestData,
 						on: {

@@ -18,6 +18,10 @@ class FormBlock extends TreeStructure {
 					$newValue = $_REQUEST[$b->name];
 					
 					switch ($b->formtype) {
+						case 'DateField':
+							$t = strtotime($newValue);
+							$fields[$b->name] = Utils::sql_date($t);;
+							break;
 						case 'PasswordField':
 							if ($newValue != '') 
 								$fields[$b->name] = $redCMS->sessionManager->generateHash($newValue);
@@ -28,7 +32,6 @@ class FormBlock extends TreeStructure {
 				}
 			}
 		}
-		
 		return $fields;
 	}
 	function getFormFields(){
@@ -161,10 +164,12 @@ class EditDBFormBlock extends FormBlock {
 		}
 		
 		if (isset($_REQUEST['redaction'])) {								//Form has been sent for submission
-			if ($this->_targetBlock->save($fields)) {
+			$ret = $this->_targetBlock->save($fields);
+			if ($ret === true) {
 				$this->onBlockSaved();
 				$ret = array('result' => 'success', 'msg'=>'Changes have been made.');
 			} else {
+				$red = RedCMS::get();
 				$ret = array('result' => 'error', 'msg'=>'Form unsuccessfully saved.');
 			}
 			echo json_encode($ret);
@@ -317,7 +322,9 @@ class EditRightsFormBlock extends EditDBFormBlock {
 		
 		if (isset($_REQUEST['redaction'])) {									// Form has been sent for submission
 			$fields['read'] = (isset($_REQUEST['read']))?1:0;
-			$fields['write'] = (isset($_REQUEST['write']))?1:0;
+			$fields['write'] = (isset($_REQUEST['write']))?1:0;		
+			$fields['publicread'] = (isset($_REQUEST['publicread']))?1:0;
+			$fields['publicwrite'] = (isset($_REQUEST['publicwrite']))?1:0;
 			
 			foreach ($this->getRightsByGroup($this->getTargetBlock()->id) as $g) {	// We loop through the rights to select the one corresponding to 
 				$r = (isset($_REQUEST['read_'.$g['idGroup']]));
@@ -333,7 +340,9 @@ class EditRightsFormBlock extends EditDBFormBlock {
 		}
 		return $fields;
 	}
-	
+	/**
+	 * TODO Not sure this is working... (not in use)
+	 */
 	function getFormFields(){
 		$redCMS = RedCMS::get();
 		$fields = array();
@@ -341,8 +350,10 @@ class EditRightsFormBlock extends EditDBFormBlock {
 		$this->getTargetBlock();
 		
 		$fields[] = array('name'=>'id', 'type'=>'HiddenField', 'value' => ''.$this->_targetBlock->id);
-		$fields[] = array('name'=>'read', 'type'=>'CheckboxField', 'label' => 'Default: read', 'checked' => $this->_targetBlock->read === 1);
-		$fields[] = array('name'=>'write', 'type'=>'CheckboxField', 'label' => 'Default: write', 'checked' => $this->_targetBlock->write === 1);
+		$fields[] = array('name'=>'publicread', 'type'=>'CheckboxField', 'label' => 'Public read', 'checked' => $this->_targetBlock->publicread === 1);
+		$fields[] = array('name'=>'publicwrite', 'type'=>'CheckboxField', 'label' => 'Public write', 'checked' => $this->_targetBlock->publicwrite === 1);
+		$fields[] = array('name'=>'read', 'type'=>'CheckboxField', 'label' => 'Registered user read', 'checked' => $this->_targetBlock->read === 1);
+		$fields[] = array('name'=>'write', 'type'=>'CheckboxField', 'label' => 'Registered user write', 'checked' => $this->_targetBlock->write === 1);
 		
 		foreach ($this->getRightsByGroup($this->_targetBlock->id) as $g) {				//we loop through the rights to select the one corresponding to 
 			if (!isset($g['read'])) { $g['read'] = 0;$g['write'] = 0; }

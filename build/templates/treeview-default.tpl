@@ -10,9 +10,11 @@ http://redcms.red-agent.com/license.html
 		<ul>
 			{foreach $blocks as $block}
 				<li redid="{$block->id}" widget="{get_class($block)}">
-					<a href="{$block->getLink()|default:'#'}">{$block->getLabel()}</a>
+					<a href="{$block->getLink()|default:'#'}" class="yui3-redcms-icon-html">
+						{$block->getLabel()}
+					</a>
 					{*
-					{$subBlocks = $block->getChildBlocks()}
+					{$subBlocks = $block->getChildBlocks('link')}
 					{if !empty($subBlocks)}
     					{call menu blocks=$subBlocks level=$level+1}
 					{/if}*}
@@ -21,7 +23,7 @@ http://redcms.red-agent.com/license.html
 		</ul>
 	{/function}
 	
-	{$childs = $this->getChildBlocks()}
+	{$childs = $this->getChildBlocks('link')}
 	{if sizeof($childs) == 0}
 		<center><em>There is no items in this block.</em></center>
 	{else}

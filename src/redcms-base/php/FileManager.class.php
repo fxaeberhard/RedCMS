@@ -26,7 +26,8 @@ class FileBlock extends Block {
 			foreach ($_FILES as $fieldName => $file) {
 				switch ($file['error']) {
 					case 0:														// No error during upload, proceed with file move
-						$fName = $relPath.preg_replace('/[^A-Za-z0-9_\.\-]/', '_', $file['name']);	//Escape the provided file name of any unwanted chars
+						$fName = $relPath.str_replace(array('\\', '/', ':', '*', '?', '"', '<', '>', '|'), 
+							array('', '', '', '', '', '', '', '', ''), $file['name']);		//Escape the provided file name of any unwanted chars				
 						$fParts = pathinfo($fName);
 						
 						$i = 1;
