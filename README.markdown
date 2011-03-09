@@ -39,9 +39,13 @@ Install
 ----------------------
 	
 1. REQUIREMENT
+
 1.1. Required Apache Module:
+
 mod-rewrite
+
 1.1 Optional Apache Module:
+
 mod-curl
 	
 #INSTALL
