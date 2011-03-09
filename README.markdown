@@ -38,10 +38,10 @@ Contributors
 Install
 ----------------------
 	
-# REQUIREMENT
-## Required Apache Module:
+1. REQUIREMENT
+1.1. Required Apache Module:
 mod-rewrite
-## Optional Apache Module:
+1.1 Optional Apache Module:
 mod-curl
 	
 #INSTALL
