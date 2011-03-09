@@ -1,10 +1,10 @@
+YUI.add('redcms-admin', function(Y) {
+
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 */
-
-
 
 //YUI.add('redcms-admin', function(Y) {
 	
@@ -13,7 +13,7 @@ http://redcms.red-agent.com/license.html
 		BOUNDINGBOX = 'boundingBox',
 		CONTENTBOX = 'contentBox';
 	
-    ContextMenu = Y.Base.create("contextmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetStack], {
+    ContextMenu = Y.Base.create("contextmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetStack, Y.WidgetChild], {
 		// *** Instance Members *** //
 
 		// *** Private Methods *** //
@@ -39,7 +39,6 @@ http://redcms.red-agent.com/license.html
 			bb.on('click', hide);
 		
 			Y.one('body').on('contextmenu', function(e) {
-				//Y.log('ContextMenu.onContextMenu()', 'info');
 
 				var targetNode = e.target.ancestor('[redid]', true),
 					//targetAdmin = e.target.ancestor('[redadmin]', true),
@@ -65,7 +64,6 @@ http://redcms.red-agent.com/license.html
 			//console.log("ContextMenu._onContextMenuItemsRendered(): ");
 			
 			if (widgets.length != this._adminNodes.length) {									//HACK
-				Y.log("ContextMenu._onContextMenuItemsRendered(): widget count does not match _adminNodes count", 'error');
 			}
 			
 			for (var i=0; i<widgets.length; i++) {
@@ -98,7 +96,6 @@ http://redcms.red-agent.com/license.html
 					try {
 						jsonConf = Y.JSON.parse(decodeURI(currentAdminNode.getAttribute('redadmin')));
 					} catch(e) {
-						Y.log('RedCMSAdmin._getMenuMarkupFromAdminNodesList(): Unable to parse admin menu JSON configuration', 'error');
 					}
 					if (jsonConf.length>0) {
 						if (firstOfType) { ret.push('<ul>'); }
@@ -116,7 +113,6 @@ http://redcms.red-agent.com/license.html
 		_getMenuMarkupFromAdminNode : function( targetNode, targetAdminNode, adminConfObj ) {
 			var ret = [],
 				row, i, isValidRow, href, params, parentNode;
-			//Y.log("ContextMenu._getMenumarkupFromObject(): "+ this._targetBlock, 'log');
 			
 			for (i=0; i<adminConfObj.length; i++) {
 				row = adminConfObj[i];
@@ -176,3 +172,7 @@ http://redcms.red-agent.com/license.html
     });
 	
 //}, '0.1.1', {requires:['gallery-outside-events', 'node-menunav']});
+
+
+
+}, '@VERSION@' );

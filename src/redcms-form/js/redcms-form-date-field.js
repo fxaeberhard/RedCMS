@@ -1,12 +1,16 @@
+/* 
+RedCMS Form Date Field
 
+Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+Code licensed under the BSD License:
+http://redcms.red-agent.com/license.html
+*/
 
- YUI.add('redcms-form-date', function(Y) {
+//YUI.add('redcms-form-date', function(Y) {
 	
-	 var CONTENTBOX = 'contentBox';
-	 
-	 Y.DateField = Y.Base.create('editor-field', Y.TextField, [], {
-		 _overlay : null,
-		 _clickHandler: null,
+	Y.DateField = Y.Base.create('editor-field', Y.TextField, [], {
+		_overlay : null,
+		_clickHandler: null,
 		_calendar : null,
 
 		_showCalendar:function(e){
@@ -58,7 +62,7 @@
 				this._calendar = calendar;
 				
 				this._calendar.selectEvent.subscribe(Y.bind(function(e, oDate) {
-					var oDate = oDate[0][0];
+					oDate = oDate[0][0];
 					this.set('value', this._padNumber(oDate[1]) + '/' + this._padNumber(oDate[2]) + '/' + oDate[0]); 
 					this._overlay.hide();
 					this._clickHandler.detach();
@@ -76,4 +80,4 @@
 	 }, {
 		NAME : 'date-field'
 	 });
- });
+ //});

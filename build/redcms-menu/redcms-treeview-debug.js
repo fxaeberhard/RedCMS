@@ -1,10 +1,12 @@
+YUI.add('redcms-treeview', function(Y) {
+
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 */
 
-YUI.add('redcms-treeview', function(Y) {
+//YUI.add('redcms-treeview', function(Y) {
 
 	var TreeView = Y.Base.create("redcms-treeview", Y.Widget, [Y.RedCMS.RedCMSWidget], {
 
@@ -38,11 +40,11 @@ YUI.add('redcms-treeview', function(Y) {
 		        var node = e.node,
 		        	tooltipContent;
 		        if (node) {
-			        tooltipContent = node.one('.redcms-tooltip-content');
+					tooltipContent = node.one('.redcms-tooltip-content');
 			        if (tooltipContent) {
 			            this.setTriggerContent(tooltipContent.getContent());
-			        } else e.preventDefault()
-		        } else e.preventDefault();
+			        } else { e.preventDefault(); }
+		        } else { e.preventDefault(); }
 		    });
 			
 			cb.removeClass('redcms-hidden');
@@ -53,4 +55,8 @@ YUI.add('redcms-treeview', function(Y) {
 		}
 	}, {} );
 	Y.namespace('RedCMS').TreeView = TreeView;
-}, '0.1.1');
+//}, '0.1.1');
+
+
+
+}, '@VERSION@' ,{requires:['gallery-yui3treeview', 'redcms-tooltip']});

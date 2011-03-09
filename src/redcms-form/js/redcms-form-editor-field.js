@@ -1,10 +1,14 @@
+/* 
+RedCMS Form Editor Field
 
+Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+Code licensed under the BSD License:
+http://redcms.red-agent.com/license.html
+*/
 
- YUI.add('redcms-form-editor', function(Y) {
+//YUI.add('redcms-form-editor', function(Y) {
 	
-	 var CONTENTBOX = 'contentBox';
-	 
-	 Y.EditorField = Y.Base.create('editor-field', Y.TextareaField, [], {
+	Y.EditorField = Y.Base.create('editor-field', Y.TextareaField, [], {
 		
 		_editor: null,
 		
@@ -13,9 +17,8 @@
 			Y.EditorField.superclass._renderFieldNode.apply(this);
 			
 			Y.use('yui2-editor', Y.bind( function(Y) {
-				var YAHOO = Y.YUI2;
-				//this = that;
-				var editor = new YAHOO.widget.Editor(this._fieldNode._node, {
+				var YAHOO = Y.YUI2,
+					editor = new YAHOO.widget.Editor(this._fieldNode._node, {
 					//dompath: true,
 					height: '200px',
 					width: '98%',
@@ -39,4 +42,4 @@
 	}, {
 	});
 	
- });
+ //});

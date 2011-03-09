@@ -4,10 +4,9 @@
  * http://redcms.red-agent.com/license.html
  */
 
-YUI.add('redcms-accordion', function(Y) {
+//YUI.add('redcms-accordion', function(Y) {
 	var Accordion,
 		
-		HOST = 'host',
 		CONTENT_BOX = 'contentBox',
 		
 		REDCMS = 'redcms',
@@ -51,12 +50,10 @@ YUI.add('redcms-accordion', function(Y) {
 			n.addClass(CLASSES.toggled);
 		},
 		_onTitleClicked : function(e) {
-			var tn = e.currentTarget.next('.'+CLASSES.item);
-			
 			if (e.currentTarget.hasClass(CLASSES.toggled)) {
 				this._closeNode(e.currentTarget);
 			} else {
-				if (this._currentOpenedNode && this._currentOpenedNode != e.currentTarget) this._closeNode(this._currentOpenedNode);
+				if (this._currentOpenedNode && this._currentOpenedNode != e.currentTarget) { this._closeNode(this._currentOpenedNode); }
 				this._showNode(e.currentTarget);
 				this._currentOpenedNode = e.currentTarget;
 			}
@@ -76,5 +73,5 @@ YUI.add('redcms-accordion', function(Y) {
 		CLASSES : CLASSES
 	} );
 	
-	Y.namespace('RedCMS').Accordion = Accordion
-}, '0.1.1');
+	Y.namespace('RedCMS').Accordion = Accordion;
+//}, '0.1.1');

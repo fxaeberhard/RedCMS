@@ -1,10 +1,10 @@
+YUI.add('redcms-admin', function(Y) {
+
 /* 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 */
-
-
 
 //YUI.add('redcms-admin', function(Y) {
 	
@@ -13,7 +13,7 @@ http://redcms.red-agent.com/license.html
 		BOUNDINGBOX = 'boundingBox',
 		CONTENTBOX = 'contentBox';
 	
-    ContextMenu = Y.Base.create("contextmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetStack], {
+    ContextMenu = Y.Base.create("contextmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetStack, Y.WidgetChild], {
 		// *** Instance Members *** //
 
 		// *** Private Methods *** //
@@ -176,3 +176,7 @@ http://redcms.red-agent.com/license.html
     });
 	
 //}, '0.1.1', {requires:['gallery-outside-events', 'node-menunav']});
+
+
+
+}, '@VERSION@' );

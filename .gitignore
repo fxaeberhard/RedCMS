@@ -10,3 +10,5 @@ files/*
 .project*
 .settings
 .buildpath
+*build_tmp*
+google*.html
