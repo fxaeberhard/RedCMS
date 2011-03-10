@@ -6,6 +6,8 @@ Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 */
 
+
+
 //YUI.add('redcms-admin', function(Y) {
 	
 // *** OverlayAutohide *** //
@@ -13,7 +15,7 @@ http://redcms.red-agent.com/license.html
 		BOUNDINGBOX = 'boundingBox',
 		CONTENTBOX = 'contentBox';
 	
-    ContextMenu = Y.Base.create("contextmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetStack, Y.WidgetChild], {
+    ContextMenu = Y.Base.create("contextmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetStack], {
 		// *** Instance Members *** //
 
 		// *** Private Methods *** //
@@ -77,7 +79,7 @@ http://redcms.red-agent.com/license.html
 				targetAdmin;
 			
 			if (!targetAdminWidget) {														//HACK
-				targetAdmin = Y.RedCMS.RedCMSManager.getParentAdminBlock(targetAdminNode);
+				targetAdmin = Y.RedCMS.RedCMSManager.getParentAdminBlock(targetBlock);
 				targetAdminWidget = Y.Widget.getByNode(targetAdmin);
 			}
 			Y.RedCMS.RedCMSManager.reloadWidget(targetAdminWidget);
@@ -175,4 +177,4 @@ http://redcms.red-agent.com/license.html
 
 
 
-}, '@VERSION@' );
+}, '@VERSION@' ,{requires:['widget', 'widget-position', 'widget-stack', 'widget-position-align', 'async-queue', 'json', 'gallery-outside-events', 'redcms-menunav', 'redcms-openpanelaction']});

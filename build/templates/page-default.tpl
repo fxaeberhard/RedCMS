@@ -110,9 +110,9 @@
 	</div>
 
 	{* YUI Seed *}
-{*	<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui-min.js&3.3.0pr3/build/loader/loader-min.js"></script>
-	*}
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui.js&3.3.0pr3/build/loader/loader.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui-min.js&3.3.0pr3/build/loader/loader-min.js"></script>
+	
+	{*<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui.js&3.3.0pr3/build/loader/loader.js"></script>*}
 	
 	<script type="text/javascript" > 
 		var Config = {

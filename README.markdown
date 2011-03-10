@@ -43,12 +43,12 @@ mod-rewrite
 mod-curl
 2. Install
 	1. Create a new database 
-	2. load the content of the file "db/redcms-default.sql"
+	2. Query the content of the file *sql/redcms-default.sql*
 	3. Edit config file index.php to provide db connection settings and the relative path to RedCMS
 	4. If you are using RedCMS in a subdirectory of your webserver, open *.htaccess* file, and change:
-		RewriteBase /
+		"RewriteBase /"
 	to
-		RewriteBase <your directory>
+		"RewriteBase <your directory>"
 
 Build
 ----------------------

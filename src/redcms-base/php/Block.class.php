@@ -77,7 +77,7 @@ class Tuple {
 	}
 }
 class Block extends Tuple {
-	var $_dbFields = array('parentId', 'type', 'text1', 'text2', 'text3', 'text4', 'text5', 'date1', 'date2', 'longtext1', 
+	var $_dbFields = array('parentId', 'type',  'text1', 'text2', 'text3', 'text4', 'text5', 'number1', 'date1', 'date2', 'longtext1', 
 			'template', 'link', 'read', 'write', 'dateadded', 'dateupdated', 'owner', 'publicread', 'publicwrite');
 	var $_dbTable = 'redcms_block';
 	

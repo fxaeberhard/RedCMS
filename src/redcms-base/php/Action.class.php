@@ -14,7 +14,16 @@ class Action extends Block {
 	function getLink(){
 		return '#';
 	}
-
+	function save(){
+		if (!is_numeric($this->id)){
+			$red = RedCMS::getInstance();
+			$stat = $red->dbManager->prepare('SELECT MAX(number1) FROM redcms_block WHERE parentId=?');
+			$stat->execute(array($this->parentId));
+			$r = $stat->fetchAll(PDO::FETCH_NUM);
+			$this->fields['number1'] = $r[0][0]+1;
+		}
+		return parent::save();
+	}
 }
 
 class LoginAction extends Action {

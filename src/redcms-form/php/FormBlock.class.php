@@ -181,7 +181,31 @@ class EditDBFormBlock extends FormBlock {
 }
 	
 class EditBlockFormBlock extends EditDBFormBlock {
-
+	function getTargetBlock() {
+		global $_REQUEST;
+		if (!isset($this->_targetBlock)){							
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {				// If we are editing an existing block, we retrieve it
+				$this->_targetBlock = BlockManager::getBlockById($_REQUEST['id']);
+			} else {
+				if (isset($_POST['type'])) {									// Otherwise we try to instantiate a block with class provided in arguments
+					//eval('$this->_targetBlock = new '.$_POST['type'].'();');	// PHP< 5.3.0
+					$this->_targetBlock = new $_POST['type']();					// PHP>=5.3.0
+				} else {														// And if no information is available we use a generic block
+					$this->_targetBlock = new Block();
+				}
+			}	
+			
+		}
+		return $this->_targetBlock;
+	}
+	function parseRequest(){
+		global $_REQUEST;
+		$fields = parent::parseRequest();
+		
+		if (isset($_REQUEST['parentId'])) $fields['parentId'] = $_REQUEST['parentId'];
+		
+		return $fields;
+	}
 	function onBlockSaved(){
 		global $_REQUEST;
 		$red = RedCMS::get();
@@ -219,32 +243,88 @@ class EditBlockFormBlock extends EditDBFormBlock {
 		}
 		
 		return $fields;
-	}
-	function parseRequest(){
-		global $_REQUEST;
-		$fields = parent::parseRequest();
-		
-		if (isset($_REQUEST['parentId'])) $fields['parentId'] = $_REQUEST['parentId'];
-		
-		return $fields;
-	}
+	}	
+}
+
+class EditBlockPositionFormBlock { //extends EditBlockFormBlock {
 	
 	function getTargetBlock() {
 		global $_REQUEST;
 		if (!isset($this->_targetBlock)){							
 			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {				// If we are editing an existing block, we retrieve it
 				$this->_targetBlock = BlockManager::getBlockById($_REQUEST['id']);
-			} else {
-				if (isset($_POST['type'])) {									// Otherwise we try to instantiate a block with class provided in arguments
-					//eval('$this->_targetBlock = new '.$_POST['type'].'();');	// PHP< 5.3.0
-					$this->_targetBlock = new $_POST['type']();					// PHP>=5.3.0
-				} else {														// And if no information is available we use a generic block
-					$this->_targetBlock = new Block();
-				}
-			}	
-			
+			} else $this->targetBlock = null;
 		}
 		return $this->_targetBlock;
+	}
+	
+	function moveField($values){
+		
+		$red = RedCMS::get();
+
+		
+		$rs = $redCMS->dbManager->Execute($sql);
+		//		$this->log($sql);
+		return $rs;
+	}
+	function recursivePropagation($cPos, $delta, $fields){
+		$red = RedCMS::get();
+
+		$stat = $red->dbManager->prepare('SELECT id FROM redcms_block WHERE number1=? AND parentId=? AND id!=? AND id!=? LIMIT 0,1');
+		$fields[0] = $cPos;
+
+		if ($stat->execute($fields)){
+			$tuples = $stat->fetchAll();
+			if (!empty($tuples)){
+				$this->recursivePropagation($cPos+$delta, $delta, $fields);
+				
+				$fields[0] =$cPos+$delta;
+				$fields[4] = $cPos;
+				$stat = $red->dbManager->prepare('UPDATE redcms_block SET number1=? WHERE parentId=? AND id!=? AND id!=? AND number1=?');
+				$stat->execute($fields);
+			}
+		}
+	}
+	
+	function render() {	
+		if (isset($_REQUEST['redaction'])) {								//Form has been sent for submission
+			$red = RedCMS::get();
+			$ret = array('result' => 'error', 'msg'=>'Form unsuccessfully saved.');
+			$targetBlock = $this->getTargetBlock();
+			
+			$targetBlock->set('parentId', $_REQUEST['parentId']);
+			
+			if (isset($_REQUEST['targetId'])) {									//There is a target, we move the block just after the target
+				$refBlock = BlockManager::getBlockById($_REQUEST['targetId']);
+				$position = $refBlock->number1;
+				if (!$position) {												//HACK If there is no position, positions are corrupted, we reset them.
+					$stat = $red->dbManager->prepare('UPDATE redcms_block SET number1=0 WHERE parentId=?');
+					$stat->execute(array($targetBlock->id));
+					$position = 0;
+				}
+				$fields = array('', $targetBlock->parentId, $targetBlock->id, $refBlock->id);
+				$this->recursivePropagation($position, -1, $fields);
+				$this->recursivePropagation($position+1, 1, $fields);
+		
+				$targetBlock->set('number1', $position+1);
+				if ($targetBlock->save()) {
+					$ret = array('result' => 'success', 'msg'=>'Changes have been made.');
+				}
+			} else {															// No target, we move the block in the first position
+				$stat = $red->dbManager->prepare('SELECT MIN(number1) FROM redcms_block WHERE parentId=?');
+				$stat->execute(array($targetBlock->parentId));
+				$r = $stat->fetchAll(PDO::FETCH_NUM);
+				$position = $r[0][0];
+				if (!$position) $position = 0;
+				else $position = $position-1;
+				$targetBlock->set('number1', $position);
+				$targetBlock->save();
+			}
+			echo json_encode($ret);
+		} else {
+			// FIXME Better error handling here
+			die('Cannot render this block');
+		}
 	}
 }
 

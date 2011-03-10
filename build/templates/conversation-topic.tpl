@@ -33,7 +33,9 @@
 					<h1><a name="{$block->title|escape:url}">{$block->title}</a></h1>
 				</div>
 				<div class="redcms-conversation-content">
-					{$block->description}
+					<div>
+						{$block->description}
+					</div>
 					<div class="redcms-clear" ></div>
 				</div>	
 				<div class="redcms-conversation-footer">

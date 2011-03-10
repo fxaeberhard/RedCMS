@@ -79,7 +79,7 @@ http://redcms.red-agent.com/license.html
 				targetAdmin;
 			
 			if (!targetAdminWidget) {														//HACK
-				targetAdmin = Y.RedCMS.RedCMSManager.getParentAdminBlock(targetAdminNode);
+				targetAdmin = Y.RedCMS.RedCMSManager.getParentAdminBlock(targetBlock);
 				targetAdminWidget = Y.Widget.getByNode(targetAdmin);
 			}
 			Y.RedCMS.RedCMSManager.reloadWidget(targetAdminWidget);
