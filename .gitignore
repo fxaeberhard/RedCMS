@@ -12,3 +12,4 @@ files/*
 .buildpath
 *build_tmp*
 google*.html
+tests/*

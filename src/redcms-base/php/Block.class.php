@@ -145,6 +145,9 @@ class Block extends Tuple {
 		$template = $this->getTemplate();
 		$template->display($this->template);
 	}
+	function renderHeaders(){
+		
+	}
 	
 	// *** Rights Managment *** //
 	function getOwner(){
@@ -176,6 +179,10 @@ class Block extends Tuple {
 		}
 	}
 	function canWrite(){
+		// FIXME shortcut for development only, to remove
+		$redCMS = RedCMS::getInstance();
+		if ($redCMS->sessionManager->currentUser->isAMember('1') || $redCMS->sessionManager->currentUser->isAMember('2') ) return true;
+		
 		if ($this->publicwrite == '1') return true;
 		else if ($this->write == '1' && $redCMS->sessionManager->isLoggedIn()) return true;
 		else {
@@ -203,7 +210,11 @@ class Block extends Tuple {
 		return $admin;
 	}
 	function renderAdminJSON() {
-		return htmlspecialchars(json_encode($this->getAdminJSON()));
+		if ($this->canWrite()){
+			return htmlspecialchars(json_encode($this->getAdminJSON()));
+		} else {
+			return '';
+		}
 	}
 	
 	// *** Parameters Stack Managment *** //

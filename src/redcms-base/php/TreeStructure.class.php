@@ -11,6 +11,11 @@ class TreeStructure extends Block {
 }
 class MenuBlock extends TreeStructure {
 	
+	function getLabel(){
+		if ($this->text1) return $this->text1;
+		else return parent::getLabel();
+	}
+	
 	function toJSON0($node) {
 		$ret = array();
 		if (get_class($node) == 'Action' || $node instanceof  TreeStructure) {	// This optim allows to look for child nodes only when required
@@ -29,7 +34,7 @@ class MenuBlock extends TreeStructure {
 		}
 		return $ret;
 	}
-	
+	/*
 	function getChildBlocks($orderBy=null) {
 		$childs = parent::getChildBlocks($orderBy);
 		$val ="[2611, 2604]";
@@ -45,7 +50,7 @@ class MenuBlock extends TreeStructure {
 		}
 		return $childs;
 		
-	}
+	}*/
 	function toJSON() {
 		return $this->toJSON0($this);
 	}

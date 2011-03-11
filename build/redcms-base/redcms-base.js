@@ -10,6 +10,9 @@ http://redcms.red-agent.com/license.html
 	 
 	function RedCMSWidget() {
 
+		this.publish("redcms:select", {
+			emitFacade: false
+		});
 		this.publish("reload", {
 			emitFacade: false
 		});
@@ -83,7 +86,7 @@ http://redcms.red-agent.com/license.html
 		},
 		renderUI : function() {},
 		bindUI : function() {},
-		destroy : function() {
+		destructor : function() {
 			
 		}
 	}, {
@@ -206,7 +209,7 @@ http://redcms.red-agent.com/license.html
 						});
 					//});
 				} else {
-					Y.use('overlay', 'widget-anim', 'json', 'gallery-overlay-extras', 'redcms-overlay-window', 'redcms-form', function(Y){
+					Y.use('widget-anim', 'json', 'gallery-overlay-extras', 'redcms-panel', 'redcms-form', function(Y){
 						
 						/** First create an overlay window widget */
 						var form, 
@@ -215,7 +218,7 @@ http://redcms.red-agent.com/license.html
 							headerContent : 'Login',
 							width       : '400px',
 							zIndex      : 100,
-							centered    : true,
+							align		: {points:["cc", "cc"]},
 							constrain   : true,
 							render      : true,
 							visible     : true,

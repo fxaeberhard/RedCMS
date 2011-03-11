@@ -7,7 +7,7 @@
 <div redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" widget="Block" >
 	
 	{$params = ['parentId' => $this->id]}
-	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-openpanelaction" 
+	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-panel" 
 		params="{htmlspecialchars(json_encode($params))}">
 		<span>
 			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('300')}" >
@@ -67,7 +67,7 @@
 				redid="{$block->id}" widget="{get_class($block)}">
 				<div class="yui3-g topiclist-layout">
 					<div class="yui3-u topiclist-main">
-						<img src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" style="float: left;margin: 2px 3px 0 0;border:1px solid gray"/>
+						<img width="40" height="40" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" style="float: left;margin: 2px 3px 0 0;border:1px solid gray"/>
 			
 						<a href="{ParamManager::getLink($this->parentBlock()->link, $block->title)}">{$block->title}</a><br />
 						<span style="font-size: 8pt;">
@@ -114,7 +114,7 @@
 	</div>
 	
 	{$params = ['parentId' => $this->id]}
-	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-openpanelaction" 
+	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-panel" 
 		params="{htmlspecialchars(json_encode($params))}">
 		<span>
 			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('300')}" >

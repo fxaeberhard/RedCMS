@@ -13,7 +13,7 @@ class PageBlock extends Block {
 	}
 	function getLink(){
 		$redCMS = RedCMS::get();
-		if ($this->id === $redCMS->config['homePageId']) return ParamManager::getLink();
+		if ( $this->id == $redCMS->config['homePageId']) return ParamManager::getLink();
 		else return parent::getLink();
 	}
 	function getSiteBlocks(){

@@ -5,7 +5,7 @@
  *}
  
 <div class="redcms-block redcms-hidden" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" 
-	widget="TreeView" requires="redcms-treeview">
+	widget="TreeView" requires="redcms-treeview" style="min-width: 600px">
 	<ul>
 		{foreach $this->getChildBlocks() as $block}
 			<li redid="{$block->id}" widget="User">	

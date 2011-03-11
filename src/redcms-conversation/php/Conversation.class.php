@@ -22,13 +22,26 @@ class ConversationBlock extends TreeStructure {
 	}
 	
 }
-class ConversationField extends Block {
+class Field extends Block {
 	function canRead(){
-		return $this->parentBlock()->canRead();
+		$parent = $this->parentBlock();
+		if ($parent) {
+			return $parent->canRead();
+		} else {
+			return false;	
+		}
 	}
 	function canWrite(){
-		return $this->parentBlock()->canRead();
+		$parent = $this->parentBlock();
+		if ($parent) {
+			return $parent->canWrite();
+		} else {
+			return false;	
+		}
 	}
+}
+class ConversationField extends Field {
+	
 	function getLabel(){
 		if ($this->text1) return $this->text1;
 		else return parent::getLabel();

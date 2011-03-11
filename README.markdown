@@ -31,24 +31,22 @@ Contributors
 * [Smarty 3](http://www.smarty.net/)
 * [FirePHP](http://www.firephp.org/)
 * [PHPMailer](http://phpmailer.worxware.com/)
-* [Refresh Cl Icons by TpdkDesign.net](http://www.iconarchive.com/category/system/refresh-cl-icons-by-tpdkdesign.net.html)]
+* [Refresh Cl Icons by TpdkDesign.net](http://www.iconarchive.com/category/system/refresh-cl-icons-by-tpdkdesign.net.html)
 	
 Install
 ----------------------
 	
 1. Requirements
-	1. Required Apache Module:
-mod-rewrite
-	2. Optional Apache Module:
-mod-curl
+	1. Required Apache Module: mod-rewrite
+	2. Optional Apache Module: mod-curl, tidy
 2. Install
 	1. Create a new database 
 	2. Query the content of the file *sql/redcms-default.sql*
-	3. Edit config file index.php to provide db connection settings and the relative path to RedCMS
+	3. Edit config file *index.php* to provide db connection settings and the relative path to RedCMS
 	4. If you are using RedCMS in a subdirectory of your webserver, open *.htaccess* file, and change:
 		"RewriteBase /"
 	to
-		"RewriteBase <your directory>"
+		"RewriteBase *yourdirectory*"
 
 Build
 ----------------------
@@ -56,4 +54,5 @@ Build
 	1. Apache Ant
 	2. [YUI Builder](http://yuilibrary.com/projects/builder) (copy this at the root directory of your RedCMS install)
 2. Build
-	1. Type "ant all" in the command line at the root directory of your RedCMS install
+	1. Type *ant* in the command line at the root directory of your RedCMS install
+	2. You can build individual moduls by going in there directory and running *ant all* command

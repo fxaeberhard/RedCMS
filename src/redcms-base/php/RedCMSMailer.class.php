@@ -10,7 +10,7 @@ http://redcms.red-agent.com/license.html
 class RedCMSMailer extends PHPMailer {
 	
 	function __construct() {
-		parent::__construct(true);
+		parent::__construct(false);
 		//parent::__construct(true);
 		$redCMS = RedCMS::getInstance();
 		$this->IsHTML(true);

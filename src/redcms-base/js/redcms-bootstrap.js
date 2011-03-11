@@ -11,13 +11,14 @@ var Y = YUI({
 	//filter: 'debug',
 	//combine: false,
     useBrowserConsole: true,
-	//debug: true,
+   // debug: true,
+  // debug: Config.debug,
 	//timeout: 10000,
     insertBefore: 'customstyles',
     gallery: 'gallery-2011.02.18-23-10',
 	groups: {
 		redcms: {
-		//	combine: true,
+			combine: true,
 			base: Config.path,
 			comboBase: Config.path+'combo/?',
 			root: '/',
@@ -38,9 +39,9 @@ var Y = YUI({
 
 				// *** MENU MODULES *** //
 				"redcms-menunav": {
-					path: 'src/redcms-menu/js/redcms-menunav.js',
-					requires: ['node-menunav', 'widget', 'widget-parent', 'widget-child', 'widget-position', 
-					           'sortable', 'redcms-base']
+					//path: 'src/redcms-menu/js/redcms-menunav.js',
+					path: 'build/redcms-menu/redcms-menunav-min.js',
+					requires: ['node-menunav', 'redcms-base']
 				},
 				"redcms-accordion": {
 					//path: 'src/redcms-menu/js/redcms-accordion.js',
@@ -55,25 +56,32 @@ var Y = YUI({
 				
 				// *** ADMIN MODULES *** //
 				"redcms-admin": {
-					path: 'build/redcms-admin/redcms-admin.js',
+					path: 'build/redcms-admin/redcms-admin-min.js',
 					//path: 'src/redcms-admin/js/redcms-admin.js',
 					requires: ["widget", "widget-position", "widget-stack", "widget-position-align", "async-queue", 
-					           'json', 'redcms-menunav', 'gallery-outside-events', 'redcms-openpanelaction']
+					           'json', 'redcms-menunav', 'gallery-outside-events', 'redcms-panel']
 				},
 				
-				// *** OVERLAY MODULES *** //
+				// *** PANEL MODULES *** //
 				'redcms-msgbox': {
 					path: 'src/redcms-base/js/redcms-msgbox.js',
 					requires: ['widget']
 				},
-				'redcms-overlay-window': {
-					path: 'src/redcms-panel/js/redcms-overlay-window.js',
-					requires: ['widget', 'plugin', 'event-focus']
+				
+				'redcms-panel': {
+					path: 'build/redcms-panel/redcms-panel-min.js',
+					requires: ['redcms-base', 'plugin', 'event-focus', 'overlay', 'widget-anim', 'json', 'dd-plugin', 'io-base', 'resize']
 				},
-				'redcms-openpanelaction': {
-					path: 'src/redcms-panel/js/redcms-openpanelaction.js',
+				/*
+				'redcms-panel': {
+					path: 'src/redcms-panel/js/redcms-action-openpanel.js',
 					requires: ['overlay', 'widget-anim', 'json', 'redcms-overlay-window', 'dd-plugin', 'io-base', 'resize']
 				},
+				'redcms-overlay-window': {
+					path: 'src/redcms-panel/js/redcms-overlay-window.js',
+					requires: ['plugin', 'event-focus']
+				},
+				*/
 				'redcms-tooltip': {
 					path: 'src/redcms-panel/js/redcms-tooltip.js',
 					requires: ["event-mouseenter", "widget", "widget-position", "widget-stack"]
@@ -81,7 +89,8 @@ var Y = YUI({
 				
 				// *** FORM MODULES *** //
 				'redcms-form': {
-					path: 'build/redcms-form/redcms-form.js',
+					//path: 'build/redcms-form/redcms-form.js',
+					path: 'build/redcms-form/redcms-form-min.js',
 					requires: ['redcms-base', 'gallery-form', 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json']
 				},
 				/*
@@ -137,9 +146,14 @@ var Y = YUI({
 	    		return conf.path+conf.lang+URLSEPARATOR+
 	    			Array.prototype.join.call(arguments, URLSEPARATOR)+URLSEPARATOR;
 	    	},
-	    	getParentAdminBlock : function(n) {
+	    	getParentBlock : function(n) {
 	    		return n.ancestor( function(e) {
 					return  (e.getAttribute('redid') != '');
+				});
+	    	},
+	    	getParentAdminBlock : function(n) {
+	    		return n.ancestor( function(e) {
+					return  (e.getAttribute('redadmin') != '');
 				});
 	    	},
 	    	reloadWidget : function(widget) {

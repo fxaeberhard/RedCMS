@@ -5,15 +5,32 @@ http://redcms.red-agent.com/license.html
 */
 
 //YUI.add('redcms-treeview', function(Y) {
-	var TreeView = Y.Base.create("redcms-treeview", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+
+	
+	var TreeView,
+	//	BOUNDING_BOX = 'boundingBox',
+		CONTENT_BOX = 'contentBox';
+	
+	TreeView = Y.Base.create("redcms-treeview", Y.Widget, [Y.RedCMS.RedCMSWidget], {
 
 		// *** Instance members *** //
 		_treeview:null,
 		_tooltip:null,
 		
+		// *** Private Methods *** //
+		_treeLeafClick: function(e) {
+			var cb = e.target.get(CONTENT_BOX),
+				selectedElem = {
+					id:	cb.get('parentNode').getAttribute('redid'),
+					href: cb.getAttribute('href'),
+					label: cb.getContent()
+				};
+			this.fire('redcms:select', selectedElem);
+		},
+		
 		// *** Life Cycle methods *** //
 		renderUI : function() {
-			var cb = this.get("contentBox"),
+			var cb = this.get(CONTENT_BOX),
 				treeNode = cb.one('ul');
 			
 			this._treeview = new Y.TreeView({  
@@ -22,6 +39,10 @@ http://redcms.red-agent.com/license.html
 				boundingBox: treeNode,
 				type : "TreeView"
 			});
+			
+
+			this._treeview.on("treeleaf:click", this._treeLeafClick, this);  
+			
 			this._treeview.render();
 			
 			this._tooltip = new Y.RedCMS.Tooltip({
@@ -35,7 +56,7 @@ http://redcms.red-agent.com/license.html
 		 
 			this._tooltip.on("triggerEnter", function(e) {
 		        var node = e.node,
-		        	tooltipContent;
+					tooltipContent;
 		        if (node) {
 					tooltipContent = node.one('.redcms-tooltip-content');
 			        if (tooltipContent) {
@@ -46,10 +67,11 @@ http://redcms.red-agent.com/license.html
 			
 			cb.removeClass('redcms-hidden');
 		}, 
-		destroy: function() {
+		destructor: function() {
 			this._tooltip.destroy();
-			this._treeview.destroy();
+			//this._treeview.destroy();
 		}
 	}, {} );
 	Y.namespace('RedCMS').TreeView = TreeView;
+	
 //}, '0.1.1');

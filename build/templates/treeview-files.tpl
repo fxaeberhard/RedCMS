@@ -5,33 +5,34 @@ http://redcms.red-agent.com/license.html
 *}
 <div class="redcms-block redcms-hidden" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" 
 	widget="TreeView" requires="redcms-treeview" >
-
+	
 	{function name=menu level=0}
 		<ul>
 			{foreach $blocks as $block}
 				{$link = $block->getLink()}
 				{$ext = Utils::file_extension($link)}
-			
-				<li redid="{$block->id}" widget="{get_class($block)}" >
-					<a href="{$link}" class="yui3-redcms-icon-{$ext}" target="_blank">{$block->getLabel()}</a>
-					
-					<div class="redcms-tooltip-content">
-						{$relPath = substr( $link, strlen($redCMS->path))}
-						{if file_exists($relPath)}
-							{if $ext == 'jpg' OR $ext == 'jpeg' OR $ext == 'png' OR $ext == 'gif'}
-								<img src="{$link}" /><br />
+				{if !isset($smarty.request.filter) || get_class($block) EQ 'Action' || strpos($smarty.request.filter, $ext) !== false}
+					<li redid="{$block->id}" widget="{get_class($block)}" >
+						<a href="{$link}" class="yui3-redcms-icon-{$ext}" target="_blank">{$block->getLabel()}</a>
+						
+						<div class="redcms-tooltip-content">
+							{$relPath = substr( $link, strlen($redCMS->path))}
+							{if file_exists($relPath)}
+								{if $ext == 'jpg' OR $ext == 'jpeg' OR $ext == 'png' OR $ext == 'gif'}
+									<img src="{$link}" /><br />
+								{/if}
+								{round( filesize( $relPath )/ (1024), 2)}KB
+							{else}
+								Target file is missing
 							{/if}
-							{round( filesize( $relPath )/ (1024), 2)}KB
-						{else}
-							Target file is missing
+						</div>
+					
+						{$subBlocks = $block->getChildBlocks('text1')}
+						{if !empty($subBlocks)}
+	    					{call menu blocks=$subBlocks level=$level+1}
 						{/if}
-					</div>
-				
-					{$subBlocks = $block->getChildBlocks('text1')}
-					{if !empty($subBlocks)}
-    					{call menu blocks=$subBlocks level=$level+1}
-					{/if}
-				</li>
+					</li>
+				{/if}
 			{/foreach}
 		</ul>
 	{/function}

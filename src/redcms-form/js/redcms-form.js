@@ -49,6 +49,7 @@ http://redcms.red-agent.com/license.html
 		_parseFields : function (contentBox) {		
 			var fields = [];
 			try {
+				//console.log("log", Y.RedCMS.RedCMSManager.urldecode(contentBox.getContent()));
 				fields = Y.JSON.parse(Y.RedCMS.RedCMSManager.urldecode(contentBox.getContent()));
 			} catch (e) { 
 				Y.log('_parseFields():Unable to parse form content.', 'log', 'RedCMS.Form');
@@ -126,7 +127,7 @@ http://redcms.red-agent.com/license.html
 
 			ATTRS : {
 				redid : {
-					validator : Y.Lang.isNumber,
+					validator : Y.Lang.isString,
 					writeOnce : true
 				}
 			}
@@ -157,6 +158,7 @@ http://redcms.red-agent.com/license.html
 				labelBoundingBox.addClass(CLASSES.label);
 				labelBoundingBox.addClass('yui3-u');
 				cb.addClass('yui3-g');
+				//console.log(cb, this, this.get('redid'));
 				cb.setAttribute('redid', this.get('redid') );
 				cb.setAttribute('widget', 'FormField' );
 				cb.appendChild(labelBoundingBox);
@@ -320,14 +322,12 @@ http://redcms.red-agent.com/license.html
 	Y.augment(Y.CheckboxField, Y.RedCMS.CheckboxField, true);
 	*/
 	
-	SimpleForm = Y.Base.create("redcms-simpleform", Y.Widget, [ ], {
+	SimpleForm = Y.Base.create("redcms-simpleform", Y.Widget, [ Y.RedCMS.RedCMSWidget ], {
 
 		//	***	Life cycle methods	***	//
 		renderUI: function() {
 			this.get(CONTENTBOX).one("form").on('submit', Y.bind( function(e) {
 				e.halt();
-				//e.preventDefault();
-				//console.log(e, e.target);
 				
 				var f = this.get(CONTENTBOX).one('form');
 
@@ -339,7 +339,7 @@ http://redcms.red-agent.com/license.html
 					on: {
 						success: function(id, o, args) {
 							Y.log("SimpleForm.onRequestSuccess(): "+ o.responseText, 'info');
-							//FIXME here we should handle failure scenario
+							//FIXME here we should parse json and handle failure scenario
 							this.fire('success');
 						}
 					},

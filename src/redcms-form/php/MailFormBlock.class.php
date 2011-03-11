@@ -6,14 +6,15 @@ http://redcms.red-agent.com/license.html
 
 class MailFormBlock extends FormBlock {
 	
-	function parseRequest(){
+	/*function parseRequest(){
 		global $_REQUEST;
 		$redCMS = RedCMS::get();
 		$fields = parent::parseRequest();
 		
 		foreach ($fields as &$f) {
 			switch ($f['type']) {
-				case 'TextAreaField':
+				case 'TextareaField':
+				case 'EditorField':
 					$f['value'] .= $redCMS->config['mailFooter'];
 				default: 
 					break;
@@ -21,7 +22,7 @@ class MailFormBlock extends FormBlock {
 		}
 		
 		return $fields;
-	}
+	}*/
 	function render(){
 		global $_REQUEST, $_SERVER;
 		$redCMS = RedCMS::get();
@@ -32,12 +33,15 @@ class MailFormBlock extends FormBlock {
 			if ($user->email) {
 				$mail->From = $user->email;
 				$mail->FromName = $user->getLabel();
+			} else {
+				$mail->From = 'anonymous@anonymous.com';
 			}
+			$fields = $this->parseRequest();
 			
-			$mail->Subject = '['.$_SERVER['HTTP_HOST'].']'.$_REQUEST['msg_title'];
-			$mail->Body = $_REQUEST['msg_content'];
+			$mail->Subject = '['.str_replace('www.', '', $_SERVER['HTTP_HOST']).']'.$fields['msg_title'];
+			$mail->Body = $fields['msg_content'].$redCMS->config['mailFooter'];
 			
-			foreach (UserManager::getUsersByGroupId($_REQUEST['dest_group']) as $u) {
+			foreach (UserManager::getUsersByGroupId($fields['dest_group']) as $u) {
 				$mail->AddUser($u);
 				$r = $mail->Send();
 				if ($r !== true) {
@@ -46,9 +50,8 @@ class MailFormBlock extends FormBlock {
 				}
 				$mail->ClearAllRecipients();
 			}
-			
 			if ($ret) {
-				$msg = 'Mailing list sent to group '.$_REQUEST['dest_group'];
+				$msg = 'Mail sent.';//. to group number '.$_REQUEST['dest_group'];
 				//$redCMS->log($msg, 'log', 'MailFormBlock');
 				$ret = array('result' => 'success', 'msg' => $msg);
 			} else {

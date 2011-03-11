@@ -40,6 +40,7 @@ h3 {
 /** Layout Styles */
 .redcms-layout {
 	padding-left: 287px; /* allow for left column (#nav) */
+	padding-right: 0px;
 }
 .redcms-left {
 	margin-left: -287px;
@@ -47,13 +48,19 @@ h3 {
 	/* workaround for IE9 not firing mouse events on #side due to negative margin */
 	width: 287px;
 }
+.redcms-left .redcms-content {
+	margin: 0;
+}
 .redcms-bd {
 	margin-left: 2px;
 	background-color: #E3EBF4;
 }
+
+
 .redcms-bd .redcms-bd-content {
 	min-height: 251px;
 	padding: 8px;
+	border:none;
 	border-left: 2px solid black;
 	border-right: 2px solid black;
 }
@@ -150,14 +157,18 @@ h3 {
 }
 
 /* Hierarchy */
-.redcms-bd-title {
+.redcms-bd .redcms-bd-title {
+	padding: 0;
+	background: transparent;
+	border: none;
 	border-right: 2px solid black;
 }
-.redcms-bd-title-content {
+
+.redcms-bd .redcms-bd-title-content {
 	background: transparent url(sprite-smag.png) repeat scroll 0 -30px;
 	float: left;
 }
-.redcms-bd-title-item {
+.redcms-bd .redcms-bd-title-item {
 	float: left;
 	height: 20px;
 	font-size: 12px;
@@ -165,11 +176,15 @@ h3 {
 	font-weight: bold;
 	padding: 6px 3px 0px;
 }
-.redcms-bd-title-separator {
+.redcms-bd .redcms-bd-title-separator {
 	float: left;
 	width: 20px;
 	height: 26px;
 	background: transparent url(sprite-smag.png) no-repeat scroll 0 0;
+}
+.redcms-bd-title .redcms-bd-title-separator:after {
+	content:"";
+	padding:0;
 }
 .redcms-bd-title-right {
 	float: left;

@@ -1,5 +1,5 @@
 /* 
-RedCMS Editor Widget
+RedCMS Editor Widget NOT IN USE
 
 Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:

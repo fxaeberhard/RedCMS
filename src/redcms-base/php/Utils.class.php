@@ -63,7 +63,7 @@ class Utils {
 	// *** File Functions *** //
 	
 	static function file_extension($filename){
-		return end(explode(".", $filename));
+		return strtolower(end(explode(".", $filename)));
 	}
 
 	/**

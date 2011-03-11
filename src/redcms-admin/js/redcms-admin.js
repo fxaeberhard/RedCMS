@@ -74,12 +74,13 @@ http://redcms.red-agent.com/license.html
 			}
 		},
 		_onContextMenuItemSuccess: function(targetBlock, targetAdminNode) {
-			//console.log("ContextMenu._onContextMenuItemSuccess(): ", targetBlock, 'log');
+			//console.log("ContextMenu._onContextMenuItemSuccess(): ", targetBlock, targetAdminNode, 'log');
 			var targetAdminWidget = Y.Widget.getByNode(targetAdminNode),
 				targetAdmin;
-			
 			if (!targetAdminWidget) {														//HACK
-				targetAdmin = Y.RedCMS.RedCMSManager.getParentAdminBlock(targetBlock);
+				targetAdmin = targetBlock.ancestor( function(e) {
+					return  (e.getAttribute('redadmin') != '');
+				 }, true);
 				targetAdminWidget = Y.Widget.getByNode(targetAdmin);
 			}
 			Y.RedCMS.RedCMSManager.reloadWidget(targetAdminWidget);
@@ -127,8 +128,7 @@ http://redcms.red-agent.com/license.html
 				if (isValidRow) {
 					href = row.href;
 					params = {};
-					//parentTuple = this._targetBlock.ancestor('[redid]'),
-					parentNode = Y.RedCMS.RedCMSManager.getParentAdminBlock(targetNode);
+					parentNode = Y.RedCMS.RedCMSManager.getParentBlock(targetNode);
 					if (row.action == 'editCurrent') {
 						params.id = targetNode.getAttribute('redid');
 					} else if (row.action == 'addSibling' ){
@@ -143,7 +143,6 @@ http://redcms.red-agent.com/license.html
 						if (targetAdminNode) { params.parentId = targetAdminNode.getAttribute('redid'); }
 						else { isValidRow = false; }
 					} else if (row.action == 'replaceHref') {
-						//console.log('replacing', this._targetBlock, this._targetBlock.get(CONTENTBOX), CONTENTBOX);
 						href = targetNode.one('a').get('href');
 					}
 				}

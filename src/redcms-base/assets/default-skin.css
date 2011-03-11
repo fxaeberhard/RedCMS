@@ -55,7 +55,7 @@ input[type=submit] {
 	border-bottom: none;
 }
 .redcms-bd .redcms-bd-content {
-	padding: 5px;
+	padding: 8px;
 	min-height: 280px;
 }
 .redcms-ft .redcms-ft-content {
@@ -96,8 +96,12 @@ fieldset legend {
 	padding:10px;
 	overflow:auto;
 	max-height: 700px;
-	max-width: 900px;
+	max-width: 1500px;
 }
+.yui3-skin-sam .yui3-overlay-window .yui3-widget-bd.yui3-resize {
+	margin-right: 7px;
+}
+
 .yui3-skin-sam .yui3-overlay-window .yui3-overlay-close {
 	position: absolute;
 	top: 5px;
@@ -183,10 +187,11 @@ body {
 }
 
 /* RedCMSForm styles */
-/*
+
 .yui3-skin-sam .yui3-form .yui3-form-field {
-	clear:both;
-}*/
+	/*clear:both;*/
+	padding:2px;
+}
 
 .yui3-skin-sam .yui3-form .yui3-form-field .yui3-g {
     padding-left:100px; /* "left col" width */ 
@@ -430,6 +435,25 @@ ul li {
 /** YUI2 Editor styles **/
 .yui-skin-sam .yui-toolbar-container .yui-toolbar-titlebar {
 	display:none;	
+}
+.yui-skin-sam .yui-editor-panel .yui3-redcms-button span a.yui3-redcms-button-addfile {
+	padding-left: 1.5em;
+	background: url(file-icons.png) no-repeat scroll 6px -298px;
+	line-height: 2.0;	
+}
+.yui-skin-sam .yui-editor-panel .yui3-redcms-button span a.yui3-redcms-button-addpage {
+	padding-left: 1.5em;
+	background: url(file-icons.png) no-repeat scroll 6px -321px;
+	line-height: 2.0;	
+}
+.yui-skin-sam .yui-editor-panel label:after {
+	content:'';	
+}
+.yui-skin-sam .yui-editor-panel label:before {
+	content:'';	
+}
+.yui-skin-sam .yui-editor-panel .yui-toolbar-group-height-width input[type="text"] {
+	width: inherit;
 }
 
 /** RedCMS Accordion styles */

@@ -22,10 +22,14 @@ class FormBlock extends TreeStructure {
 							$t = strtotime($newValue);
 							$fields[$b->name] = Utils::sql_date($t);;
 							break;
+							
 						case 'PasswordField':
 							if ($newValue != '') 
 								$fields[$b->name] = $redCMS->sessionManager->generateHash($newValue);
 							break;
+							
+						case 'TextareaField':
+							$newValue = nl2br($newValue);
 						default: 
 							$fields[$b->name] = $newValue;
 					}
@@ -63,12 +67,14 @@ class FormBlock extends TreeStructure {
 }
 
 class FormField extends Block {
-	var $_dbFieldsMap = array('redid'=>'id', 'name' => 'text1', 'label' => 'text2', 'required' => 'text3', 'formtype' => 'text4', 'defaultValue' => 'text5');	
+	var $_dbFieldsMap = array('name' => 'text1', 'label' => 'text2', 'required' => 'text3', 'formtype' => 'text4', 'defaultValue' => 'text5');	
 
 	function toJSON() {
 		
 		$ret = parent::toJSON();
 		if ($ret['label'] == '') $ret['label'] = $this->name;
+		
+		$ret['redid'] = ''.$this->id;
 		
 		$ret['value'] = $this->defaultValue;
 		unset($ret['defaultValue']);
@@ -97,8 +103,9 @@ class BlockSelectFormField extends FormField {
 	function toJSON() {
 		$ret = parent::toJSON();
 		$ret['choices'] = array();
-		foreach (BlockManager::getBlocksBySelect('type=\'PageBlock\' ORDER BY link') as $b) {
-		//	print_r($b);
+		$config = json_decode($this->longtext1, true);
+		$filter = ($config['class'])?$config['class']:'PageBlock';
+		foreach (BlockManager::getBlocksBySelect('type=\''.$filter.'\' ORDER BY link') as $b) {
 			$ret['choices'][] = array('label' => $b->getLabel(), 'value'=> ''.$b->id);
 		}
 		return $ret;
@@ -246,7 +253,7 @@ class EditBlockFormBlock extends EditDBFormBlock {
 	}	
 }
 
-class EditBlockPositionFormBlock { //extends EditBlockFormBlock {
+class EditBlockPositionFormBlock extends Block { //extends EditBlockFormBlock {
 	
 	function getTargetBlock() {
 		global $_REQUEST;
@@ -297,9 +304,9 @@ class EditBlockPositionFormBlock { //extends EditBlockFormBlock {
 			if (isset($_REQUEST['targetId'])) {									//There is a target, we move the block just after the target
 				$refBlock = BlockManager::getBlockById($_REQUEST['targetId']);
 				$position = $refBlock->number1;
-				if (!$position) {												//HACK If there is no position, positions are corrupted, we reset them.
+				if ($position === null) {										//HACK If there is no position, positions are corrupted, we reset them.
 					$stat = $red->dbManager->prepare('UPDATE redcms_block SET number1=0 WHERE parentId=?');
-					$stat->execute(array($targetBlock->id));
+					$stat->execute(array($targetBlock->parentId));
 					$position = 0;
 				}
 				$fields = array('', $targetBlock->parentId, $targetBlock->id, $refBlock->id);
@@ -318,7 +325,9 @@ class EditBlockPositionFormBlock { //extends EditBlockFormBlock {
 				if (!$position) $position = 0;
 				else $position = $position-1;
 				$targetBlock->set('number1', $position);
-				$targetBlock->save();
+				if ($targetBlock->save()) {
+						$ret = array('result' => 'success', 'msg'=>'Changes have been made.');
+				}
 			}
 			echo json_encode($ret);
 		} else {

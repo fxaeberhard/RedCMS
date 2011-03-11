@@ -14,7 +14,7 @@
 				<div class="redcms-icon" ><span /></div>
 				<div class="redcms-conversation-title">
 					
-					<img src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=30&d=mm" style="float: left;margin: 3px 2px 0 0;border:1px solid gray"/>
+					<img width="30" height="30"  src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=30&d=mm" style="float: left;margin: 3px 2px 0 0;border:1px solid gray"/>
 					
 					<h2>par <a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>, 
 					posté {Utils::date_formatduration($block->dateadded)} 

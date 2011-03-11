@@ -8,6 +8,9 @@ http://redcms.red-agent.com/license.html
 	 
 	function RedCMSWidget() {
 
+		this.publish("redcms:select", {
+			emitFacade: false
+		});
 		this.publish("reload", {
 			emitFacade: false
 		});

@@ -2,7 +2,7 @@
 
 {block name="bd"}
 
-	<div class="redcms-content" widget="Block" {$this->renderBlockAttributes()} >
+	<div class="redcms-bd-content" widget="Block" {$this->renderBlockAttributes()} >
 		<div class="yui3-g">
 			<div class="yui3-u-1-2">
 				{$this->longtext1}

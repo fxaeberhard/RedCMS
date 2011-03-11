@@ -42,7 +42,7 @@
 					<div class="redcms-icon"><span></span></div>
 					<div class="redcms-clear"></div>
 					<div>
-						<img src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" style="float: left;margin: 3px 3px 0 0;border:1px solid gray"/>
+						<img width="40" height="40" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" style="float: left;margin: 3px 3px 0 0;border:1px solid gray"/>
 			
 						<a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>
 						{if $block instanceof EventField} a posté un événement

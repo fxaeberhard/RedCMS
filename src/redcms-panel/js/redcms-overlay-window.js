@@ -6,17 +6,20 @@ Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 */
 
- YUI.add('redcms-overlay-window', function(Y) {
+ //YUI.add('redcms-overlay-window', function(Y) {
+	
+
 	var OverlayManager = function() {
 		return {
 			_overlays : [],
 			_bringToTop: function(overlay){
-				var ol = OverlayManager._overlays;
-
-				var highest =0;
-				for (var i = 0;i< ol.length;i++){
-					var overlayZ = ol[i].get('zIndex');
-					if (overlayZ> highest) highest = overlayZ;
+				var ol = OverlayManager._overlays,
+					highest =0,
+					i = 0,
+					overlayZ;
+				for (;i< ol.length;i++){
+					overlayZ = ol[i].get('zIndex');
+					if (overlayZ> highest) { highest = overlayZ; }
 				}
 				overlay.set('zIndex', highest+1);
 			},
@@ -25,7 +28,7 @@ http://redcms.red-agent.com/license.html
 				overlay.get('boundingBox').on('mousedown', Y.bind(this._bringToTop, this, overlay));
 				OverlayManager._bringToTop(overlay);
 			}
-		}
+		};
 	}();
 
 	Y.namespace('RedCMS').OverlayManager = OverlayManager;
@@ -90,7 +93,7 @@ http://redcms.red-agent.com/license.html
 		
 		destructor : function () {
 			var bb = this.get(HOST).get(BOUNDING_BOX);
-			if (bb._node) bb.removeClass(CLASSES.window);
+			if (bb._node) { bb.removeClass(CLASSES.window); }
 		},
 		
 		renderUI : function () {
@@ -110,9 +113,8 @@ http://redcms.red-agent.com/license.html
 			this._closeNode.on('click', function(e) {
 				try {
 					this.get(HOST).destroy();
-				} catch(e) {
-					// FIXME Need to find a way to destroy overlay without triggering dd error
-					//Y.log("OverlayWindow._closeNode.onClick(): Uncaught error destroying plugin host", "error");
+				} catch (e){
+					//TODO why is this class error thrown...
 				}
 			}, this);
 		},
@@ -128,4 +130,4 @@ http://redcms.red-agent.com/license.html
 	
 	Y.namespace('Plugin').OverlayWindow = OverlayWindow;
 	
- });
+ //});

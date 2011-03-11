@@ -66,8 +66,8 @@ YUI.add('redcms-accordion', function(Y) {
 
 			this._handler = cb.delegate('click', this._onTitleClicked, '.'+CLASSES.title, this);
 		},
-		destroy : function() {
-			//this.get("contentBox").one('.yui3-menu').unplug(Y.Plugin.NodeMenuNav);
+		destructor : function() {
+			
 		}
 	}, {
 		NAME : ACCORDION,

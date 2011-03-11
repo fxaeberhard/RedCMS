@@ -25,7 +25,7 @@ class RedCMS {
 		'debugMode' => false,
 		'windowTitleSuffix'=>'',
 		'keywordSuffix' => '',
-		'adminMail'=>'fx@red-agent.com',
+		'adminMail'=> 'fx@red-agent.com',
 		'mailFooter' => '<br /><br/><hr>Sent via RedCMS',
 		'publicFilePath' => 'files/public/',
 		'privateFilePath' => 'files/private/',
@@ -35,7 +35,7 @@ class RedCMS {
 		'smtpAuth' => false,
 		'smtpUsername' => '',
 		'smtpPassword' => '',
-		'version' => '0.2.0',
+		'version' => '0.2.2',
 		'cacheEnabled'=> false
 	);
 	
@@ -66,7 +66,7 @@ class RedCMS {
 		$this->config = array_merge($this->defaultConfg, $config);
 	
 		$this->path = $this->config['path'];
-		$this->fullpath = $_SERVER['DOCUMENT_ROOT'].$this->path;
+		//$this->fullpath = $_SERVER['DOCUMENT_ROOT'].$this->path;
 		$this->fullpath =  str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']);
 		$this->host = 'http://'.$_SERVER['HTTP_HOST'];
 		
@@ -94,10 +94,6 @@ class RedCMS {
 		$this->currentHierarchy[] = $this->currentBlock;
 	}
 	
-	function headers() {
-		header("Content-Type: text/html; charset=".$this->config['charset']);
-	}
-	
 	/**
 	 * TODO
 	 * + handle the page not found condition with the corresponding page name. 
@@ -105,9 +101,12 @@ class RedCMS {
 	 */
 	function render() {
 		
-		$this->headers();
+		//ob_implicit_flush(true);
+		ob_start('ob_gzhandler');
+		header("Content-Type: text/html; charset=".$this->config['charset']);
 		
-		if (isset($this->currentBlock)) {									// If the block was correctly pulled
+		if ($this->currentBlock) {											// If the block was correctly pulled
+			$this->currentBlock->renderHeaders();
 			$this->currentBlock->render();		 							// we render it
 		} else {
 			die('Page Not Found');
@@ -121,11 +120,7 @@ class RedCMS {
     private function __construct() {  }										// A private constructor; prevents direct creation of object
 
     public static function getInstance(){									// The singleton method
-        if (!isset(self::$instance)) {
-            $c = __CLASS__;
-            self::$instance = new $c;
-        }
-        return self::$instance;
+        return RedCMS::get();
     }
  	public static function get(){											// The singleton method
         if (!isset(self::$instance)) {

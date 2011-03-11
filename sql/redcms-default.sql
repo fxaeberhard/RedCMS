@@ -26,13 +26,15 @@ CREATE TABLE `redcms_block` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `link` (`link`),
   KEY `parentId` (`parentId`)
-) ENGINE=MyISAM AUTO_INCREMENT=2771 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM AUTO_INCREMENT=2786 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 INSERT INTO redcms_block VALUES("2","0","pageManager","TreeStructure",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"treeview-default.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","0","0","0","0");
 
-INSERT INTO redcms_block VALUES("3","2","HomePage","PageBlock",NULL,NULL,NULL,NULL,NULL,"Welcome on RedCMS. ",NULL,NULL,NULL,"page-2cols.tpl","0","1","0000-00-00 00:00:00","2011-03-08 01:01:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("3","2","Home Page","PageBlock",NULL,NULL,NULL,NULL,NULL,"<br>Welcome on <span><span>RedCMS</span></span>. This is a trial server. You can connect as an admin or a system asdministrator. As soon as you are connected, you can edit element by right clicking on them, order the menu by dragging and dropping its items or explore the site content using the top bar menu.<br><br><br><fieldset><legend>Site Admin Access <em>(The person who updates the site)</em></legend>Username: <em>admin</em><br>Password: <em>redpass</em></fieldset><br>\n<fieldset><legend>System Admin Access <em>(Usually the webmaster)</em></legend>Username:&nbsp;<em>root</em><br>Password:&nbsp;<em>redpass<br></em></fieldset><br><br>",NULL,NULL,NULL,"page-2cols.tpl","0","1","0000-00-00 00:00:00","2011-03-11 05:17:00","1","0","1","0");
 
 INSERT INTO redcms_block VALUES("4","0","modulemanager","ModuleManagerBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("5","0","PositionManager","EditBlockPositionFormBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","0","0");
 
 INSERT INTO redcms_block VALUES("6","0","fileManager","TreeStructure",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"treeview-files.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
@@ -66,33 +68,37 @@ INSERT INTO redcms_block VALUES("23","0","User Profile","PageBlock",NULL,NULL,NU
 
 INSERT INTO redcms_block VALUES("24","23",NULL,"UserManagerBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"users-default.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
+INSERT INTO redcms_block VALUES("25","0","Public Profile","PageBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","2011-03-11 02:10:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("26","25",NULL,"CurrentUserManagerBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"users-default.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
 INSERT INTO redcms_block VALUES("49","-2",NULL,"Block","Admin context menu",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"admin-contextmenu.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","0","0","0","0");
 
 INSERT INTO redcms_block VALUES("50","-2",NULL,"MenuBlock","Admin menu",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"menu-horizontal.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","0","0","0","0");
 
-INSERT INTO redcms_block VALUES("51","50",NULL,"Action","File",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("51","50",NULL,"Action","File",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"-1",NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("52","51",NULL,"OpenPanelAction","Page Library",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("52","51",NULL,"OpenPanelAction","Page Library",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"-2",NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:23:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("53","51",NULL,"OpenPanelAction","File Library",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("53","51",NULL,"OpenPanelAction","File Library",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"-1",NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("54","51",NULL,"OpenPanelAction","Site Backups",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("54","51",NULL,"OpenPanelAction","Site Backups",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("59","51",NULL,"LoginAction","Login","Logout",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("59","51",NULL,"LoginAction","Login","Logout",NULL,NULL,NULL,NULL,NULL,NULL,"1",NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:23:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("60","50",NULL,"Action","Users",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("60","50",NULL,"Action","Users",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("61","60",NULL,"OpenPanelAction","Users",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("61","60",NULL,"OpenPanelAction","Users",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"-2",NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:23:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("64","60",NULL,"OpenPanelAction","Groups",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("64","60",NULL,"OpenPanelAction","Groups",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("68","60",NULL,"OpenPanelAction","Mailing List",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("68","60",NULL,"OpenPanelAction","Mailing List",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"1",NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:23:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("70","50",NULL,"Action","Help",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("70","50",NULL,"Action","Help",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"1",NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:23:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("71","70",NULL,"OpenPanelAction","License",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("71","70",NULL,"OpenPanelAction","License",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"1",NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:23:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("72","70",NULL,"OpenPanelAction","About",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("72","70",NULL,"OpenPanelAction","About",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2",NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:23:00","1","0","1","0");
 
 INSERT INTO redcms_block VALUES("99","100",NULL,"OpenPanelAction","Edit category","editCurrent","Action",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
@@ -173,6 +179,12 @@ INSERT INTO redcms_block VALUES("153","150",NULL,"FormField","surname","Surname"
 INSERT INTO redcms_block VALUES("154","150",NULL,"FormField","password","Password","0","PasswordField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
 INSERT INTO redcms_block VALUES("155","150",NULL,"FormField","email","E-mail","0","EmailField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("156","150",NULL,"FormField","anniversary","Date of birth",NULL,"DateField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("157","150",NULL,"FormField","profession","Profession","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("158","150",NULL,"FormField","poPhone","Mobile Phone","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
 INSERT INTO redcms_block VALUES("159","160",NULL,"NewWindowHrefAction","Download","replaceHref","FileBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
@@ -312,21 +324,41 @@ INSERT INTO redcms_block VALUES("321","320",NULL,"FormField","text1","File","0",
 
 INSERT INTO redcms_block VALUES("322","320",NULL,"FormField","type",NULL,NULL,"HiddenField","BackupFileBlock",NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
+INSERT INTO redcms_block VALUES("330","150",NULL,"FormField","pPhone","Phone","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("331","150",NULL,"FormField","adress","Address","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("332","150",NULL,"FormField","adres_zip","Zip Code","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("333","150",NULL,"FormField","adress_country","Country","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("334","150",NULL,"FormField","adresspro","Professionnal Address","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("335","150",NULL,"FormField","adresspro_zip","Zip Code","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("336","150",NULL,"FormField","prPhone","Professional Phone","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("337","150",NULL,"FormField","text1","Additionnal Informations","0","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
 INSERT INTO redcms_block VALUES("2000","-1",NULL,"MenuBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"menu-default.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2001","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","2011-03-08 01:10:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2001","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"-11",NULL,"0","1","0000-00-00 00:00:00","2011-03-10 22:28:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2002","2000",NULL,"LoginAction","Login","Logout",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2002","2000",NULL,"LoginAction","Login","Logout",NULL,NULL,NULL,NULL,NULL,NULL,"12",NULL,"0","1","0000-00-00 00:00:00","2011-03-10 09:27:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2003","2000",NULL,"PageLinkAction","Profile",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 01:10:00","2011-03-08 03:54:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2003","2009",NULL,"PageLinkAction","View Profile",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","1","2011-03-08 01:10:00","2011-03-09 23:40:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2004","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 01:10:00","2011-03-08 01:33:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2004","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"1",NULL,"0","1","2011-03-08 01:10:00","2011-03-11 02:00:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2005","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 01:10:00","2011-03-08 01:33:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2005","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0",NULL,"0","1","2011-03-08 01:10:00","2011-03-09 23:54:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2006","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 01:10:00","2011-03-08 02:23:00","1","0","0","0");
+INSERT INTO redcms_block VALUES("2006","2009",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"-1",NULL,"0","1","2011-03-08 01:10:00","2011-03-10 21:51:00","1","0","0","0");
 
-INSERT INTO redcms_block VALUES("2007","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 02:35:00","2011-03-08 02:43:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2007","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"-10",NULL,"0","1","2011-03-08 02:35:00","2011-03-11 02:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("2008","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"9",NULL,"0","1","2011-03-09 11:15:00","2011-03-11 02:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("2009","2000",NULL,"Action","Profile",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"10",NULL,"0","1","2011-03-09 18:51:00","2011-03-11 02:00:00","1","0","0","0");
 
 INSERT INTO redcms_block VALUES("2010","2","Forum","PageBlock",NULL,NULL,NULL,NULL,NULL,"Welcome on RedCMS\'s forum.",NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","2011-03-04 12:25:00","0","0","0","0");
 
@@ -342,39 +374,35 @@ INSERT INTO redcms_block VALUES("2020","2","News","PageBlock",NULL,NULL,NULL,NUL
 
 INSERT INTO redcms_block VALUES("2021","2020",NULL,"TreeStructure",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"conversation-default.tpl","0","1","2011-03-08 02:35:00","2011-03-08 02:35:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2759","0","ee",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2025","2","Members List","PageBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"page-default.tpl","0","1","2011-03-09 11:15:00","2011-03-09 11:15:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2758","2011",NULL,"TopicField","General Discussion",NULL,NULL,NULL,NULL,"<div style=\"padding-top: 7px; padding-right: 7px; padding-bottom: 7px; padding-left: 7px; background-color: #ffffff; font: normal normal normal 13px/1.22 arial, helvetica, clean, sans-serif; font-family: \'Times New Roman\'; line-height: normal; font-size: medium; \">Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;Ipsem lorum es. Ipsem lorum es.&nbsp;",NULL,NULL,NULL,NULL,"0","1","2011-03-08 02:52:00","2011-03-08 03:56:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2026","2025",NULL,"UserManagerBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"accordion-users.tpl","0","1","2011-03-09 11:17:00","2011-03-09 11:17:00","1","0","1","0");
 
 INSERT INTO redcms_block VALUES("2030","3",NULL,"DigestBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"conversation-reader.tpl","0","1","2011-03-08 01:39:00","2011-03-08 01:39:00","1","0","1","0");
 
+INSERT INTO redcms_block VALUES("2040","2","Contact","PageBlock",NULL,NULL,NULL,NULL,NULL,"If you have any question about RedCMS, feel free to use this form. ",NULL,NULL,NULL,NULL,"0","1","2011-03-09 11:15:00","2011-03-11 05:06:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("2041","2040",NULL,"MailFormBlock","Group Mailing List Form",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"form-default.tpl","0","1","2011-03-09 11:17:00","2011-03-09 11:17:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("2042","2041",NULL,"FormField","dest_group",NULL,"1","HiddenField","2",NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("2043","2041",NULL,"FormField","msg_title","Mail Title","1","TextField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","2011-03-11 05:06:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("2044","2041",NULL,"FormField","msg_content","Mail Content","1","TextareaField",NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+
+INSERT INTO redcms_block VALUES("2050","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"8",NULL,"0","1","2011-03-09 11:15:00","2011-03-11 01:59:00","1","0","1","0");
+
 INSERT INTO redcms_block VALUES("2757","2014",NULL,"EventField","RedCMS v0.1","-",NULL,NULL,NULL,NULL,"2011-03-08 00:00:00",NULL,NULL,NULL,"0","1","2011-03-08 02:51:00","2011-03-08 02:51:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2760","2758",NULL,"ReplyField","ear",NULL,NULL,NULL,NULL,"srarse",NULL,NULL,NULL,NULL,"0","0","2011-03-08 03:31:00","2011-03-08 03:31:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2758","2011",NULL,"TopicField","General Discussion",NULL,NULL,NULL,NULL,"Test topic",NULL,NULL,NULL,NULL,"0","1","2011-03-08 02:52:00","2011-03-11 02:11:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2761","2758",NULL,"ReplyField","rtrtrt",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","0","2011-03-08 03:38:00","2011-03-08 03:38:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("25","0","Profile","PageBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("26","25",NULL,"CurrentUserManagerBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"users-default.tpl","0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2760","2758",NULL,"ReplyField","Test Reply",NULL,NULL,NULL,NULL,"Test reply",NULL,NULL,NULL,NULL,"0","0","2011-03-08 03:31:00","2011-03-11 02:12:00","1","0","1","0");
 
 INSERT INTO redcms_block VALUES("2762","2021",NULL,"NewsField","Test de news",NULL,NULL,NULL,NULL,"Ma première news...",NULL,NULL,NULL,NULL,"0","1","2011-03-08 03:55:00","2011-03-08 03:55:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2763","2011",NULL,"TopicField","sdds",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 03:56:00","2011-03-08 03:58:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("2782","2763",NULL,"ReplyField","waewe",NULL,NULL,NULL,NULL,"aweawe",NULL,NULL,NULL,NULL,"0","1","2011-03-10 00:12:00","2011-03-10 00:12:00","1","0","1","0");
 
-INSERT INTO redcms_block VALUES("2764","6",NULL,"FileBlock","files/public/6/Claude Magnin.jpg",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 04:35:00","2011-03-08 04:35:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("2765","6",NULL,"FileBlock","files/public/6/Daniel_Adler_6.1.2009.pdf",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 04:40:00","2011-03-08 04:40:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("2766","11",NULL,"BackupFileBlock","files/private/11/Backup-08.Mar.11-05.00.sql",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 05:00:00","2011-03-08 05:00:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("2767","11",NULL,"BackupFileBlock","files/private/11/Backup-08.Mar.11-05.04.sql",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-08 05:04:00","2011-03-08 05:04:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("2025","2","Members List","PageBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"page-default.tpl","0","1","2011-03-09 11:15:00","2011-03-09 11:15:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("2008","2000",NULL,"PageLinkAction",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0","1","2011-03-09 11:15:00","2011-03-09 11:25:00","1","0","1","0");
-
-INSERT INTO redcms_block VALUES("2026","2025",NULL,"UserManagerBlock",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"accordion-users.tpl","0","1","2011-03-09 11:17:00","2011-03-09 11:17:00","1","0","1","0");
+INSERT INTO redcms_block VALUES("220","210",NULL,"BlockSelectFormField","redcms_link_admin","Admin menu",NULL,"SelectField",NULL,"{\"class\":\"MenuBlock\"}",NULL,NULL,NULL,NULL,"0","1","0000-00-00 00:00:00","0000-00-00 00:00:00","1","0","1","0");
 
 
 
@@ -389,7 +417,7 @@ CREATE TABLE `redcms_blockxblock` (
   PRIMARY KEY (`id`),
   KEY `blockId` (`blockId`),
   KEY `subBlockId` (`subBlockId`)
-) ENGINE=MyISAM AUTO_INCREMENT=1173 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1180 DEFAULT CHARSET=utf8;
 
 INSERT INTO redcms_blockxblock VALUES("1","3","120","target");
 
@@ -483,13 +511,15 @@ INSERT INTO redcms_blockxblock VALUES("46","2011","260","admin");
 
 INSERT INTO redcms_blockxblock VALUES("55","2","120","admin");
 
+INSERT INTO redcms_blockxblock VALUES("1179","2040","230","admin");
+
 INSERT INTO redcms_blockxblock VALUES("1172","2008","2025","target");
 
 INSERT INTO redcms_blockxblock VALUES("58","2026","140","admin");
 
 INSERT INTO redcms_blockxblock VALUES("45","2010","230","admin");
 
-INSERT INTO redcms_blockxblock VALUES("1171","2769","2768","target");
+INSERT INTO redcms_blockxblock VALUES("1178","2043","0","admin");
 
 INSERT INTO redcms_blockxblock VALUES("56","23","230","admin");
 
@@ -511,7 +541,7 @@ INSERT INTO redcms_blockxblock VALUES("48","2014","260","admin");
 
 INSERT INTO redcms_blockxblock VALUES("1169","2007","2020","target");
 
-INSERT INTO redcms_blockxblock VALUES("1168","2755","2020","target");
+INSERT INTO redcms_blockxblock VALUES("1177","2050","2040","target");
 
 INSERT INTO redcms_blockxblock VALUES("1164","2004","2013","target");
 
@@ -546,7 +576,7 @@ CREATE TABLE `redcms_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-INSERT INTO redcms_group VALUES("1","Super Administrators",NULL);
+INSERT INTO redcms_group VALUES("1","Root Administrators",NULL);
 
 INSERT INTO redcms_group VALUES("2","Site Administrators",NULL);
 
@@ -564,7 +594,7 @@ CREATE TABLE `redcms_groupxblock` (
   PRIMARY KEY (`id`),
   KEY `idBlock` (`idBlock`),
   KEY `idGroup` (`idGroup`)
-) ENGINE=MyISAM AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 INSERT INTO redcms_groupxblock VALUES("15","50","1","1","1");
 
@@ -573,6 +603,8 @@ INSERT INTO redcms_groupxblock VALUES("20","50","2","1","1");
 INSERT INTO redcms_groupxblock VALUES("23","49","1","1","1");
 
 INSERT INTO redcms_groupxblock VALUES("24","49","2","1","1");
+
+INSERT INTO redcms_groupxblock VALUES("50","2001","1","0","0");
 
 INSERT INTO redcms_groupxblock VALUES("47","2010","1","1","1");
 
@@ -632,7 +664,7 @@ CREATE TABLE `redcms_user` (
 
 INSERT INTO redcms_user VALUES("1","Root Administrator",NULL,"bc9775ee610f930c2d132c5e7a438fc2744063c57d69c4a43","fx@red-agent.com","root",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"","","");
 
-INSERT INTO redcms_user VALUES("2","Site Administrator",NULL,"5481b84134305d731a26ea443d4d2f2903b26574b3514e8b8","fx@red-agent.com","root",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"","","");
+INSERT INTO redcms_user VALUES("2","Site Administrator",NULL,"b675c3625469a1c2cabbdbbc59bdd1f1c42a3a458df185d50","fx@red-agent.com","admin",NULL,"2011-03-11 05:12:00",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"","","");
 
 
 
@@ -658,13 +690,13 @@ CREATE TABLE `redcms_userxgroup` (
   PRIMARY KEY (`id`),
   KEY `idUser` (`idUser`),
   KEY `idGroup` (`idGroup`)
-) ENGINE=MyISAM AUTO_INCREMENT=160 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=MyISAM AUTO_INCREMENT=161 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 INSERT INTO redcms_userxgroup VALUES("1","2","2");
 
 INSERT INTO redcms_userxgroup VALUES("3","1","1");
 
-INSERT INTO redcms_userxgroup VALUES("2","2","1");
+INSERT INTO redcms_userxgroup VALUES("160","1","2");
 
 
 
