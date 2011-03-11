@@ -4,7 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
  
-<div class="redcms-block redcms-hidden" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" 
+<div class="redcms-block yui3-redcms-loading" {$this->renderBlockAttributes()}
 	widget="TreeView" requires="redcms-treeview" style="min-width: 600px">
 	<ul>
 		{foreach $this->getChildBlocks() as $block}

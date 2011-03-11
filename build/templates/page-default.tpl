@@ -3,7 +3,7 @@
  * Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
  * Code licensed under the BSD License:
  * http://redcms.red-agent.com/license.html
- * 
+ * {$this->renderBlockAttributes()}z
  *}{if !$reload}<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 {* HTML5 <!DOCTYPE html>*}
 {* HTML4 Transnational <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">*}
@@ -110,7 +110,7 @@
 		<div class="redcms-ft-content">
 			{block name='ft-content'}
 				<hr />
-				Powered by <a href="http://redcms.red-agent.com">RedCMS</a> | Version {$redCMS->config['version']} | &copy; Francois-Xavier Aeberhard, 2011
+				Powered by <a href="http://redcms.red-agent.com">RedCMS</a> | Version {$redCMS->config['version']} | &copy; 2011, Francois-Xavier Aeberhard
 			{/block}
 		</div>
 		

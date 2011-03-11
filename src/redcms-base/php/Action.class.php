@@ -48,6 +48,17 @@ class TargetBlockAction extends Action {
 		if ($target) return $target->getLink();
 		else return parent::getLink();
 	}
+
+	function canRead() {
+		$target = $this->getTarget();
+		if ($target) return $target->canRead();
+		else return parent::canRead();
+	}
+	function canWrite(){
+		$target = $this->getTarget();
+		if ($target) return $target->canWrite();
+		else return parent::canWrite();
+	}
 }
 class OpenPanelAction extends TargetBlockAction {
 	

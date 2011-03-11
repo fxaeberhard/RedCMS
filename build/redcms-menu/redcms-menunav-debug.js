@@ -102,7 +102,8 @@ YUI.add('redcms-menunav', function(Y) {
 				sortable.delegate.on('drop:over', function(e) {
 			        var drag = e.drag.get('node'),
 			            drop = e.drop.get('node'),
-			            target = drop.one('.yui3-menu');
+			            target = drop.one('.yui3-menu'),
+			            firstItem;
 			         
 					if (target && drag != drop) {
 						if (this._lastOpenedMenuNode && !this._lastOpenedMenuNode.contains(target)) {
@@ -110,7 +111,7 @@ YUI.add('redcms-menunav', function(Y) {
 						}
 						this._menuNode.menuNav._showMenu(target);
 						this._lastOpenedMenuNode = target;
-						var firstItem = target.one('li');
+						firstItem = target.one('li');
 						this._menuNode.menuNav._focusItem(firstItem);
 						this._menuNode.menuNav._setActiveItem(firstItem);
 					}

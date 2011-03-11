@@ -4,8 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
 
-<div redid="{$this->id}" widget="SimpleForm" requires="redcms-form" style="min-width: 200px;"
-	redadmin="{$this->renderAdminJSON()}" >
+<div {$this->renderBlockAttributes()} widget="SimpleForm" requires="redcms-form" style="min-width: 200px;" >
 	
 	<style type="text/css">
 		.redcms-form-editgroups > .yui3-g {

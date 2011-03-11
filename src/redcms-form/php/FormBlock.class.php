@@ -416,8 +416,10 @@ class EditRightsFormBlock extends EditDBFormBlock {
 			$fields['publicwrite'] = (isset($_REQUEST['publicwrite']))?1:0;
 			
 			foreach ($this->getRightsByGroup($this->getTargetBlock()->id) as $g) {	// We loop through the rights to select the one corresponding to 
-				$r = (isset($_REQUEST['read_'.$g['idGroup']]));
-				$w = (isset($_REQUEST['write_'.$g['idGroup']]));
+				print_r($g);	
+				$r = (isset($_REQUEST['read_'.$g['idGroup']]))?1:0;
+				$w = (isset($_REQUEST['write_'.$g['idGroup']]))?1:0;
+				echo $r,'s',$w;
 				if ($r || $w || $g['id'] != '') {
 					$g['idBlock'] = $this->_targetBlock->id;					// For new tuples, we set the target id	
 					$g['read'] = ($r)?'1':'0';
@@ -437,7 +439,6 @@ class EditRightsFormBlock extends EditDBFormBlock {
 		$fields = array();
 		
 		$this->getTargetBlock();
-		
 		$fields[] = array('name'=>'id', 'type'=>'HiddenField', 'value' => ''.$this->_targetBlock->id);
 		$fields[] = array('name'=>'publicread', 'type'=>'CheckboxField', 'label' => 'Public read', 'checked' => $this->_targetBlock->publicread === 1);
 		$fields[] = array('name'=>'publicwrite', 'type'=>'CheckboxField', 'label' => 'Public write', 'checked' => $this->_targetBlock->publicwrite === 1);

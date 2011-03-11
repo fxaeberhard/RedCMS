@@ -4,7 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
 
-<div redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" widget="Block" >
+<div {$this->renderBlockAttributes()} widget="Block" >
 
 	<style type="text/css">		
 		.yui3-redcms-conversation-reader-item {

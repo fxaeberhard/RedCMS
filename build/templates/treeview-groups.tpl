@@ -4,7 +4,7 @@ Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 *}
 
-<div class="redcms-block redcms-hidden" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" 
+<div class="redcms-block yui3-redcms-loading {$this->renderBlockAttributes()}s
 	widget="TreeView" requires="redcms-treeview" >
 	<ul>
 		{foreach $this->getChildBlocks() as $group}

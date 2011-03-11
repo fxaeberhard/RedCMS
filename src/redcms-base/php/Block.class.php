@@ -251,6 +251,7 @@ class WrapperBlock extends Block {
 			$newFields = array_merge($targetBlock->fields, $newFields);
 			$blocks = BlockManager::getBlocksByFields(array($newFields));
 			$this->_wrappedBlock = $blocks[0];
+			//$this->_wrappedBlock->fields['id'] = $this->id;
 		}
 		return $this->_wrappedBlock;
 	}

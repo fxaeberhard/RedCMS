@@ -20,19 +20,24 @@ http://redcms.red-agent.com/license.html
 		// *** Private Methods *** //
 		_treeLeafClick: function(e) {
 			var cb = e.target.get(CONTENT_BOX),
+				blockNode = cb.get('parentNode'),
 				selectedElem = {
-					id:	cb.get('parentNode').getAttribute('redid'),
+					id:	blockNode.getAttribute('redid'),
 					href: cb.getAttribute('href'),
 					label: cb.getContent()
 				};
 			this.fire('redcms:select', selectedElem);
+			
+			if (blockNode.hasAttribute('widget') && blockNode.getAttribute('widget') === 'PageLinkAction'
+				 &&  selectedElem.href !== '#'){
+				window.location = selectedElem.href;
+			}
 		},
 		
 		// *** Life Cycle methods *** //
 		renderUI : function() {
 			var cb = this.get(CONTENT_BOX),
 				treeNode = cb.one('ul');
-			
 			this._treeview = new Y.TreeView({  
 				srcNode: treeNode,
 				contentBox: treeNode,
@@ -65,7 +70,7 @@ http://redcms.red-agent.com/license.html
 		        } else { e.preventDefault(); }
 		    });
 			
-			cb.removeClass('redcms-hidden');
+			cb.removeClass('yui3-redcms-loading');
 		}, 
 		destructor: function() {
 			this._tooltip.destroy();

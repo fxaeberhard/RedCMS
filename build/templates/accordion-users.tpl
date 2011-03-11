@@ -4,7 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
 
-<div class="redcms-block" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" widget="Accordion" requires="redcms-accordion" >
+<div class="redcms-block" {$this->renderBlockAttributes()} widget="Accordion" requires="redcms-accordion" >
 	
 	<div class="yui3-g yui3-redcms-accordion-bd">
 		<div class="yui3-u-1-3">Name</div>

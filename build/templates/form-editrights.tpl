@@ -4,8 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
 
-<div redid="{$this->id} redcms-editrights" widget="SimpleForm" requires="redcms-form" rootBlock="true" 
-	redadmin="{htmlspecialchars(json_encode($this->getAdminJSON()))}" style="min-width: 200px;">
+<div widget="SimpleForm" requires="redcms-form" {$this->renderBlockAttributes()} style="min-width: 200px;">
 	
 	<style type="text/css">
 		.redcms-form-editrights > .yui3-g {
@@ -38,10 +37,10 @@
 				<div class="yui3-u right">
 					<div class="yui3-g">
 						<div class="yui3-u-1-2 redcms-center">
-							<input name="publicread" type="checkbox" {if $this->_targetBlock->publicread === 1}checked{/if} />
+							<input name="publicread" type="checkbox" {if $this->_targetBlock->publicread === '1'}checked{/if} />
 						</div>
 						<div class="yui3-u-1-2 redcms-center">
-							<input name="publicwrite" type="checkbox" {if $this->_targetBlock->publicwrite === 1}checked{/if} />
+							<input name="publicwrite" type="checkbox" {if $this->_targetBlock->publicwrite === '1'}checked{/if} />
 					</div>
 				</div>
 			</div>
@@ -52,10 +51,10 @@
 			<div class="yui3-u right">
 				<div class="yui3-g">
 					<div class="yui3-u-1-2 redcms-center">
-						<input name="read" type="checkbox" {if $this->_targetBlock->read === 1}checked{/if} />
+						<input name="read" type="checkbox" {if $this->_targetBlock->read === '1'}checked{/if} />
 					</div>
 					<div class="yui3-u-1-2 redcms-center">
-						<input name="write" type="checkbox" {if $this->_targetBlock->write === 1}checked{/if} />
+						<input name="write" type="checkbox" {if $this->_targetBlock->write === '1'}checked{/if} />
 					</div>
 				</div>
 			</div>
@@ -66,8 +65,8 @@
 				<div class="yui3-u left" >{$g['name']}</div>
 				<div class="yui3-u right">
 					<div class="yui3-g">
-						<div class="yui3-u-1-2 redcms-center"><input name="read_{$g['idGroup']}" type="checkbox" {if $g['read'] === 1}checked{/if} /></div>
-						<div class="yui3-u-1-2 redcms-center"><input name="write_{$g['idGroup']}" type="checkbox" {if $g['write'] === 1}checked{/if} /></div>
+						<div class="yui3-u-1-2 redcms-center"><input name="read_{$g['idGroup']}" type="checkbox" {if $g['read'] === '1'}checked{/if} /></div>
+						<div class="yui3-u-1-2 redcms-center"><input name="write_{$g['idGroup']}" type="checkbox" {if $g['write'] === '1'}checked{/if} /></div>
 					</div>
 				</div>
 			</div>

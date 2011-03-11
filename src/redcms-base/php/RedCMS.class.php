@@ -106,8 +106,12 @@ class RedCMS {
 		header("Content-Type: text/html; charset=".$this->config['charset']);
 		
 		if ($this->currentBlock) {											// If the block was correctly pulled
-			$this->currentBlock->renderHeaders();
-			$this->currentBlock->render();		 							// we render it
+			if ($this->currentBlock->canRead()) {
+				$this->currentBlock->renderHeaders();
+				$this->currentBlock->render();		 							// we render it
+			} else {
+				die('Authorization refusedssss');
+			}
 		} else {
 			die('Page Not Found');
 		}		

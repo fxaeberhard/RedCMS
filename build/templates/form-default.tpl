@@ -4,7 +4,6 @@ Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 *}
 
-<form action="{$this->getLink()}" method="post" widget="Form" requires="redcms-form" redid="{$this->id}"
-	redadmin="{$this->renderAdminJSON()}" 
-	redparams="{$this->renderParamsJSON()}"
+<form action="{$this->getLink()}" method="post" widget="Form" requires="redcms-form" 
+	{$this->renderBlockAttributes()}
 	class="redcms-hidden">{urlencode(json_encode($this->getFormFields()))}</form>

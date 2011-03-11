@@ -4,7 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
  
-<div class="redcms-block" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" widget="Block">
+<div class="redcms-block" {$this->renderBlockAttributes()} widget="Block">
 	{foreach $this->getChildBlocks() as $block}
 		{include file="user-default.tpl" inline}
 	{/foreach}

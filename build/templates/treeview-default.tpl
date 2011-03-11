@@ -3,7 +3,7 @@ Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
 Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 *}
-<div class="redcms-block redcms-hidden" redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" 
+<div class="redcms-block yui3-redcms-loading" {$this->renderBlockAttributes()}
 	widget="TreeView" requires="redcms-treeview">
 
 	{function name=menu level=0}
@@ -13,11 +13,11 @@ http://redcms.red-agent.com/license.html
 					<a href="{$block->getLink()|default:'#'}" class="yui3-redcms-icon-html">
 						{$block->getLabel()}
 					</a>
-					{*
+					
 					{$subBlocks = $block->getChildBlocks('link')}
 					{if !empty($subBlocks)}
     					{call menu blocks=$subBlocks level=$level+1}
-					{/if}*}
+					{/if}
 				</li>
 			{/foreach}
 		</ul>

@@ -4,7 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
 
-<div redid="{$this->id}" redadmin="{$this->renderAdminJSON()}" widget="Block" >
+<div {$this->renderBlockAttributes()} widget="Block" >
 	
 	{$params = ['parentId' => $this->id]}
 	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-panel" 

@@ -9,8 +9,8 @@ http://redcms.red-agent.com/license.html
 {$class='yui3-redcms-canwrite'}
 {/if}
 
-<div class="redcms-block {block name=blockClass}{/block} {$class}" redid="{$this->id}" 
-	redadmin="{$this->renderAdminJSON()}" widget="MenuNav" requires="redcms-menunav" >
+<div class="redcms-block {block name=blockClass}{/block} {$class}" {$this->renderBlockAttributes()}
+	 widget="MenuNav" requires="redcms-menunav" >
 	
 	<div class="yui3-menu-bd"></div>
 	

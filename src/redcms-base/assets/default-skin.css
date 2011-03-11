@@ -42,8 +42,12 @@ input[type=submit] {
 
 .redcms-hd {
 	border: 1px solid gray;
-	padding: 4px;
 	margin: 10px 8px 5px 10px;
+	text-align: right;
+	font-weight: 900;
+	font-size: 36px;
+	padding: 0 8px;
+	font-variant: small-caps;
 }
 .redcms-bd .redcms-bd-content {	
 	border: solid 1px gray;
@@ -456,6 +460,29 @@ ul li {
 	width: inherit;
 }
 
+
+/* YUI2-Editor: view source button */
+.yui-skin-sam .yui-toolbar-container .yui-toolbar-editcode span.yui-toolbar-icon {
+	background-image: url(redcms-sprite.png);
+	background-position: 0 -118px;
+	left: 10px;
+}
+.yui-skin-sam .yui-toolbar-container .yui-button-editcode-selected span.yui-toolbar-icon {
+	background-image: url(redcms-sprite.png);
+	background-position: 0 -118px;
+	left: 10px;
+}
+ .yui-skin-sam .yui-editor-panel .editor-hidden {
+ 	visibility: hidden;
+	top: -9999px;
+	left: -9999px;
+	position: absolute;
+}
+.yui-skin-sam .yui-editor-panel textarea {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
 /** RedCMS Accordion styles */
 .yui3-redcms-accordion-item {
 	height:0;
