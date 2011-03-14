@@ -13,3 +13,4 @@ files/*
 *build_tmp*
 google*.html
 tests/*
+index-*.php
