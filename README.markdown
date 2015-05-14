@@ -47,12 +47,3 @@ Install
 		"RewriteBase /"
 	to
 		"RewriteBase *yourdirectory*"
-
-Build
-----------------------
-1. Requirements
-	1. Apache Ant
-	2. [YUI Builder](http://yuilibrary.com/projects/builder) (copy this at the root directory of your RedCMS install)
-2. Build
-	1. Type *ant* in the command line at the root directory of your RedCMS install
-	2. You can build individual moduls by going in there directory and running *ant all* command
