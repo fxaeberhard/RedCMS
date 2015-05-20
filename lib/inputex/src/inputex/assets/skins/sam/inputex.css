@@ -14,7 +14,7 @@ div.inputEx-label {
 }
 
 div.inputEx-Group div.inputEx-label {
-   width: 130px;
+   width: 110px;
 }
 
 div.inputEx-Field {
@@ -143,7 +143,7 @@ div.inputEx-Group fieldset.inputEx-Collapsed div.inputEx-CombineField {
  */
 
 div.inputEx-Form-buttonBar {
-   margin: 3px 0 0 137px;
+   margin: 3px 0 0 117px;
 }
 
 .inputEx-Button { margin:0 4px 0 0; }
@@ -479,6 +479,6 @@ tbody.yui-dt-data div.inputEx-dtInPlaceEdit-deleteLinkSpinner{
   box-shadow: 0 0 16px rgba(255,255,255,.5);
   position: absolute;
   cursor: move;
-  /* IE doesn't handle event with empty transparent div, adding à transparent gif solves the problem  */
+  /* IE doesn't handle event with empty transparent div, adding Ã  transparent gif solves the problem  */
   background: transparent url(images/space.gif);
 }

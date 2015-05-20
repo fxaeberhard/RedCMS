@@ -1,11 +1,11 @@
 /* 
-Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
-Code licensed under the BSD License:
-http://redcms.red-agent.com/license.html
-*/
+ Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+ Code licensed under the BSD License:
+ http://redcms.red-agent.com/license.html
+ */
 
-//YUI.add('redcms-widget', function(Y) {
-	 
+YUI.add('redcms-widget', function(Y) {
+
 	function RedCMSWidget() {
 
 		this.publish("redcms:select", {
@@ -14,26 +14,25 @@ http://redcms.red-agent.com/license.html
 		this.publish("reload", {
 			emitFacade: false
 		});
+		this.publish("dirty", {
+			defaultFn: function() {
+				Y.RedCMS.RedCMSManager.reload(this.get("contentBox"));
+			}
+		});
 		this.publish("success"
-			//	, { 
+			//	,{ 
 			//   defaultTargetOnly: true,
 			//    defaultFn: this._defAddChildFn 
 			// }
-		);
+			);
 	}
-	
-	/*RedCMSWidget.ATTRS = {
-	
-	};*/
-	
+
 	RedCMSWidget.prototype = {
 		_overlay: null,
-		
-		hideReloadOverlay: function(){
+		hideReloadOverlay: function() {
 			this._overlay.hide();
 		},
-	
-		showReloadOverlay: function(){
+		showReloadOverlay: function() {
 			var bb = this.get('boundingBox');
 
 			if (!this._overlay) {
@@ -46,4 +45,4 @@ http://redcms.red-agent.com/license.html
 	};
 
 	Y.namespace('RedCMS').RedCMSWidget = RedCMSWidget;
-//});
+});
