@@ -1,29 +1,31 @@
-<?php /* 
-Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
-Code licensed under the BSD License:
-http://redcms.red-agent.com/license.html
-*/
+<?php
+
+/*
+  Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+  Code licensed under the BSD License:
+  http://redcms.red-agent.com/license.html
+ */
 
 class MailFormBlock extends FormBlock {
-	
-	/*function parseRequest(){
-		global $_REQUEST;
-		$redCMS = RedCMS::get();
-		$fields = parent::parseRequest();
-		
-		foreach ($fields as &$f) {
-			switch ($f['type']) {
-				case 'TextareaField':
-				case 'EditorField':
-					$f['value'] .= $redCMS->config['mailFooter'];
-				default: 
-					break;
-			}
-		}
-		
-		return $fields;
-	}*/
-	function render(){
+	/* function parseRequest(){
+	  global $_REQUEST;
+	  $redCMS = RedCMS::get();
+	  $fields = parent::parseRequest();
+
+	  foreach ($fields as &$f) {
+	  switch ($f['type']) {
+	  case 'TextareaField':
+	  case 'EditorField':
+	  $f['value'] .= $redCMS->config['mailFooter'];
+	  default:
+	  break;
+	  }
+	  }
+
+	  return $fields;
+	  } */
+
+	function render() {
 		global $_REQUEST, $_SERVER;
 		$redCMS = RedCMS::get();
 		if (isset($_REQUEST['redaction'])) {
@@ -37,10 +39,10 @@ class MailFormBlock extends FormBlock {
 				$mail->From = 'anonymous@anonymous.com';
 			}
 			$fields = $this->parseRequest();
-			
-			$mail->Subject = '['.str_replace('www.', '', $_SERVER['HTTP_HOST']).']'.$fields['msg_title'];
-			$mail->Body = $fields['msg_content'].$redCMS->config['mailFooter'];
-			
+
+			$mail->Subject = '[' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . ']' . $fields['msg_title'];
+			$mail->Body = $fields['msg_content'] . $redCMS->config['mailFooter'];
+
 			foreach (UserManager::getUsersByGroupId($fields['dest_group']) as $u) {
 				$mail->AddUser($u);
 				$r = $mail->Send();
@@ -51,16 +53,19 @@ class MailFormBlock extends FormBlock {
 				$mail->ClearAllRecipients();
 			}
 			if ($ret) {
-				$msg = 'Mail sent.';//. to group number '.$_REQUEST['dest_group'];
+				$msg = 'Mail sent.'; //. to group number '.$_REQUEST['dest_group'];
 				//$redCMS->log($msg, 'log', 'MailFormBlock');
 				$ret = array('result' => 'success', 'msg' => $msg);
 			} else {
-				$msg = 'Error sending mail to group '.$_REQUEST['dest_group'];
+				$msg = 'Error sending mail to group ' . $_REQUEST['dest_group'];
 				//$redCMS->log($msg, 'error', 'MailFormBlock');
-				$ret = array('result' => 'error', 'msg'=> $msg);
+				$ret = array('result' => 'error', 'msg' => $msg);
 			}
-			echo json_encode($ret);	
-		} else echo parent::render();
+			echo json_encode($ret);
+		} else
+			echo parent::render();
 	}
+
 }
+
 ?>

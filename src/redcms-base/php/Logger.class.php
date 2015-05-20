@@ -1,29 +1,40 @@
 <?php
+
 class Logger {
+
 	var $logWriters = array();
 	var $verbose = array('log', 'info', 'warn', 'error');
 	var $startTime;
+
 	function Logger() {
 		$this->startTime = microtime(true);
 	}
-	function addLogWriter($logWriter){
+
+	function addLogWriter($logWriter) {
 		array_push($this->logWriters, $logWriter);
 	}
-	function log($object, $verbose='log', $src=null){
-		foreach ($this->logWriters as &$lw){
+
+	function log($object, $verbose = 'log', $src = null) {
+		foreach ($this->logWriters as &$lw) {
 			$lw->write($object, $verbose, $src);
 		}
 	}
-	function doCheckPoint($name= 'Checkpoint'){
+
+	function doCheckPoint($name = 'Checkpoint') {
 		$add = '';
-		if (function_exists('memory_get_usage')) $add = "mem usage ".memory_get_usage();
-		echo $this->log($name.":temps ".round(microtime(true)- $this->startTime, 4).$add);
+		if (function_exists('memory_get_usage'))
+			$add = "mem usage " . memory_get_usage();
+		echo $this->log($name . ":temps " . round(microtime(true) - $this->startTime, 4) . $add);
 	}
+
 }
+
 class LogWriter {
-	function write($verbose, $object, $src){
+
+	function write($verbose, $object, $src) {
 		throw new NotImplementedException();
 	}
+
 	//	function getMessageString($object, $src){
 	//		$ret = '['.(($src)?get_class($src):'global').']';
 	//		if (is_string($object)) $ret .=  $object;
@@ -31,23 +42,27 @@ class LogWriter {
 	//		return $ret;
 	//	}
 }
+
 class FirePHPLogWriter extends LogWriter {
+
 	var $firephp;
-	function FirePHPLogWriter(){
+
+	function FirePHPLogWriter() {
 		$this->firephp = FirePHP::getInstance(true);
 
-		$this->firephp->setOptions( array(
+		$this->firephp->setOptions(array(
 			'maxObjectDepth' => 4,
-            'maxArrayDepth' => 4,
-            'useNativeJsonEncode' => true,
-            'includeLineNumbers' => true));
+			'maxArrayDepth' => 4,
+			'useNativeJsonEncode' => true,
+			'includeLineNumbers' => true));
 		//This line is present in firebug documentation, but seems to be unuseful for us
 		//		ob_start();
 	}
-	function write($object, $verbose, $src){
-		$label = '['.(($src)?get_class($src):'global').']';
-		try{
-			switch ($verbose){
+
+	function write($object, $verbose, $src) {
+		$label = '[' . (($src) ? get_class($src) : 'global') . ']';
+		try {
+			switch ($verbose) {
 				case 'log':
 					$this->firephp->log($object, $label);
 					break;
@@ -61,9 +76,11 @@ class FirePHPLogWriter extends LogWriter {
 					$this->firephp->error($object, $label);
 					break;
 			}
-		} catch (Exception $e){
+		} catch (Exception $e) {
 			echo '[FirePHPLogger}Headers have alredy been sent.';
 		}
 	}
+
 }
+
 ?>
