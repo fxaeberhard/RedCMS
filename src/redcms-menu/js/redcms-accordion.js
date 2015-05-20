@@ -4,74 +4,53 @@
  * http://redcms.red-agent.com/license.html
  */
 
-//YUI.add('redcms-accordion', function(Y) {
+YUI.add('redcms-accordion', function(Y) {
 	var Accordion,
-		
-		CONTENT_BOX = 'contentBox',
-		
-		REDCMS = 'redcms',
-		ACCORDION = 'redcms-accordion',
-		TITLE = 'title',
-		ITEM = 'item',
-		CONTENT = 'content',
-		TOGGLED = 'toggled',
-		
+		CONTENT_BOX = 'contentBox',  ACCORDION = 'redcms-accordion',
+		TITLE = 'title', ITEM = 'item', TOGGLED = 'toggled',
 		getCN = Y.ClassNameManager.getClassName,
-		
 		CLASSES = {
-			title	: getCN(ACCORDION, TITLE),
-			item	: getCN(ACCORDION, ITEM),
-			content : getCN(ACCORDION, CONTENT),
-			toggled : getCN(ACCORDION, TOGGLED)
+			title: getCN(ACCORDION, TITLE),
+			item: getCN(ACCORDION, ITEM),
+			toggled: getCN(ACCORDION, TOGGLED)
 		};
-	
+
 	Accordion = Y.Base.create("redcms-accordion", Y.Widget, [Y.RedCMS.RedCMSWidget], {
-		
-		_accordion : null,
-		_handler : null,
-		_currentOpenedNode : null,
-		
-		_closeNode : function(n) {
-			var tn = n.next('.'+CLASSES.item);
+		_accordion: null,
+		_currentOpenedNode: null,
+		_closeNode: function(n) {
+			var tn = n.next('.' + CLASSES.item);
 			tn.transition({
-			    duration: 0.3,
-			    easing: 'ease-in',
-			    height: 0
+				duration: 0.3,
+				easing: 'ease-in',
+				height: 0
 			});
 			n.removeClass(CLASSES.toggled);
 		},
-		_showNode : function(n) {
-			var tn = n.next('.'+CLASSES.item);
+		_showNode: function(n) {
+			var tn = n.next('.' + CLASSES.item);
 			tn.transition({
-			    duration: 0.3,
-			    easing: 'ease-in',
-			    height: tn.one('div').getComputedStyle('height')
+				duration: 0.3,
+				easing: 'ease-in',
+				height: tn.one('div').getComputedStyle('height')
 			});
 			n.addClass(CLASSES.toggled);
 		},
-		_onTitleClicked : function(e) {
+		_onTitleClicked: function(e) {
 			if (e.currentTarget.hasClass(CLASSES.toggled)) {
 				this._closeNode(e.currentTarget);
 			} else {
-				if (this._currentOpenedNode && this._currentOpenedNode != e.currentTarget) { this._closeNode(this._currentOpenedNode); }
+				if (this._currentOpenedNode && this._currentOpenedNode != e.currentTarget) {
+					this._closeNode(this._currentOpenedNode);
+				}
 				this._showNode(e.currentTarget);
 				this._currentOpenedNode = e.currentTarget;
 			}
 		},
-		
-		renderUI : function() {
-			var cb = this.get(CONTENT_BOX);
-
-			this._handler = cb.delegate('click', this._onTitleClicked, '.'+CLASSES.title, this);
-		},
-		destructor : function() {
-			
+		renderUI: function() {
+			this.get(CONTENT_BOX).delegate('click', this._onTitleClicked, '.' + CLASSES.title, this);
 		}
-	}, {
-		NAME : ACCORDION,
-		NS : REDCMS,
-		CLASSES : CLASSES
-	} );
-	
+	});
+
 	Y.namespace('RedCMS').Accordion = Accordion;
-//}, '0.1.1');
+}, '0.1.1');

@@ -27,7 +27,7 @@
 				</div>	
 				<div class="redcms-conversation-footer">
 					{$params = ['parentId' => $block->id]}
-					<span widget="BlockReloadOpenPanelAction" params="{htmlspecialchars(json_encode($params))}">
+					<span widget="OpenPanelAction" params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
 						<a href="{ParamManager::getLink('290')}">Commenter</a>
 					</span>
 				</div>	

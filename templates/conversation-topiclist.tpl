@@ -7,8 +7,8 @@
 <div {$this->renderBlockAttributes()} widget="Block" >
 	
 	{$params = ['parentId' => $this->id]}
-	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-panel" 
-		params="{htmlspecialchars(json_encode($params))}">
+	<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
+		params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
 		<span>
 			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('300')}" >
 				Poster un nouveau message
@@ -114,8 +114,8 @@
 	</div>
 	
 	{$params = ['parentId' => $this->id]}
-	<span class="yui3-redcms-button" widget="BlockReloadOpenPanelAction" requires="redcms-panel" 
-		params="{htmlspecialchars(json_encode($params))}">
+	<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
+		params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
 		<span>
 			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('300')}" >
 				Poster un nouveau message

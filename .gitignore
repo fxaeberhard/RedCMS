@@ -1,16 +1,8 @@
-builder
-files/smarty/template_c
 lib/FirePHPCore
-lib/phploader
-lib/phpmailer
-lib/yui
-lib/yuicompressor
-test/*
 files/*
 .project*
 .settings
 .buildpath
 *build_tmp*
 google*.html
-tests/*
-index-*.php
+/nbproject/private/

@@ -1,8 +1,6 @@
 body {
-	padding: 0 0;
-	margin: 4px 4px;
 	font-family: Arial;
-	font-size: 10pt;
+	font-size: 10.5pt;
 	font-variant: normal;
 	font-weight: normal;
 	line-height: normal;
@@ -39,21 +37,21 @@ h3 {
 
 /** Layout Styles */
 .redcms-layout {
-	padding-left: 287px; /* allow for left column (#nav) */
-	padding-right: 0px;
+	padding-left: 300px; /* allow for left column (#nav) */
+	padding-right: 10px;
+	padding-top: 7px;
 }
 .redcms-left {
-	margin-left: -287px;
+	margin-left: -295px;
 	position: relative;
 	/* workaround for IE9 not firing mouse events on #side due to negative margin */
-	width: 287px;
+	width: 290px;
 }
 .redcms-left .redcms-content {
 	margin: 0;
 }
 .redcms-bd {
-	margin-left: 2px;
-	background-color: #E3EBF4;
+	/* background-color: #E3EBF4; */
 }
 
 
@@ -67,7 +65,7 @@ h3 {
 
 /** Menu Styles */
 .redcms-left .yui3-menu-bd {
-	background: transparent url(smag-menu-title-principal.gif);
+	background: transparent url(smag-menu-title-principal.gif) no-repeat;
 	height: 48px;
 }
 
@@ -75,11 +73,11 @@ h3 {
 	background: transparent url(smag-menu-title-membres.gif);
 }
 .yui3-skin-sam .redcms-left .yui3-menu-ft {
-	background: transparent url(smag-menu-back.gif);
+	background: transparent url(smag-menu-back.gif) no-repeat;
 	height: 19px;
 }
 .yui3-skin-sam .redcms-left .yui3-menu-content {
-	background: transparent url(smag-menu-foot.gif);
+	background: transparent url(smag-menu-foot.gif) repeat-y;
 }
 .yui3-skin-sam .redcms-left .yui3-menu-content, .yui3-skin-sam  .redcms-left .yui3-menu .yui3-menu .yui3-menu-content {
 	border: none;
@@ -102,13 +100,18 @@ h3 {
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label, 
 .yui3-skin-sam .redcms-left .yui3-menuitem-content, 
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-content {
-	padding: 0 20px 0 35px;
+	padding: 2px 20px 2px 35px;
+	margin: 0;
+	/* font-size: 104%; */
+	font-size: 96%;
+	/* overflow: visible; */
 }
 /** Header */
 .smag-header {
 	padding: 5px;
 	border: 2px solid black;
 	border-bottom: none;
+	background: #E3EBF4;
 }
 .smag-header > div {
 	background: transparent url(sprite-smag.png) repeat scroll 0 -100px;
@@ -130,43 +133,59 @@ h3 {
 /* Footer */
 .smag-footer {
 	border-left: 2px solid black;
+	background: #E3EBF4;
 }
 .smag-footer-content {
 	float: right;
 }
 .smag-footer-left {
 	float: left;
-	width: 20px;
+	width: 13px;
 	height: 16px;
-	background: transparent url(sprite-smag.png) no-repeat scroll 0 -60px;
+	/* background: transparent url(sprite-smag.png) no-repeat scroll 0 -60px; */
+	background: white;
+	border: 2px solid black;
+	border-top-left-radius: 20px;
+	border-right: none;
 }
 .smag-footer-center {
 	float: left;
-	height: 15px;
-	background: transparent url(sprite-smag.png) repeat scroll 0 -80px;
+	height: 14px;
+	/* background: transparent url(sprite-smag.png) repeat scroll 0 -80px; */
 	font-size: 11px;
 	font-style: italic;
 	padding-right: 5px;
-	padding-top: 1px;	
+	padding-top: 2px;	
+	border: 2px solid black;
+	background: white;
+	border-left: none;
+	border-right: none;
 }
 
 .smag-subfooter {
 	border: 2px solid black;
 	border-top: none;
 	height: 6px;
+	background: #E3EBF4;
 }
 
 /* Hierarchy */
 .redcms-bd .redcms-bd-title {
 	padding: 0;
-	background: transparent;
+	background: #E3EBF4;
 	border: none;
 	border-right: 2px solid black;
+	vertical-align: top;
+	/* margin-top: 4px; */
+}
+.redcms-bd .redcms-bd-title +div {
+	background: #E3EBF4;
 }
 
 .redcms-bd .redcms-bd-title-content {
 	background: transparent url(sprite-smag.png) repeat scroll 0 -30px;
 	float: left;
+	display: inline-block;
 }
 .redcms-bd .redcms-bd-title-item {
 	float: left;
@@ -174,7 +193,8 @@ h3 {
 	font-size: 12px;
 	font-style: italic;
 	font-weight: bold;
-	padding: 6px 3px 0px;
+	padding: 6px 0px 0px 3px;
+	height: 20px;
 }
 .redcms-bd .redcms-bd-title-separator {
 	float: left;
@@ -189,8 +209,14 @@ h3 {
 .redcms-bd-title-right {
 	float: left;
 	width: 20px;
-	height: 26px;
-	background: transparent url(sprite-smag.png) no-repeat scroll 0 0;
+	height: 22px;
+	/* background: transparent url(sprite-smag.png) no-repeat scroll 0 0; */
+	border: 2px solid black;
+	border-left: 0;
+	border-bottom-right-radius: 70px;
+	display: inline-block;
+	padding: 0;
+	background: white;
 }
 
 /** RedCMS Conversation styles */
