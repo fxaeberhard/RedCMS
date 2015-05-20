@@ -1,74 +1,82 @@
 /* 
-Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
-Code licensed under the BSD License:
-http://redcms.red-agent.com/license.html
-*/
+ Copyright (c) 2011, Francois-Xavier Aeberhard All rights reserved.
+ Code licensed under the BSD License:
+ http://redcms.red-agent.com/license.html
+ */
 
+YUI.add('redcms-admin', function(Y) {
 
+	// *** OverlayAutohide *** //
+	var ContextMenu, CONTENTBOX = 'contentBox';
 
-//YUI.add('redcms-admin', function(Y) {
-	
-// *** OverlayAutohide *** //
-	var ContextMenu,
-		BOUNDINGBOX = 'boundingBox',
-		CONTENTBOX = 'contentBox';
-	
-    ContextMenu = Y.Base.create("contextmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetStack], {
+	ContextMenu = Y.Base.create("overmenu", Y.Widget, [Y.WidgetPosition, Y.WidgetPositionAlign], {
+		CONTENT_TEMPLATE: '<div><div class="yui3-menu redcmas-over-menu yui3-menu-horizontal"></div></div>',
 		// *** Instance Members *** //
 
 		// *** Private Methods *** //
 
 		// *** Lifecycle Methods *** //
 
-		renderUI : function() {
-			var bb = this.get(BOUNDINGBOX),
-				cb = this.get(CONTENTBOX);
-				
-			bb.setStyle('position', 'absolute');
-			cb.setContent('<div class="yui3-menu" />');
-			
-			cb.one('.yui3-menu').plug(Y.Plugin.NodeMenuNav);
+		renderUI: function() {
+			this.get(CONTENTBOX).one('.yui3-menu').plug(Y.Plugin.NodeMenuNav);
 		},
-		
-		bindUI : function() {
-			var bb = this.get(BOUNDINGBOX),
-				cb = this.get(CONTENTBOX),
-				hide = Y.bind(this.hide, this);
-			
-			bb.on('mouseupoutside', hide);
-			bb.on('click', hide);
-		
-			Y.one('body').on('contextmenu', function(e) {
-				//Y.log('ContextMenu.onContextMenu()', 'info');
+		bindUI: function() {
+			Y.one('body').delegate('mouseover', function(e) {
+				if (!e.treated) {
+					var menuCB = this.get(CONTENTBOX).one('div'),
+						targetAdminNodes = e.currentTarget.ancestor(function(n) {
+							return n.getAttribute('redadmin');
+						}, true);
 
-				var targetNode = e.target.ancestor('[redid]', true),
-					//targetAdmin = e.target.ancestor('[redadmin]', true),
-					targetAdminNodes = e.target.ancestors(function(n){
-						return (n.getAttribute('redadmin') != '');
-					}, true),
-					
-					menuCB = cb.one('div');
-				
-				if (targetNode && targetAdminNodes.size() > 0) {
-					e.halt();	
-					this.show();
-					this.move(e.clientX + Y.DOM.docScrollX(), e.clientY + Y.DOM.docScrollY());
-					menuCB.setContent(this._getMenuMarkupFromAdminNodesList(targetNode, targetAdminNodes));
-					Y.RedCMS.RedCMSManager.render(menuCB, Y.bind(this._onContextMenuItemsRendered, this, targetNode));
+					if (targetAdminNodes) {
+						e.treated = true;
+						menuCB.setContent(this._getMenuMarkupFromAdminNodesList(e.currentTarget, targetAdminNodes));
+						Y.RedCMS.RedCMSManager.render(menuCB, Y.bind(this._onContextMenuItemsRendered, this, e.currentTarget));
+
+						if (menuCB.getContent()) {
+							this.showOverlay(e.currentTarget);
+						}
+					}
 				}
+			}, "[redid]", this);
+
+			Y.one('body').delegate('mouseout', function(e) {
+				if (!e.treated) {
+					e.treated = true;
+					this.hideOverlay();
+				}
+			}, "[redid]", this);
+
+			this.get(CONTENTBOX).on("mouseover", function() {
+				this.timer && this.timer.cancel();
 			}, this);
-		}, 
-		
-		
+			this.get(CONTENTBOX).on("mouseout", this.hideOverlay, this);
+		},
+		showOverlay: function(target) {
+			this.timer && this.timer.cancel();
+			this.show();
+			this.align(target, ["tr", "tr"]);
+			Y.all(".redcms-admin-over").removeClass("redcms-admin-over");
+			target.addClass("redcms-admin-over");
+		},
+		hideOverlay: function() {
+			this.timer && this.timer.cancel();
+			this.timer = Y.later(20, this, this.doHideOverlay);
+		},
+		doHideOverlay: function() {
+			this.hide();
+			this.timer && this.timer.cancel();
+			Y.all(".redcms-admin-over").removeClass("redcms-admin-over");
+		},
 		// *** Private Methods *** //
 		_onContextMenuItemsRendered: function(targetNode, widgets) {
 			//console.log("ContextMenu._onContextMenuItemsRendered(): ");
-			
-			if (widgets.length != this._adminNodes.length) {									//HACK
+
+			if (widgets.length !== this._adminNodes.length) {									//HACK
 				Y.log("ContextMenu._onContextMenuItemsRendered(): widget count does not match _adminNodes count", 'error');
 			}
-			
-			for (var i=0; i<widgets.length; i++) {
+
+			for (var i = 0; i < widgets.length; i++) {
 				//console.log("adding succes callback on a menu item");
 				widgets[i].on('success', Y.bind(this._onContextMenuItemSuccess, this, targetNode, this._adminNodes[i]));
 			}
@@ -78,86 +86,115 @@ http://redcms.red-agent.com/license.html
 			var targetAdminWidget = Y.Widget.getByNode(targetAdminNode),
 				targetAdmin;
 			if (!targetAdminWidget) {														//HACK
-				targetAdmin = targetBlock.ancestor( function(e) {
-					return  (e.getAttribute('redadmin') != '');
-				 }, true);
+				targetAdmin = targetBlock.ancestor(function(e) {
+					return  e.getAttribute('redadmin') !== '';
+				}, true);
 				targetAdminWidget = Y.Widget.getByNode(targetAdmin);
 			}
 			Y.RedCMS.RedCMSManager.reloadWidget(targetAdminWidget);
 		},
-		_adminNodes : null,
-		
-		_getMenuMarkupFromAdminNodesList : function( targetNode, targetAdminNodesList ) {
-			var ret = ['<div class="yui3-menu-content">'],
-				firstOfType = false,
-				currentAdminNode, i, jsonConf;
-				
-				this._adminNodes = [];							//HACK
-			
-				for (i=targetAdminNodesList.size()-1; i>=0; i--) {
-					currentAdminNode = targetAdminNodesList.item(i);
-					try {
-						jsonConf = Y.JSON.parse(decodeURI(currentAdminNode.getAttribute('redadmin')));
-					} catch(e) {
-						Y.log('RedCMSAdmin._getMenuMarkupFromAdminNodesList(): Unable to parse admin menu JSON configuration', 'error');
-					}
-					if (jsonConf.length>0) {
-						if (firstOfType) { ret.push('<ul>'); }
-						else { ret.push('<ul class="first-of-type">'); }
-						ret = ret.concat(this._getMenuMarkupFromAdminNode(targetNode, currentAdminNode, jsonConf));
-						ret.push('</ul>');
-						firstOfType = true;
-					}
-				}
+		_adminNodes: null,
+		_getMenuMarkupFromAdminNodesList: function(targetNode, currentAdminNode) {
+			var ret = ['<div class="yui3-menu-content"><ul class="first-of-type">'], jsonConf;
 
-				ret.push('</div>');
-				if (ret.length>2) { return ret.join(''); }
-				else { return ''; }
+			this._adminNodes = [];                                              //HACK
+
+			try {
+				jsonConf = Y.JSON.parse(decodeURI(currentAdminNode.getAttribute('redadmin')));
+			} catch (e) {
+				Y.log('RedCMSAdmin._getMenuMarkupFromAdminNodesList(): Unable to parse admin menu JSON configuration', 'error');
+			}
+
+			ret = ret.concat(this._getMenuMarkupFromAdminNode(targetNode, currentAdminNode, jsonConf));
+
+			if (ret.length > 2) {
+				return ret.join('');
+			} else {
+				return '';
+			}
 		},
-		_getMenuMarkupFromAdminNode : function( targetNode, targetAdminNode, adminConfObj ) {
-			var ret = [],
-				row, i, isValidRow, href, params, parentNode;
+		_getMenuMarkupFromAdminNode: function(targetNode, targetAdminNode, adminConfObj) {
+			var ret = [], row, i, isValidRow, href, params, parentNode;
 			//Y.log("ContextMenu._getMenumarkupFromObject(): "+ this._targetBlock, 'log');
-			
-			for (i=0; i<adminConfObj.length; i++) {
+
+			adminConfObj = adminConfObj.reverse();
+
+			for (i = 0; i < adminConfObj.length; i++) {
 				row = adminConfObj[i];
 				isValidRow = true;
-				if (row.filter !== undefined) {
-					isValidRow =  row.filter.split('|').indexOf(targetNode.getAttribute('widget')) > -1;
+				if (row.filter !== undefined && row.filter.split('|').indexOf(targetNode.getAttribute('widget')) === -1) {
+					continue;
 				}
-				if (isValidRow) {
-					href = row.href;
-					params = {};
-					parentNode = Y.RedCMS.RedCMSManager.getParentBlock(targetNode);
-					if (row.action == 'editCurrent') {
+				href = row.href;
+				params = {};
+				parentNode = Y.RedCMS.RedCMSManager.getParentBlock(targetNode);
+				switch (row.action) {
+					case 'editCurrent':
 						params.id = targetNode.getAttribute('redid');
-					} else if (row.action == 'addSibling' ){
-						if (parentNode) { params.parentId = parentNode.getAttribute('redid'); }
-						else { isValidRow = false; }
-					} else if (row.action == 'addChild'){
-						params.parentId = targetNode.getAttribute('redid');			
-					} else if (row.action == 'editRoot') {
-						if (targetAdminNode) { params.id = targetAdminNode.getAttribute('redid'); }
-						else  { isValidRow = false; }
-					} else if (row.action == 'addChildToRoot') {
-						if (targetAdminNode) { params.parentId = targetAdminNode.getAttribute('redid'); }
-						else { isValidRow = false; }
-					} else if (row.action == 'replaceHref') {
-						href = targetNode.one('a').get('href');
-					}
+						break;
+					case 'addSibling':
+						if (parentNode) {
+							params.parentId = parentNode.getAttribute('redid');
+						} else {
+							isValidRow = false;
+						}
+						break;
+					case 'addChild':
+						params.parentId = targetNode.getAttribute('redid');
+						break;
+					case  'editRoot':
+						if (targetAdminNode) {
+							params.id = targetAdminNode.getAttribute('redid');
+						} else {
+							isValidRow = false;
+						}
+						break;
+					case 'addChildToRoot':
+						if (targetAdminNode) {
+							params.parentId = targetAdminNode.getAttribute('redid');
+						} else {
+							isValidRow = false;
+						}
+						break;
+					case  'replaceHref':
+						href = (targetNode.one('a') || targetNode).get('href');
+						break;
 				}
+
 				if (isValidRow) {
+					var l = row.label.toLowerCase(), icon = "";                     // Append font awesome icons
+
+					if (l.indexOf("restore") > -1) {
+						icon = "<i class='fa fa-undo fa-1'></i>";
+					} else if (l.indexOf("open") > -1) {
+						icon = "<i class='fa fa-external-link fa-1'></i>";
+					} else if (l.indexOf("download") > -1) {
+						icon = "<i class='fa fa-download fa-1'></i>";
+					} else if (l.indexOf("upload") > -1) {
+						icon = "<i class='fa fa-upload fa-1'></i>";
+					} else if (l.indexOf("rights") > -1 || l.indexOf("group") > -1) {
+						icon = "<i class='fa fa-users fa-1'></i>";
+					} else if (l.indexOf("edit") > -1) {
+						icon = "<i class='fa fa-pencil fa-1'></i>";
+					} else if (l.indexOf("create") > -1 || l.indexOf("new") > -1) {
+						icon = "<i class='fa fa-plus fa-1'></i>";
+					} else if (l.indexOf("delete") > -1) {
+						icon = "<i class='fa fa-trash fa-1'></i>";
+					}
+
 					ret.push('<li ');
-					if (!row.children) { ret.push('class="yui3-menuitem" '); }
-					ret.push('widget="',row.widget,'" params="',Y.RedCMS.RedCMSManager.escapeAttribute(Y.JSON.stringify(params)),'" >');
+					if (!row.children) {
+						ret.push('class="yui3-menuitem" ');
+					}
+					ret.push('widget="', row.widget, '" params="', Y.RedCMS.RedCMSManager.escapeAttribute(Y.JSON.stringify(params)), '" >');
 					if (row.children) {
-						ret.push('<a class="yui3-menu-label" href="',href,'" >', row.label, 
-								'</a><div class="yui3-menu yui3-menu-hidden"><div class="yui3-menu-content"><ul class="first-of-type">');
-						ret = ret.concat( this._getMenuMarkupFromAdminNode( targetNode, targetAdminNode, row.children));
-						ret.push('</ul></div></div>');	
+						ret.push('<a class="yui3-menu-label" href="', href, '" title="', row.label, '">', icon, row.label,
+							'</a><div class="yui3-menu yui3-menu-hidden"><div class="yui3-menu-content"><ul class="first-of-type">');
+						ret = ret.concat(this._getMenuMarkupFromAdminNode(targetNode, targetAdminNode, row.children));
+						ret.push('</ul></div></div>');
 					} else {
 						this._adminNodes.push(targetAdminNode);											//HACK
-						ret.push('<a class="yui3-menuitem-content" href="',href,'" >',row.label,'</a>');	
+						ret.push('<a class="yui3-menuitem-content" href="', href, '" title="', row.label, '" >', icon, row.label, '</a>');
 					}
 					ret.push('</li>');
 				}
@@ -165,13 +202,12 @@ http://redcms.red-agent.com/license.html
 			return ret;
 		}
 	});
-    
+
 	Y.namespace('RedCMS').ContextMenu = ContextMenu;
-	
+
 	Y.RedCMS.cm = new ContextMenu({
-        zIndex:1000,
-        render : true,
-		visible : false
-    });
-	
-//}, '0.1.1', {requires:['gallery-outside-events', 'node-menunav']});
+		zIndex: 100000,
+		visible: false
+	}).render();
+
+}, '0.1.1');
