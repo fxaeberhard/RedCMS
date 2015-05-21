@@ -26,12 +26,14 @@ YUI.add('redcms-msgbox', function(Y) {
 			this.get(BOUNDING_BOX).removeClass(CLASSES.warning)
 				.removeClass(CLASSES.error)
 				.removeClass(CLASSES.success)
-				.addClass(style)
+				.addClass(style);
 
 			this.get(CONTENT_BOX).setContent(msg);
 
 			this.show();
 		}
+	}, {
+		CLASSES: CLASSES
 	});
 
 	Y.namespace('RedCMS').MsgBox = MsgBox;

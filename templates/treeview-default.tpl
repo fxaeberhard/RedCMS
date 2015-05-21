@@ -4,7 +4,7 @@ Code licensed under the BSD License:
 http://redcms.red-agent.com/license.html
 *}
 <div class="redcms-block yui3-redcms-loading yui3-redcms-treeview-content" {$this->renderBlockAttributes()}
-     widget="TreeView" requires="redcms-treeview" >
+     widget="TreeView" requires="redcms-treeview" data-noover=true >
   <button class='yui3-button' widget='OpenPanelAction' params='{ "parentId":2 }' href="/RedCMS/130/" data-cfg='{ "onSuccessEvent": "dirty" }'><i class='fa fa-plus-square'></i> New page</button>
   <br /><br />
   <div>

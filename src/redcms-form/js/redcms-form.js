@@ -22,7 +22,6 @@ YUI.add('redcms-form', function(Y) {
 				cb = this.get(CONTENTBOX);
 
 			try {
-				//console.log("log", Y.RedCMS.RedCMSManager.urldecode(cb.getContent()));
 				fields = Y.JSON.parse(Y.RedCMS.RedCMSManager.urldecode(cb.getContent()));
 				this.set("children", fields);
 
@@ -34,6 +33,13 @@ YUI.add('redcms-form', function(Y) {
 							break;
 						case "editor":
 							f.type = "tinymce";
+							break;
+						case "date":
+						case "datepicker":
+							if (f.value) {
+								var date = f.value.replace(" 00:00:00", "").split("-");
+								f.value = date[1] + "/" + date[2] + "/" + date[0];
+							}
 							break;
 					}
 				});

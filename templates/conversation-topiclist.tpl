@@ -15,6 +15,7 @@
 			</a>
 		</span>
 	</span>
+				<br /><br />
 	
 	<style type="text/css">
 		.topiclist-layout {

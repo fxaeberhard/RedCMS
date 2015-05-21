@@ -254,7 +254,7 @@ class Block extends Tuple {
 		if ($this->canWrite()) {
 			return htmlspecialchars(json_encode($this->getAdminJSON()));
 		} else {
-			return '';
+			return '{}';
 		}
 	}
 

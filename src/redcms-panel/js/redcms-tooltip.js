@@ -19,7 +19,7 @@ YUI.add('redcms-tooltip', function(Y) {
 		 * Initialization Code: Sets up privately used state
 		 * properties, and publishes the events Tooltip introduces
 		 */
-		initializer: function(config) {
+		initializer: function() {
 
 			this._triggerClassName = this.getClassName("trigger");
 
@@ -213,7 +213,7 @@ YUI.add('redcms-tooltip', function(Y) {
 		 * Shows the tooltip, after moving it to the current mouse
 		 * position.
 		 */
-		_showTooltip: function(node) {
+		_showTooltip: function() {
 			var x = this._currTrigger.mouseX;
 			var y = this._currTrigger.mouseY;
 
@@ -260,6 +260,8 @@ YUI.add('redcms-tooltip', function(Y) {
 				triggerHandles = this._eventHandles.trigger;
 
 			this._setTriggerContent(node);
+			if (this.get("contentBox").get("innerHTML") == "")
+				return;
 
 			triggerHandles.mouseMove = Y.on("mousemove", Y.bind(this._onNodeMouseMove, this), node);
 			triggerHandles.mouseOut = Y.on("mouseleave", Y.bind(this._onNodeMouseLeave, this), node);

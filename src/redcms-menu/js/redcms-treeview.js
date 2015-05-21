@@ -7,9 +7,9 @@
 YUI.add('redcms-treeview', function(Y) {
 
 
-	var TreeView, BOUNDING_BOX = 'boundingBox', CONTENT_BOX = 'contentBox';
+	var TreeView, RedCMS = Y.RedCMS, BOUNDING_BOX = 'boundingBox', CONTENT_BOX = 'contentBox';
 
-	TreeView = Y.Base.create("redcms-treeview", Y.Widget, [Y.RedCMS.RedCMSWidget], {
+	TreeView = Y.Base.create("redcms-treeview", Y.Widget, [RedCMS.RedCMSWidget], {
 		// *** Instance members *** //
 		_treeview: null,
 		_tooltip: null,
@@ -20,22 +20,21 @@ YUI.add('redcms-treeview', function(Y) {
 				target = cb.one("div") || cb;
 
 			try {
-				//console.log("log", Y.RedCMS.RedCMSManager.urldecode(cb.getContent()));
-				fields = Y.JSON.parse(Y.RedCMS.RedCMSManager.urldecode(target.getContent()));
+				fields = Y.JSON.parse(RedCMS.RedCMSManager.urldecode(target.getContent()));
 				this.set("children", fields);
 			} catch (e) {
 				Y.log('Form._parseFields(): Unable to parse form content.', 'log', 'RedCMS.Form');
 			}
 			target.setContent('');
 
-			this._treeview = new TreeView({
+			this._treeview = new CTreeView({
 				startCollapsed: false,
 				children: fields
 			}).render(cb);
 
 			cb.removeClass('yui3-redcms-loading');
 
-			this._tooltip = new Y.RedCMS.Tooltip({
+			this._tooltip = new RedCMS.Tooltip({
 				triggerNodes: ".yui3-treenode-label",
 				delegate: cb.one('ul'),
 				shim: false,
@@ -63,8 +62,8 @@ YUI.add('redcms-treeview', function(Y) {
 				window.location = selectedElem.href;
 			}
 		}
-	}, {});
-	Y.namespace('RedCMS').TreeView = TreeView;
+	});
+	RedCMS.TreeView = TreeView;
 
 	var TreeNode = Y.Base.create("treeview", Y.TreeNode, [], {
 		syncUI: function() {
@@ -82,8 +81,8 @@ YUI.add('redcms-treeview', function(Y) {
 			attrs: {}
 		}
 	});
-	var TreeView = Y.Base.create("treenode", Y.TreeView, [], {
-	}, {
+
+	var CTreeView = Y.Base.create("treenode", Y.TreeView, [], {}, {
 		ATTRS: {
 			defaultChildType: {
 				value: TreeNode

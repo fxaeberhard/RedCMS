@@ -19,18 +19,28 @@ class FormBlock extends TreeStructure {
 
 					switch ($b->formtype) {
 						case 'DateField':
-							$t = strtotime($newValue);
-							$fields[$b->name] = Utils::sql_date($t);
-							;
+						case 'datepicker':
+						case 'date':
+							echo"m".$newValue;
+							if ($newValue != "") {
+								echo "i";
+								$t = strtotime($newValue);
+								$fields[$b->name] = Utils::sql_date($t);
+							} else {
+								$newValue = null;
+							}
 							break;
 
 						case 'PasswordField':
+						case "password":
 							if ($newValue != '')
 								$fields[$b->name] = $redCMS->sessionManager->generateHash($newValue);
 							break;
 
 						case 'TextareaField':
+						case "text":
 							$newValue = nl2br($newValue);
+
 						default:
 							$fields[$b->name] = $newValue;
 					}
@@ -43,11 +53,12 @@ class FormBlock extends TreeStructure {
 	function getFormFields() {
 		$fields = array();
 
-		foreach ($this->getChildBlocks() as $b) {
+		foreach ($this->getChildBlocks("number1") as $b) {
 			$f = $b->toJSON();
 
 			switch ($b->formtype) {
-				case 'PasswordField':	//Password fields values are never sent to the client
+				case 'PasswordField': //Password fields values are never sent to the client
+				case "password":
 					$f['value'] = '';
 					break;
 			}
@@ -153,7 +164,8 @@ class EditDBFormBlock extends FormBlock {
 				$f['value'] = $value;
 
 			switch ($f['type']) {
-				case 'PasswordField':	//Password fields values are never sent to the client
+				case 'PasswordField': //Password fields values are never sent to the client
+				case "password":
 					$f['value'] = '';
 					break;
 				/* case 'EditorField':
@@ -194,7 +206,7 @@ class EditDBFormBlock extends FormBlock {
 				$ret = array('result' => 'error', 'msg' => 'Form unsuccessfully saved.');
 			}
 			echo json_encode($ret);
-		} else {	  //No action, we display the block in the regular way
+		} else {   //No action, we display the block in the regular way
 			$template = $this->getTemplate();
 			$template->display($this->template);
 		}
@@ -213,7 +225,7 @@ class EditBlockFormBlock extends EditDBFormBlock {
 				if (isset($_POST['type'])) {   // Otherwise we try to instantiate a block with class provided in arguments
 					//eval('$this->_targetBlock = new '.$_POST['type'].'();');	// PHP< 5.3.0
 					$this->_targetBlock = new $_POST['type']();  // PHP>=5.3.0
-				} else {	 // And if no information is available we use a generic block
+				} else {  // And if no information is available we use a generic block
 					$this->_targetBlock = new Block();
 				}
 			}
@@ -327,7 +339,7 @@ class EditBlockPositionFormBlock extends Block { //extends EditBlockFormBlock {
 			if (isset($_REQUEST['targetId'])) {   //There is a target, we move the block just after the target
 				$refBlock = BlockManager::getBlockById($_REQUEST['targetId']);
 				$position = $refBlock->number1;
-				if ($position === null) {	//HACK If there is no position, positions are corrupted, we reset them.
+				if ($position === null) { //HACK If there is no position, positions are corrupted, we reset them.
 					$stat = $red->dbManager->prepare('UPDATE redcms_block SET number1=0 WHERE parentId=?');
 					$stat->execute(array($targetBlock->parentId));
 					$position = 0;
@@ -340,7 +352,7 @@ class EditBlockPositionFormBlock extends Block { //extends EditBlockFormBlock {
 				if ($targetBlock->save()) {
 					$ret = array('result' => 'success', 'msg' => 'Changes have been made.');
 				}
-			} else {	  // No target, we move the block in the first position
+			} else {   // No target, we move the block in the first position
 				$stat = $red->dbManager->prepare('SELECT MIN(number1) FROM redcms_block WHERE parentId=?');
 				$stat->execute(array($targetBlock->parentId));
 				$r = $stat->fetchAll(PDO::FETCH_NUM);

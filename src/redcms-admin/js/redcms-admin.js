@@ -30,6 +30,7 @@ YUI.add('redcms-admin', function(Y) {
 
 					if (targetAdminNodes) {
 						e.treated = true;
+						if (e.currentTarget.getAttribute("data-noover")) return;
 						menuCB.setContent(this._getMenuMarkupFromAdminNodesList(e.currentTarget, targetAdminNodes));
 						Y.RedCMS.RedCMSManager.render(menuCB, Y.bind(this._onContextMenuItemsRendered, this, e.currentTarget));
 
@@ -176,7 +177,7 @@ YUI.add('redcms-admin', function(Y) {
 						icon = "<i class='fa fa-users fa-1'></i>";
 					} else if (l.indexOf("edit") > -1) {
 						icon = "<i class='fa fa-pencil fa-1'></i>";
-					} else if (l.indexOf("create") > -1 || l.indexOf("new") > -1) {
+					} else if (l.indexOf("create") > -1 || l.indexOf("new") > -1 && l.indexOf("news") === -1) {
 						icon = "<i class='fa fa-plus fa-1'></i>";
 					} else if (l.indexOf("delete") > -1) {
 						icon = "<i class='fa fa-trash fa-1'></i>";

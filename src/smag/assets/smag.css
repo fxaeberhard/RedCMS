@@ -57,7 +57,7 @@ h3 {
 
 .redcms-bd .redcms-bd-content {
 	min-height: 251px;
-	padding: 8px;
+	padding: 13px 12px;
 	border:none;
 	border-left: 2px solid black;
 	border-right: 2px solid black;
@@ -85,26 +85,40 @@ h3 {
 .yui3-skin-sam .redcms-left .yui3-menu-label, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-label {
 	background: none;
 }
+
 .yui3-skin-sam .redcms-left .yui3-menu-label-active,
 .yui3-skin-sam .redcms-left .yui3-menu-label-menuvisible,
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label-active,
-.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label-menuvisible {
-	background-color:white;
-	background: white url(smart-clipart-syringue-2-i.gif) no-repeat scroll -8px -1px;
-}
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label-menuvisible,
 .yui3-skin-sam .redcms-left .yui3-menuitem-active .yui3-menuitem-content,
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-active .yui3-menuitem-content {
-	background: white url(smart-clipart-syringue-2-i.gif) no-repeat scroll -8px -1px;
+	background-color:white;
+}
+.yui3-skin-sam .redcms-left .yui3-menu-label-active:after,
+.yui3-skin-sam .redcms-left .yui3-menu-label-menuvisible:after,
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label-active:after,
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label-menuvisible:after,
+.yui3-skin-sam .redcms-left .yui3-menuitem-active .yui3-menuitem-content:after,
+.yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-active .yui3-menuitem-content:after {
+	content: url(smart-clipart-syringue-2-i.gif);
+	position:absolute;
+	top: 0;
+	left: -9px;
+	width: 20px;
+	height: 20px;
+	display: block;
+	z-index: 1;
 }
 .yui3-skin-sam .redcms-left .yui3-menu-label, 
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label, 
 .yui3-skin-sam .redcms-left .yui3-menuitem-content, 
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-content {
-	padding: 2px 20px 2px 35px;
+	padding: 3px 20px 2px 35px;
 	margin: 0;
 	/* font-size: 104%; */
 	font-size: 96%;
 	/* overflow: visible; */
+	position: relative;
 }
 /** Header */
 .smag-header {
@@ -220,8 +234,8 @@ h3 {
 }
 
 /** RedCMS Conversation styles */
-.redcms-conversation {
-	width: 99%;
+.redcms-conversation .redcms-conversation-title {
+	background: #c8d7ea;
 }
 
 /** Redcms Conversation Styles: reader */
@@ -230,5 +244,5 @@ h3 {
 	margin: 0;
 }
 .yui3-redcms-conversation-reader-hd {
-	background: lightgray;
+	background: #c8d7ea;
 }

@@ -1,15 +1,27 @@
 /* Base styles */
-input[type=submit] {
-    /* padding: 3px 5px; */
-}
-input[type=file] {
-    min-width: 350px;
-}
 menu, ol, ul {
     padding:0;
 }
 ul, dl {
     margin:0;
+}
+hr {
+	border: 1px solid lightgray;
+	border-top: none;
+}
+input[type=submit] {}
+input[type=file] {
+    min-width: 350px;
+}
+input[type=text], input[type=password], select {
+    border: 1px solid #ccc;
+    padding: 6px 7px;
+}
+select {
+    padding: 6px 2px;
+}
+p, pre {
+	margin: 0;
 }
 
 /* CSS shortcuts for RedCMS */
@@ -40,14 +52,12 @@ ul, dl {
     margin-left: -200px;
     width: 200px;	/* workaround for IE9 not firing mouse events on #side due to negative margin */
 }
-
 .redcms-left .redcms-content {
     margin: 0 10px;
 }
 .redcms-bd {
     width:100%;
 }
-
 .redcms-hd {
     border: 1px solid gray;
     margin: 10px 8px 5px 10px;
@@ -78,13 +88,13 @@ ul, dl {
 .redcms-ft .redcms-ft-content hr {
     margin: 10px 10px 0;
 }
+
 /* Default fieldset view */
 fieldset {
     border: none;
     margin: 0;
     padding: 0;
 }
-
 fieldset legend {
     font-weight: bold;
 }
@@ -122,18 +132,13 @@ fieldset legend {
     cursor:move;
 }
 
-/* BUtton style */
+/* Button style */
 .yui3-button {
     border: none;
     box-shadow: none;
     padding: 0.5em 1em 0.55em;
     background: #a40000;
     color: white;
-}
-
-/* Overlay Modal styles */
-body { 
-    _height: 100%; /* better IE6 support */
 }
 
 /** RedCMS Buttons (base on YUI2 Buttons for styling) */
@@ -144,14 +149,14 @@ body {
     border-style: solid;
     border-color: gray;
     background: url(sprite.png) repeat-x 0 0;
-    margin: auto .25em;
+    margin: auto 0;
     cursor:pointer;
 }
 .yui3-redcms-button span {
     border-width: 0 1px;
     border-style: solid;
     border-color: gray;
-    margin: 0 -1px;
+    margin: 0 0px;
     display: block;
     _margin: 0;
 }
@@ -172,6 +177,7 @@ body {
     border-color: #7D98B8;
     background-position: 0 -1300px;	
 }
+
 /* Loading style */
 .yui3-skin-sam .yui3-redcms-loading,
 .yui3-skin-sam .yui3-overlay-window  .yui3-redcms-loading {
@@ -179,11 +185,9 @@ body {
     min-height: 100px;
     min-width: 100px;
 }
-
 .yui3-skin-sam .yui3-redcms-loading .yui3-redcms-loading {
     background: none;
 }
-
 .yui3-redcms-loading-overlay {
     position:relative;
 }
@@ -191,12 +195,13 @@ body {
     position: absolute;
     width: 100%;
     background: rgb(211, 211, 211);/* Fallback for web browsers that doesn't support RGBa */
-    background: rgba(211, 211, 211, 0.4); /* RGBa with 0.6 opacity */
+    background: rgba(255, 255, 255, 0.8); /* RGBa with 0.6 opacity */
     background-image:url('loading.gif');
     background-repeat:no-repeat;
-    background-position:center; 
+    background-position-x: center; 
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300); /* For IE 5.5 - 7*/
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300)"; /* For IE 8*/
+    background-position-y: 50px;
 }
 
 /* Inputex styles */
@@ -219,20 +224,12 @@ body {
 .yui3-skin-sam .inputEx-Button:hover {
     background: gray;
 }
-input[type=text], input[type=password], select {
-    /* width: 300px; */
-    border: 1px solid #ccc;
-    padding: 6px 7px;
-}
-select {
-    padding: 6px 2px;
-}
 
 /* Tinymce */
 .defaultSkin td.mceToolbar {
     background: none !important;
 }
-.defaultSkin .mceButton,Ã‚Â .defaultSkin .mceSplitButton a.mceAction, .defaultSkin .mceSplitButton a.mceOpen{
+.defaultSkin .mceButton, .defaultSkin .mceSplitButton a.mceAction, .defaultSkin .mceSplitButton a.mceOpen{
     border: 1px solid transparent !important;
 }
 .yui3-skin-sam .defaultSkin .mceSeparator {
@@ -251,6 +248,13 @@ select {
 .defaultSkin .mceStatusbar div {
     display: none;
 }
+.defaultSkin .mceListBox .mceText {
+	border-right: 0 !important;
+}
+.defaultSkin .mceListBox .mceOpen {
+	border-left: 0 !important;
+}
+
 /* RedCMS MsgBox styles */
 .yui3-skin-sam .yui3-redcms-msgbox {
     border: 1px solid lightgray;
@@ -276,18 +280,16 @@ select {
     z-index: 10000;
     min-width: 155px; 
 }
-.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > div > ul > li{
-    /* float: right; */
-    /* display: inline-block; */
-    margin: 1px 1px 0 0;
+.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > div > ul > li {
+    margin: 0px 0px 0 0;
     float: right;   
     display:inline;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content{
     background: none;
     border: none;
+    margin: 4px 5px 0 0;
 }
-
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > div > li > a,
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > li > a {
     margin: 0;
@@ -295,11 +297,11 @@ select {
     border-radius: 34px;
     padding: 7px;
     border: none;
-    margin-left: 5px;
+    margin-left: 2px;
     font-size: 0%;
 }
-.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > div > li.yui3-menuitem-active > a,
-.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > li.yui3-menuitem-active > a {
+.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > li.yui3-menuitem-active > a,
+.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > li.yui3-menuitem-active > a.yui3-menu-label-active {
     background: lightgray;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content i {
@@ -307,12 +309,16 @@ select {
     margin: 0;
     color: #a40000;
 }
-
 .yui3-skin-sam .yui3-overmenu-hidden {
     display:none;  
 }
-/* Context menu styles */
+/* Admin overlay */
+.yui3-skin-sam .redcms-admin-over {
+    box-shadow: inset 1px 1px 1px #580000,
+        inset -1px -1px 1px #580000; 
+}
 
+/* Context menu styles */
 .yui3-skin-sam .yui3-contextmenu {
     position: absolute;
 }
@@ -363,11 +369,6 @@ select {
     padding: 4px 8px;
 }
 
-/* Admin overlay */
-.yui3-skin-sam .redcms-admin-over {
-    box-shadow: inset 1px 1px 1px #580000,
-        inset -1px -1px 1px #580000; 
-}
 
 /* Tree View: Default skin */
 .yui3-skin-sam .yui3-treenode .yui3-treenode-label {
@@ -379,6 +380,7 @@ select {
 .yui3-redcms-loading.yui3-redcms-treeview-content {
     font-size:0;
 }
+
 /* Custom Icons */
 .yui3-redcms-icon {
     width: 20px;
@@ -409,6 +411,7 @@ select {
 .yui3-redcms-icon-html {
     background: url(file-icons.png) no-repeat scroll 0px -320px;
 }
+
 /** ToolTip Styles **/
 .redcms-tooltip-content {
     display:none;
@@ -428,59 +431,13 @@ select {
 .yui3-redcms-tooltip-hidden {
     visibility:hidden;
 }
+
 /** MenuNav styles */
 .yui3-skin-sam .yui3-menuitem-content, 
 .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menuitem-content {
     cursor:pointer;
 }
 
-/** YUI2 Editor styles **/
-.yui-skin-sam .yui-toolbar-container .yui-toolbar-titlebar {
-    display:none;	
-}
-.yui-skin-sam .yui-editor-panel .yui3-redcms-button span a.yui3-redcms-button-addfile {
-    padding-left: 1.5em;
-    background: url(file-icons.png) no-repeat scroll 6px -298px;
-    line-height: 2.0;	
-}
-.yui-skin-sam .yui-editor-panel .yui3-redcms-button span a.yui3-redcms-button-addpage {
-    padding-left: 1.5em;
-    background: url(file-icons.png) no-repeat scroll 6px -321px;
-    line-height: 2.0;	
-}
-.yui-skin-sam .yui-editor-panel label:after {
-    content:'';	
-}
-.yui-skin-sam .yui-editor-panel label:before {
-    content:'';	
-}
-.yui-skin-sam .yui-editor-panel .yui-toolbar-group-height-width input[type="text"] {
-    width: inherit;
-}
-
-
-/* YUI2-Editor: view source button */
-.yui-skin-sam .yui-toolbar-container .yui-toolbar-editcode span.yui-toolbar-icon {
-    background-image: url(redcms-sprite.png);
-    background-position: 0 -118px;
-    left: 10px;
-}
-.yui-skin-sam .yui-toolbar-container .yui-button-editcode-selected span.yui-toolbar-icon {
-    background-image: url(redcms-sprite.png);
-    background-position: 0 -118px;
-    left: 10px;
-}
-.yui-skin-sam .yui-editor-panel .editor-hidden {
-    visibility: hidden;
-    top: -9999px;
-    left: -9999px;
-    position: absolute;
-}
-.yui-skin-sam .yui-editor-panel textarea {
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
 /** RedCMS Accordion styles */
 .yui3-redcms-accordion li {
     padding: 3px 0;
@@ -504,7 +461,6 @@ select {
     background: url(sprite.png) no-repeat scroll 0 -395px;
 }
 .yui3-redcms-accordion-item {
-    /* border-bottom: 2px groove #CCC; */
     margin: 0 12px;
 }
 .yui3-redcms-accordion-title .yui3-g {
@@ -520,12 +476,13 @@ select {
 }
 
 /** RedCMS Conversation styles */
-.redcms-conversation {
-    margin: 10px 0;
-}
 .redcms-conversation .redcms-conversation-title {
     background-color: #D1D8DF;
-    padding: 5px;
+    padding: 5px 8px;
+}
+.redcms-conversation-title img {
+	float: left;
+	margin: 0px 6px 0 0px;
 }
 .redcms-conversation .redcms-conversation-title h2 {
     margin: 0;
@@ -537,18 +494,19 @@ select {
 .redcms-conversation .redcms-conversation-title h1 {
     margin: 0;
     font-weight: bolder;
-    font-size: 18px;
+    font-size: 20px;
     color: #1C5AA9;
 }
 .redcms-conversation .redcms-conversation-content {
-    padding-left:56px;	
-    padding: 8px 5px 5px 58px;
+    padding: 8px 5px 5px 63px;
+}
+.redcms-conversation .redcms-conversation-content:empty {
+    padding: 0;
 }
 .redcms-conversation .redcms-conversation-footer {
-    padding: 3px 5px;
-    margin-top: 5px;
+    padding: 4px 8px;
     font-size: 11px;
-    border-top: 1px groove lightgray;
+    border-top: 1px solid lightgray;
 }
 .redcms-conversation .redcms-conversation-footer a {
     text-decoration: none;
@@ -557,35 +515,54 @@ select {
     text-decoration: underline;
 }
 .redcms-conversation .redcms-icon span {
-    background: transparent url(conversation-sprite.png) no-repeat scroll 0 0;
+    background: transparent url(conversation-sprite.png) no-repeat scroll 0 -1px;
     width: 48px;
     height: 46px;
-    margin: 7px 5px 0;
+    margin: 2px 9px 0 5px;
     float: left;
 }
 .redcms-conversation .redcms-conversation-topicfield .redcms-icon span {
     background-position: 0 -180px;
 }
 .redcms-conversation .redcms-conversation-newsfield .redcms-icon span {
-    background-position: 0 -121px;
+    background-position: 0 -116px;
 }
 .redcms-conversation .redcms-conversation-replyfield .redcms-icon span {
     background-position: 0 -61px;
 }
 .redcms-conversation > .redcms-conversation-fragment {
-    border: 1px solid #646464;
+    border: 1px solid lightgray;
     background: white;
     margin-bottom: 10px;
-    /* padding-bottom: 5px; */
 }
-
 .redcms-conversation .redcms-conversation-hd {
     background: #D1D8DF; 
 }
 .redcms-conversation .redcms-conversation-fragment .redcms-conversation-fragment {
-    margin: 10px 20px 10px 40px;
+    margin: 10px 20px 10px 61px;
+    border: 1px solid lightgray;
 }
 
+.redcms-conversation-replyfield .redcms-icon {
+	display: none;
+}
+.yui3-redcms-conversation-reader .redcms-icon {
+	display: inline-block;
+	margin-left: -50px;    
+	width: 42px;    padding-left: 8px;    padding-top: 16px;
+}
+.redcms-conversation-replyfield .redcms-conversation-title {
+    background: none
+}
+.redcms-conversation-replyfield .redcms-conversation-title h1 {
+	font-size: inherit
+}
+.redcms-conversation-replyfield .redcms-conversation-content {
+	padding: 8px 5px 5px 54px;
+}
+.redcms-conversation-replyfield .redcms-conversation-footer {
+    border: none;
+}
 /** Redcms Conversation Styles: reader */
 .yui3-redcms-conversation-reader {
     border: 1px solid gray;
@@ -595,7 +572,6 @@ select {
     font-weight: bolder;
     padding: 5px;
     background: #D1D8DF;
-    /*border-bottom: 1px solid #646464;*/
 }
 
 /** RedCMS Conversation styles :small icons */
@@ -609,8 +585,6 @@ select {
 .redcms-icon span {
     float: left;
 }
-.redcms-icon-email {
-}
 .redcms-icon-email span {
     background: transparent url(redcms-sprite.png) 0 -350px no-repeat;
     width: 25px;
@@ -623,7 +597,6 @@ select {
     font-weight:bold;
 }
 .redcms-bd-title .redcms-bd-title-item {
-    /* float:left; */
     display: inline-block;
 }
 .redcms-bd-title .redcms-bd-title-separator {

@@ -48,10 +48,12 @@ class Utils {
 	static function date_formatinterval($date1, $date2, $dateFormat = "d F Y") {
 		$date1 = strtotime($date1);
 		$date2 = strtotime($date2);
-		if (Utils::date_todays($date1) === Utils::date_todays($date2)) {
-			return 'le ' . Utils::date('j F Y, \d\e H:i', $date1) . ' à ' . date('H:i', $date2);
+		if (Utils::date_todays($date1) === Utils::date_todays($date2) || !isset($date2) || $date2 == "") {
+//			return 'le ' . Utils::date('j F Y, \d\e H:i', $date1) . ' à ' . date('H:i', $date2);
+			return 'le ' . Utils::date('j F Y', $date1);
 		} else {
-			return 'du ' . Utils::date('j F à H:i', $date1) . ' au ' . Utils::date('j F Y à H:i', $date2);
+//			return 'du ' . Utils::date('j F à H:i', $date1) . ' au ' . Utils::date('j F Y à H:i', $date2);
+			return 'du ' . Utils::date('j F', $date1) . ' au ' . Utils::date('j F Y', $date2);
 		}
 	}
 
@@ -63,12 +65,14 @@ class Utils {
 		if ($diff < 60) {
 			return $prefix . round($diff) . ' minutes';
 		} elseif ($diff < (24 * 60)) {
-			return $prefix . floor($diff / 60) . ' heures et ' . round($diff % 60) . ' minutes';
+//			return $prefix . floor($diff / 60) . ' heures et ' . round($diff % 60) . ' minutes';
+			return $prefix . floor($diff / 60) . ' heures';
 			//		}elseif ($diff < 2*24){
 			//			return 'aujourd\'hui, à '. date('H:i', $date);
 		} elseif ($diff < (2 * 24 * 60)) {
 			return (($date > $now) ? 'demain' : 'hier') . ', à ' . date('H:i', $date);
 		} else
+//			return Utils::date('\l\e j F Y', $date);
 			return Utils::date('\l\e j F Y à H:i', $date);
 	}
 

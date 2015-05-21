@@ -3,7 +3,7 @@
 * Code licensed under the BSD License:
 * http://redcms.red-agent.com/license.html
 *}
-<!DOCTYPE html>{if !$reload}   
+{if !$reload}   <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -97,7 +97,7 @@
                 {********** Render the childs in a vertical list **********}
                 {foreach $this->getChildBlocks() as $b}
                     {if $b->canRead()}
-                        <br />
+                        {if $this->longtext1}<br />{/if}
                         {$b->render()}
                     {/if}
                     {flush()}

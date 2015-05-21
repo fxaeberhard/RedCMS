@@ -26,12 +26,12 @@ var Y = YUI({
 				// *** BASE MODULES *** //	
 				'redcms-base': {
 					path: 'src/redcms-base/js/redcms-base.js',
-					requires: ["node", 'widget', 'widget-parent', 'widget-child', 'io-base'],
+					requires: ["base", "node", 'widget', 'widget-parent', 'widget-child', 'io-base'],
 					use: ['redcms-widget', "redcms-action"]
 				},
 				'redcms-action': {
 					path: 'src/redcms-base/js/redcms-action.js',
-					requires: ['redcms-base']
+					requires: ['base', "widget"]
 				},
 				'redcms-widget': {
 					path: 'src/redcms-base/js/redcms-widget.js',
@@ -64,7 +64,7 @@ var Y = YUI({
 				// *** PANEL MODULES *** //
 				'redcms-msgbox': {
 					path: 'src/redcms-base/js/redcms-msgbox.js',
-					requires: ['widget']
+					requires: 'widget'
 				},
 				'redcms-panel': {
 					path: 'src/redcms-panel/js/redcms-action-openpanel.js',

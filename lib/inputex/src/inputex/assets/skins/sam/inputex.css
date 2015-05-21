@@ -184,7 +184,7 @@ div.inputEx-Form-Mask span {
 /* position relative to position:absolute favicon inside */
 div.inputEx-UrlField {position:relative;}
 
-div.inputEx-UrlField input { padding-left: 20px; }
+div.inputEx-UrlField input { padding-left: 22px; }
 
 div.inputEx-UrlField input.nofavicon {
    padding-left: 0px;
@@ -192,8 +192,8 @@ div.inputEx-UrlField input.nofavicon {
 
 div.inputEx-UrlField img {
    position: absolute;
-   top: 3px;
-   left: 2px;
+   top: 7px;
+   left: 4px;
    width: 16px;
    height: 16px;
 }
@@ -274,11 +274,12 @@ div.inputEx-PickerField .yui3-overlay {
 div.inputEx-DatePickerField  button {
    background-image: url(images/calendar.gif);
    background-repeat: no-repeat;
-   background-position: -1px -1px;
-   margin: 0 0 0 2px;
-   width: 22px;
-   height: 22px;
+   background-position: 4px 4px;
+   margin: 2px 0 0 3px;
+   width: 25px;
+   height: 25px;
    padding: 0;
+   border: none;
 }
 
 .yui3-skin-sam div.inputEx-DatePickerField .yui3-calendar-content {
