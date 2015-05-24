@@ -17,20 +17,32 @@ YUI.add('redcms-treeview', function(Y) {
 		renderUI: function() {
 			var fields = this.get("children"),
 				cb = this.get(CONTENT_BOX),
-				target = cb.one("div") || cb;
+				target = cb.one("div") || cb,
+				striplast = function(fields) {
+					var last = fields.pop();
+					if (Y.Object.size(last) > 0)
+						fields.push(last);
+					Y.Array.each(fields, function(f) {
+						f.children && striplast(f.children);
+					});
+				};
 
 			try {
-				fields = Y.JSON.parse(RedCMS.RedCMSManager.urldecode(target.getContent()));
+				fields = Y.JSON.parse(decodeURIComponent(target.getContent()));
+//				fields = Y.JSON.parse(target.getContent());
+				striplast(fields);
 				this.set("children", fields);
+
 			} catch (e) {
-				Y.log('Form._parseFields(): Unable to parse form content.', 'log', 'RedCMS.Form');
+				Y.log('Treeview._parseFields(): Unable to parse cfg', 'log', 'RedCMS.Form');
 			}
 			target.setContent('');
 
 			this._treeview = new CTreeView({
-				startCollapsed: false,
+				//startCollapsed: false,
 				children: fields
 			}).render(cb);
+			this._treeview.on("nodeclick", this.treenodeClick);
 
 			cb.removeClass('yui3-redcms-loading');
 
@@ -47,27 +59,30 @@ YUI.add('redcms-treeview', function(Y) {
 			this._treeview.destroy();
 		},
 		// *** Private Methods *** //
-		_treeLeafClick: function(e) {
-			var cb = e.target.get(CONTENT_BOX),
-				blockNode = cb.get('parentNode'),
-				selectedElem = {
-					id: blockNode.getAttribute('redid'),
-					href: cb.getAttribute('href'),
-					label: cb.getContent()
-				};
-			this.fire('redcms:select', selectedElem);
+		treenodeClick: function(e) {
+			if (!e.treenode.get("isLeaf"))
+				return;
 
-			if (blockNode.hasAttribute('widget') && blockNode.getAttribute('widget') === 'PageLinkAction'
-				&& selectedElem.href !== '#') {
-				window.location = selectedElem.href;
+			var bb = e.treenode.get(BOUNDING_BOX).one("a"),
+				href = bb.getAttribute("href");
+
+			this.fire('redcms:select', {
+				id: bb.getAttribute('redid'),
+				href: href,
+				label: bb.get("text")
+			});
+
+			if (bb.hasAttribute('widget') && bb.getAttribute('widget') === 'PageLinkAction'
+				&& href !== '#') {
+				window.location = href;
 			}
 		}
 	});
 	RedCMS.TreeView = TreeView;
 
-	var TreeNode = Y.Base.create("treeview", Y.TreeNode, [], {
+	var RTreeNode = Y.Base.create("treenode", Y.TreeNode, [], {
 		syncUI: function() {
-			TreeNode.superclass.syncUI.call(this);
+			RTreeNode.superclass.syncUI.call(this);
 			var target = this.get(BOUNDING_BOX).one("a");
 
 			if (this.get("attrs")) {
@@ -75,17 +90,25 @@ YUI.add('redcms-treeview', function(Y) {
 					target.setAttribute(k, i);
 				});
 			}
+			if (this.get("icon")) {
+				target.one("span").prepend("<i class='yui3-redcms-icon yui3-redcms-icon-" + this.get("icon") + "'></i>");
+			}
 		}
 	}, {
 		ATTRS: {
-			attrs: {}
+			icon: {},
+			attrs: {},
+			defaultChildType: {
+				value: "RTreeNode"
+			}
 		}
 	});
+	Y.RTreeNode = RTreeNode;
 
-	var CTreeView = Y.Base.create("treenode", Y.TreeView, [], {}, {
+	var CTreeView = Y.Base.create("treeview", Y.TreeView, [], {}, {
 		ATTRS: {
 			defaultChildType: {
-				value: TreeNode
+				value: RTreeNode
 			}
 		}
 	});

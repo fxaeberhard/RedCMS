@@ -9,18 +9,20 @@
 class PageBlock extends Block {
 
 	function getLabel() {
-		if ($this->link)
+		if ($this->link) {
 			return $this->link;
-		else
+		} else {
 			return parent::getLabel();
+		}
 	}
 
 	function getLink() {
 		$redCMS = RedCMS::get();
-		if ($this->id == $redCMS->config['homePageId'])
+		if ($this->id == $redCMS->config['homePageId']) {
 			return ParamManager::getLink();
-		else
+		} else {
 			return parent::getLink();
+		}
 	}
 
 	function getSiteBlocks() {
@@ -46,5 +48,3 @@ class PageBlock extends Block {
 	}
 
 }
-
-?>

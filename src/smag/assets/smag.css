@@ -13,7 +13,7 @@ a {
 }
 
 a:hover {
-	color: black;
+	color: #487bba;
 }
 
 h1 {
@@ -93,6 +93,7 @@ h3 {
 .yui3-skin-sam .redcms-left .yui3-menuitem-active .yui3-menuitem-content,
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-active .yui3-menuitem-content {
 	background-color:white;
+	color: black;
 }
 .yui3-skin-sam .redcms-left .yui3-menu-label-active:after,
 .yui3-skin-sam .redcms-left .yui3-menu-label-menuvisible:after,
@@ -120,6 +121,7 @@ h3 {
 	/* overflow: visible; */
 	position: relative;
 }
+
 /** Header */
 .smag-header {
 	padding: 5px;

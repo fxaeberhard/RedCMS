@@ -4,7 +4,7 @@
  * http://redcms.red-agent.com/license.html
  *}
 
-<div {$this->renderBlockAttributes()} widget="Block" >
+<div {$this->renderBlockAttributes()} widget="Block"  data-noover=true >
 	
 	{$params = ['parentId' => $childBlocks[0]->id]}
 	<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 

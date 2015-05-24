@@ -63,7 +63,7 @@ class BlockManager {
 		$blocks = array();
 		foreach ($fields as &$field) {
 			//eval('$block = new '.$field['type'].'($field);');				//PHP >=5.3.0
-			$block = new $field['type']($field);	//PHP < 5.3.0
+			$block = BlockManager::GetBlockByField($field); //PHP < 5.3.0
 
 			if (isset($block)) {
 				//if ($block->id != '') $_blockCache[$block->id] = $block;
@@ -71,6 +71,12 @@ class BlockManager {
 			}
 		}
 		return $blocks;
+	}
+
+	static function getBlockByField($field) {
+		//eval('$block = new '.$field['type'].'($field);');				//PHP >=5.3.0
+		$block = new $field['type']($field); //PHP < 5.3.0
+		return $block;
 	}
 
 }

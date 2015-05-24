@@ -50,8 +50,12 @@ class SessionManager {
 			//TODO add log for user connection
 			//$CURRENTUC->DBManager->insertFields($CURRENTUC->DB_LOG, array(array('idUser', $field['id'])));
 			return true;
-		} else
+		} else {
 			return false;
+		}
+	}
+	function refreshCurrentUser() {
+		$this->currentUser = $_SESSION['currentUser'] = UserManager::getUserBySelect('id=?', [$this->currentUser->fields["id"]]);
 	}
 
 	function logout() {

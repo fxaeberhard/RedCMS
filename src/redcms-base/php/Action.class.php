@@ -99,7 +99,9 @@ class PageLinkAction extends TargetBlockAction {
 
 		return parent::getLabel();
 	}
+}
 
+class OpenPageAction extends PageLinkAction {
 }
 
 class DeleteAction extends Action {

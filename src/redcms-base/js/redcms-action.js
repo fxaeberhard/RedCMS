@@ -54,8 +54,7 @@ YUI.add('redcms-action', function(Y) {
 		bindUI: function() {
 			this.get(CONTENTBOX).on(CLICK, function(e) {
 				e.preventDefault();
-
-				var tmpWindow = window.open(this.get(CONTENTBOX).one('a').get('href'), '_blank');//,'_blank','left=10000,screenX=10000');
+				window.open(this.get(CONTENTBOX).one('a').get('href'), '_blank');//,'_blank','left=10000,screenX=10000');
 				//tmpWindow.blur();
 				//window.focus();
 			}, this);

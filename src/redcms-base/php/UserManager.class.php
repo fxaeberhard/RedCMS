@@ -37,7 +37,7 @@ class UserManager {
 		return UserManager::getUsersByStatement($statement, $values);
 	}
 
-	static function getUsersByStatement($statement, $values) {
+	static function getUsersByStatement($statement, $values = []) {
 		if ($statement->execute($values)) {
 			$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 			$users = UserManager::getUserByFields($rows);
@@ -105,15 +105,33 @@ class UserManagerBlock extends TreeStructure {
 
 	function getChildBlocks($orderBy = NULL) {
 		$redCMS = RedCMS::get();
+		$orderBy = ($orderBy) ? ' ORDER BY ' . $orderBy : '';
 		if ($redCMS->paramManager->hasMore()) {
 			$userId = $redCMS->paramManager->next();
-			$users = UserManager::getUsersBySelect('id=? ORDER BY name', array($userId));
+			$users = UserManager::getUsersBySelect("id=? $orderBy", array($userId));
 			// FIXME This does not work since hierarchy is already displayed
 			$redCMS->currentHierarchy[] = $users[0];
 			return $users;
 		} else {
-			return UserManager::getUsersBySelect('1 ORDER BY name', array());
+			return UserManager::getUsersBySelect("1 $orderBy", array());
 		}
+	}
+
+	function getUsersByGroup() {
+		$childs = $this->getChildBlocks("name");
+		usort($childs, function ($a, $b) {
+			if ($a->isAMember(10) && !$b->isAMember(10)) {
+				return -1;
+			} else if (!$a->isAMember(10) && $b->isAMember(10)) {
+				return 1;
+			} else if ($a->isAMember(11) && !$b->isAMember(11)) {
+				return -1;
+			} else if (!$a->isAMember(11) && $b->isAMember(11)) {
+				return 1;
+			}
+			return $a->name > $b->name;
+		});
+		return $childs;
 	}
 
 }

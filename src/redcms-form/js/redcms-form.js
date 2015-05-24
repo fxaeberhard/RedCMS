@@ -28,6 +28,9 @@ YUI.add('redcms-form', function(Y) {
 				Y.Array.each(fields, function(f) {
 					f.type = f.type.replace("Field", "").toLowerCase();
 					switch (f.type) {
+						case "textarea":
+							f.type = "text";
+							break;
 						case "text":
 							f.type = "string";
 							break;

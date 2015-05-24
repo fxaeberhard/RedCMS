@@ -10,21 +10,33 @@ class TreeStructure extends Block {
 
 	var $_dbFieldsMap = array('orderBy' => 'text1');
 
+	public function getPages($orderBy = null) {
+//		if (!isset($this->_childBlocks)) {
+		$orderBy = ($orderBy) ? ' ORDER BY ' . $orderBy : '';
+		$this->_pages = BlockManager::getBlocksBySelect("type='PageBlock'" . $orderBy);
+		foreach ($this->_pages as &$b) {
+			$b->_parent = $this;
+		}
+//		}
+		return $this->_pages;
+	}
+
 }
 
 class MenuBlock extends TreeStructure {
 
 	function getLabel() {
-		if ($this->text1)
+		if ($this->text1) {
 			return $this->text1;
-		else
+		} else {
 			return parent::getLabel();
+		}
 	}
 
 	function toJSON0($node) {
 		$ret = array();
 		if (get_class($node) == 'Action' || $node instanceof TreeStructure) { // This optim allows to look for child nodes only when required
-			foreach ($node->getChildBlocks() as $it) {	// cuts a lot of queries, but what if a new type is used?
+			foreach ($node->getChildBlocks() as $it) { // cuts a lot of queries, but what if a new type is used?
 				$r = array('widget' => $it->type,
 					'label' => $it->label,
 					'href' => $it->getLink(),

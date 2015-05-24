@@ -153,7 +153,6 @@
 <script type="text/javascript" src="{$redCMS->path}src/redcms-base/js/redcms-bootstrap.js"></script> 
 {*    <script type="text/javascript" src="{$redCMS->path}lib/min/f=/build/redcms-base/redcms-base-min.js&/build/redcms-menu/redcms-menunav.js&/src/redcms-base/js/redcms-bootstrap.js"></script>*}
 
-<script 
 <script src="{$redCMS->path}lib/tinymce/jscripts/tiny_mce/tiny_mce.js" type='text/javascript'></script>
 {*<script src="//tinymce.moxiecode.com/js/tinymce/jscripts/tiny_mce/tiny_mce.js" type='text/javascript'></script>*}
 {*<script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>*}

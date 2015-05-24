@@ -26,7 +26,7 @@ var Y = YUI({
 				// *** BASE MODULES *** //	
 				'redcms-base': {
 					path: 'src/redcms-base/js/redcms-base.js',
-					requires: ["base", "node", 'widget', 'widget-parent', 'widget-child', 'io-base'],
+					requires: ["base", "node", 'widget', 'widget-parent', 'widget-child', 'io-base', "json"],
 					use: ['redcms-widget', "redcms-action"]
 				},
 				'redcms-action': {
@@ -48,7 +48,7 @@ var Y = YUI({
 				},
 				"redcms-treeview": {
 					path: 'src/redcms-menu/js/redcms-treeview.js',
-					requires: ['gallery-yui3treeview-ng', 'redcms-tooltip']
+					requires: ['gallery-yui3treeview-ng', 'redcms-tooltip', "json"]
 				},
 				// *** ADMIN MODULES *** //
 				"redcms-admin": {

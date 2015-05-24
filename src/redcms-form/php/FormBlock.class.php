@@ -21,9 +21,7 @@ class FormBlock extends TreeStructure {
 						case 'DateField':
 						case 'datepicker':
 						case 'date':
-							echo"m".$newValue;
 							if ($newValue != "") {
-								echo "i";
 								$t = strtotime($newValue);
 								$fields[$b->name] = Utils::sql_date($t);
 							} else {
@@ -138,7 +136,6 @@ class EditDBFormBlock extends FormBlock {
 	var $_targetBlock;
 
 	function onBlockSaved() {
-		
 	}
 
 	function parseRequest() {
@@ -455,7 +452,6 @@ class EditRightsFormBlock extends EditDBFormBlock {
 			$fields['publicwrite'] = (isset($_REQUEST['publicwrite'])) ? 1 : 0;
 
 			foreach ($this->getRightsByGroup($this->getTargetBlock()->id) as $g) { // We loop through the rights to select the one corresponding to 
-				print_r($g);
 				$r = (isset($_REQUEST['read_' . $g['idGroup']])) ? 1 : 0;
 				$w = (isset($_REQUEST['write_' . $g['idGroup']])) ? 1 : 0;
 				echo $r, 's', $w;
@@ -538,6 +534,12 @@ class EditUserFormBlock extends EditDBFormBlock {
 				$this->_targetBlock = new User();
 		}
 		return $this->_targetblock;
+	}
+
+	function onBlockSaved() {
+		$red = RedCMS::get();
+		echo "saved";
+		$red->sessionManager->refreshCurrentUser();
 	}
 
 }

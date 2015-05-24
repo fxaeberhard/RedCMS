@@ -30,10 +30,18 @@ YUI.add('redcms-admin', function(Y) {
 
 					if (targetAdminNodes) {
 						e.treated = true;
-						if (e.currentTarget.getAttribute("data-noover")) return;
+						if (e.currentTarget.getAttribute("data-noover"))
+							return;
 						menuCB.setContent(this._getMenuMarkupFromAdminNodesList(e.currentTarget, targetAdminNodes));
 						Y.RedCMS.RedCMSManager.render(menuCB, Y.bind(this._onContextMenuItemsRendered, this, e.currentTarget));
 
+						menuCB.toggleClass("yui3-overmenu-small", parseInt(e.currentTarget.getComputedStyle("height").replace("px")) < 50);
+
+						var w = 0;
+						menuCB.all(">div>ul>li").each(function(n) {
+							w += parseInt(n.getComputedStyle("width").replace("px")) + parseInt(n.getComputedStyle("marginLeft").replace("px")) + parseInt(n.getComputedStyle("marginRight").replace("px"));
+						});
+						menuCB.setStyle("width", (w + 5) + "px");
 						if (menuCB.getContent()) {
 							this.showOverlay(e.currentTarget);
 						}
@@ -74,7 +82,7 @@ YUI.add('redcms-admin', function(Y) {
 			//console.log("ContextMenu._onContextMenuItemsRendered(): ");
 
 			if (widgets.length !== this._adminNodes.length) {									//HACK
-				Y.log("ContextMenu._onContextMenuItemsRendered(): widget count does not match _adminNodes count", 'error');
+				Y.log("ContextMenu._onContextMenuItemsRendered(): widget count does not match _adminNodes count", 'info');
 			}
 
 			for (var i = 0; i < widgets.length; i++) {
@@ -165,22 +173,24 @@ YUI.add('redcms-admin', function(Y) {
 				if (isValidRow) {
 					var l = row.label.toLowerCase(), icon = "";                     // Append font awesome icons
 
-					if (l.indexOf("restore") > -1) {
-						icon = "<i class='fa fa-undo fa-1'></i>";
-					} else if (l.indexOf("open") > -1) {
-						icon = "<i class='fa fa-external-link fa-1'></i>";
-					} else if (l.indexOf("download") > -1) {
-						icon = "<i class='fa fa-download fa-1'></i>";
-					} else if (l.indexOf("upload") > -1) {
-						icon = "<i class='fa fa-upload fa-1'></i>";
-					} else if (l.indexOf("rights") > -1 || l.indexOf("group") > -1) {
-						icon = "<i class='fa fa-users fa-1'></i>";
+					if (l.indexOf("edit groups") > -1) {
+						icon = "<i class='fa fa-users fa-1 fa-fw'></i>";
 					} else if (l.indexOf("edit") > -1) {
-						icon = "<i class='fa fa-pencil fa-1'></i>";
-					} else if (l.indexOf("create") > -1 || l.indexOf("new") > -1 && l.indexOf("news") === -1) {
-						icon = "<i class='fa fa-plus fa-1'></i>";
+						icon = "<i class='fa fa-pencil fa-1 fa-fw'></i>";
+					} else if (l.indexOf("restore") > -1) {
+						icon = "<i class='fa fa-undo fa-1 fa-fw'></i>";
+					} else if (l.indexOf("open") > -1) {
+						icon = "<i class='fa fa-external-link fa-1 fa-fw'></i>";
+					} else if (l.indexOf("download") > -1) {
+						icon = "<i class='fa fa-download fa-1 fa-fw'></i>";
+					} else if (l.indexOf("upload") > -1) {
+						icon = "<i class='fa fa-upload fa-1 fa-fw'></i>";
+					} else if (l.indexOf("permission") > -1 || l.indexOf("group") > -1) {
+						icon = "<i class='fa fa-users fa-1 fa-fw'></i>";
+					} else if (l.indexOf("create") > -1 || (l.indexOf("new") > -1 && l.indexOf("news") === -1)) {
+						icon = "<i class='fa fa-plus fa-1 fa-fw'></i>";
 					} else if (l.indexOf("delete") > -1) {
-						icon = "<i class='fa fa-trash fa-1'></i>";
+						icon = "<i class='fa fa-trash fa-1 fa-fw'></i>";
 					}
 
 					ret.push('<li ');

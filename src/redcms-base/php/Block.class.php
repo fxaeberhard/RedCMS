@@ -297,8 +297,7 @@ class WrapperBlock extends Block {
 			$targetBlock = $this->getLinkedBlock('target');
 			$newFields = json_decode($this->longtext1, true);
 			$newFields = array_merge($targetBlock->fields, $newFields);
-			$blocks = BlockManager::getBlocksByFields(array($newFields));
-			$this->_wrappedBlock = $blocks[0];
+			$this->_wrappedBlock = BlockManager::getBlockByField($newFields);
 			//$this->_wrappedBlock->fields['id'] = $this->id;
 		}
 		return $this->_wrappedBlock;

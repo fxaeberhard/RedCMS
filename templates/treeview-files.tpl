@@ -19,8 +19,8 @@ http://redcms.red-agent.com/license.html
 				{$ext = Utils::file_extension($link)}
 				{if !isset($smarty.request.filter) || get_class($block) EQ 'Action' || strpos($smarty.request.filter, $ext) !== false}
 					{
-						"redid": "{$block->id}",
-						"label": "{urlencode("<i class='yui3-redcms-icon yui3-redcms-icon-$ext'></i>")}{$block->getLabel()}",
+						"label": "{$block->getLabel()}",						
+						"icon": "{$ext}",
 						"attrs": {
 							"redid": {$block->id}, 
 							"widget": "{get_class($block)}",

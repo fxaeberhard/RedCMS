@@ -10,7 +10,7 @@ http://redcms.red-agent.com/license.html
 {/if}
 
 <div class="redcms-block {block name=blockClass}{/block} {$class}" {$this->renderBlockAttributes()}
-     widget="MenuNav" requires="redcms-menunav" >
+     widget="MenuNav" requires="redcms-menunav" data-noover=true >
 
   <div class="yui3-menu-bd"></div>
 
@@ -27,7 +27,7 @@ http://redcms.red-agent.com/license.html
                     {$aClass=(!$isCategory)?'yui3-menuitem-content':'yui3-menu-label'}
 
                     <li {$liClass} redid="{$block->id}"  widget="{get_class($block)}">
-                      <a class="{$aClass}" href="{$block->getLink()|default:'#'}">{$block->getLabel()|default:'No label provided'}</a>
+                      <a class="{$aClass}" href="{$block->getLink()|default:'#'}">{$block->getLabel()|default:'No label'}</a>
 
                       {if $isCategory}
                           <div class="yui3-menu yui3-menu-hidden">

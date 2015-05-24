@@ -12,23 +12,27 @@ http://redcms.red-agent.com/license.html
         [
         {foreach $blocks as $block}
             {
-            "redid": "{$block->id}",
-            "label": "{urlencode("<i class='yui3-redcms-icon yui3-redcms-icon-html'></i>")}{$block->getLabel()}",
-            "href": "{$block->getLink()}",
+            "label": "{$block->getLabel()}",
+			"icon": "html",
             "attrs": {
-            "redid": {$block->id}, "widget": "{get_class($block)}"
+				"redid": {$block->id}, 
+				"widget": "{get_class($block)}",
+				"href": "{$block->getLink()}"
             }
 
             {*  {$subBlocks = $block->getChildBlocks('link')}
             {if !empty($subBlocks)}
             ,children: {call menu blocks=$subBlocks level=$level+1}
             {/if}*}
-            },
+            }
+			{if !$smarty.section.menu.last},{/if}
+
         {/foreach}
         {}]
     {/function}
 
-    {call menu blocks=$this->getChildBlocks('link')}
+	{*{call menu blocks=$this->getChildBlocks('link')}*}
+    {call menu blocks=$this->getPages('link')}
 
   </div>
 </div>

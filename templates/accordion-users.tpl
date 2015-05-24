@@ -6,6 +6,9 @@
 
 <div class="redcms-block" {$this->renderBlockAttributes()} widget="Accordion" requires="redcms-accordion" >
 	
+	<button class='yui3-button' widget='OpenPanelAction' params='{ "parentId":9 }' href="/RedCMS/150/" data-cfg='{ "onSuccessEvent": "dirty" }'><i class='fa fa-plus-square'></i> Create user</button>
+	<br /><br />
+	
 	<div class="yui3-g yui3-redcms-accordion-bd">
 		<div class="yui3-u-1-3">Name</div>
 		<div class="yui3-u-1-3">Email</div>
@@ -14,7 +17,6 @@
 	
 	<ul>
 		{foreach $this->getChildBlocks() as $block}
-		{if $block->id NEQ 1}
 			<li redid="{$block->id}" widget="User"> 
 				<div class="yui3-redcms-accordion-title">
 					<div class="yui3-g">
@@ -33,7 +35,6 @@
 					</div>
 				</div> 
 			</li> 
-		{/if}
 		{/foreach}
 	</ul>
  </div>

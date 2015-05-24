@@ -13,7 +13,8 @@
   <ul>
     {foreach $this->getChildBlocks() as $block}
         <li redid="{$block->id}" widget="User">	
-          <a href="#" class="yui3-redcms-accordion-title">{$block->getLabel()}</a>
+          <a href="#" class="yui3-redcms-accordion-title">
+						<span class="redcms-icon-user"></span>{$block->getLabel()}</a>
           <ul class="yui3-redcms-accordion-item">
             {include file="user-default.tpl" inline}
           </ul> 
