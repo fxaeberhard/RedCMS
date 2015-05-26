@@ -27,7 +27,7 @@ http://redcms.red-agent.com/license.html
 							"href": "{$link}",
 							{$relPath = substr( $link, strlen($redCMS->path))}
 							"title": {strip}{if file_exists($relPath)}
-							"{if $ext == 'jpg' OR $ext == 'jpeg' OR $ext == 'png' OR $ext == 'gif'}{urlencode("<img src='{$link}' /><br />")}{/if}{round( filesize( $relPath )/ (1024), 2)}KB"
+							"{if $ext == 'jpg' OR $ext == 'jpeg' OR $ext == 'png' OR $ext == 'gif'}{urlencode("<")}img src='{$link}' {urlencode("/><br/>")}{/if}{round( filesize( $relPath )/ (1024), 2)}KB"
 							{else}
 								"Target file is missing"
 							{/if}{/strip}
@@ -43,7 +43,8 @@ http://redcms.red-agent.com/license.html
 			{}]
 		{/function}
 
-	{$childs = $this->getChildBlocks('text1')}
+	{capture assign='orderby'}{block "orderby"}text1{/block}{/capture}
+	{$childs = $this->getChildBlocks($orderby)}
 	{call menu blocks=$childs}
 
 	</div>

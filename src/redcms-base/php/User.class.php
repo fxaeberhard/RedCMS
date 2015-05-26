@@ -3,16 +3,17 @@
 class User extends Tuple {
 
 	var $_groups;
-	var $_dbFields = array('name', 'surname', 'password', 'email', 'userName', 'text1', 'anniversary',
+	var $_dbFields = ['name', 'surname', 'password', 'email', 'userName', 'text1', 'anniversary',
 		'profession', 'adress', 'adress_zip', 'adress_city', 'adress_country', 'pPhone', 'prPhone', 'poPhone', 'fax',
-		'skypeCtct', 'icqCtct', 'aimCtct', 'yahooCtct', 'society', 'adresspro', 'adresspro_zip', 'adresspro_city');
+		'skypeCtct', 'icqCtct', 'aimCtct', 'yahooCtct', 'society', 'adresspro', 'adresspro_zip', 'adresspro_city'];
 	var $_dbTable = 'redcms_user';
 
 	function getLabel() {
-		if ($this->name)
+		if ($this->name) {
 			return $this->surname . ' ' . $this->name;
-		else
+		} else {
 			return $this->userName;
+		}
 	}
 
 	function getGroups() {
@@ -26,14 +27,15 @@ class User extends Tuple {
 
 	function isAMember($groupId) {
 		foreach ($this->getGroups() as $g) {
-			if ($g->id == $groupId)
+			if ($g->id == $groupId) {
 				return true;
+			}
 		}
 		return false;
 	}
 
 	function getGroupsQuery() {
-		$ret = array();
+		$ret = [];
 		foreach ($this->getGroups() as $g) {
 			$ret[] = $g->id;
 		}
@@ -59,9 +61,7 @@ class Guest extends User {
 		parent::__construct();
 		$this->fields['userName'] = 'Guest';
 		$this->fields['id'] = '0';
-		$this->_groups = array();
+		$this->_groups = [];
 	}
 
 }
-
-?>

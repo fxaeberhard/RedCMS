@@ -38,9 +38,8 @@ class SessionManager {
 	}
 
 	function login($username, $password) {
-		$redCMS = RedCMS::getInstance();
 		$select = (strpos($username, '@') === false) ? 'userName=?' : 'email=?';
-		$user = UserManager::getUserBySelect($select, array($username));
+		$user = UserManager::getUserBySelect($select, [$username]);
 		if ($user && strcmp($user->password, $this->generateHash($password, $user->password)) == 0) {
 
 			$this->currentUser = $_SESSION['currentUser'] = $user;
@@ -54,6 +53,7 @@ class SessionManager {
 			return false;
 		}
 	}
+
 	function refreshCurrentUser() {
 		$this->currentUser = $_SESSION['currentUser'] = UserManager::getUserBySelect('id=?', [$this->currentUser->fields["id"]]);
 	}
@@ -65,10 +65,11 @@ class SessionManager {
 	}
 
 	function generateHash($plainText, $salt = null) {
-		if ($salt === null)
+		if ($salt === null) {
 			$salt = substr(md5(uniqid(rand(), true)), 0, $this->_SALTLENGTH);
-		else
+		} else {
 			$salt = substr($salt, 0, $this->_SALTLENGTH);
+		}
 		return $salt . sha1($salt . $plainText);
 	}
 
@@ -76,7 +77,7 @@ class SessionManager {
 		//on choisit le nombre de lettres
 		$letter_nb = mt_rand(3, $size - 2);
 		$nb_nb = $size - $letter_nb;
-		$pass = array();
+		$pass = [];
 		for ($i = 0; $i < $letter_nb; $i++) {
 			$n = mt_rand(0, 1);
 			//majuscule
@@ -130,5 +131,3 @@ class SessionManager {
 
 	 */
 }
-
-?>

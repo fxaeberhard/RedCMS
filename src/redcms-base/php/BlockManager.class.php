@@ -11,19 +11,21 @@ class BlockManager {
 	//var $_blockCache = array();
 
 	static function getBlockById($blockId) {
-		$blocks = BlockManager::getBlocksBySelect('id=?', array($blockId));
-		if (!empty($blocks))
+		$blocks = BlockManager::getBlocksBySelect('id=?', [$blockId]);
+		if (!empty($blocks)) {
 			return $blocks[0];
-		else
+		} else {
 			return null;
+		}
 	}
 
 	static function getBlockBySelect($select, $values = array()) {
 		$blocks = BlockManager::getBlocksBySelect($select, $values);
-		if (!empty($blocks))
+		if (!empty($blocks)) {
 			return $blocks[0];
-		else
+		} else {
 			return null;
+		}
 	}
 
 	static function getBlocksBySelect($select, $values = array()) {
@@ -80,5 +82,3 @@ class BlockManager {
 	}
 
 }
-
-?>

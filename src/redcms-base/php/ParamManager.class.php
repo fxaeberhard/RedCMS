@@ -8,7 +8,7 @@
 
 class ParamManager {
 
-	var $parameters = array();
+	var $parameters = [];
 
 	function ParamManager() {
 		$this->init();
@@ -19,8 +19,9 @@ class ParamManager {
 		$redCMS = RedCMS::getInstance();
 		if (isset($_SERVER['REDIRECT_URL'])) {  // REDIRECT_URL is provided by Apache when a URL has been rewritten
 			$redirUrl = $_SERVER['REDIRECT_URL'];
-			if ($redCMS->path != '/')
+			if ($redCMS->path != '/') {
 				$redirUrl = str_replace($redCMS->path, '', $redirUrl);
+			}
 
 			$args = explode('/', $redirUrl);
 			foreach ($args as &$arg) {
@@ -43,7 +44,7 @@ class ParamManager {
 	}
 
 	function currentStackJSON($startIndex = 1) {
-		$ret = array();
+		$ret = [];
 		foreach ($this->parameters as $p) {
 			$ret['p' . $startIndex] = Utils::url_encode($p);
 			++$startIndex;
@@ -59,20 +60,23 @@ class ParamManager {
 		$redCMS = RedCMS::getInstance();
 		$ret = $redCMS->path;
 		//echo $redCMS->config['defaultLang']."**".$redCMS->lang;
-		if ($param1 && $redCMS->config['defaultLang'] != $redCMS->lang)
+		if ($param1 && $redCMS->config['defaultLang'] != $redCMS->lang) {
 			$ret .= $redCMS->lang . "/";
-		if ($param1)
+		}
+		if ($param1) {
 			$ret .= Utils::url_encode($param1) . "/";
-		if ($param2)
+		}
+		if ($param2) {
 			$ret .= Utils::url_encode($param2) . "/";
-		if ($param3)
+		}
+		if ($param3) {
 			$ret .= Utils::url_encode($param3) . "/";
-		if ($param4)
+		}
+		if ($param4) {
 			$ret .= Utils::url_encode($param4) . "/";
+		}
 
 		return $ret;
 	}
 
 }
-
-?>

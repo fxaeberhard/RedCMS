@@ -24,7 +24,7 @@ select {
     padding: 6px 2px;
 }
 p, pre {
-	margin: 0;
+	/*margin: 0;*/
 }
 
 /* CSS shortcuts for RedCMS */
@@ -129,7 +129,7 @@ fieldset legend {
     margin-top: 5px;
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-bd {
-    padding-bottom: 20px;
+    padding: 10px 15px 20px;
 }
 .yui3-skin-sam .yui3-dd-draggable .yui3-widget-hd {
     cursor:move;
@@ -520,7 +520,7 @@ fieldset legend {
 /** RedCMS Conversation styles */
 .redcms-conversation .redcms-conversation-title {
     background-color: #D1D8DF;
-    padding: 5px 8px;
+    padding: 6px 8px 5px;
 }
 .redcms-conversation-title img {
 	float: left;
@@ -536,11 +536,11 @@ fieldset legend {
 .redcms-conversation .redcms-conversation-title h1 {
     margin: 0;
     font-weight: bolder;
-    font-size: 20px;
+    /* font-size: 18px; */
     color: #1C5AA9;
 }
 .redcms-conversation .redcms-conversation-content {
-    padding: 8px 5px 5px 63px;
+    padding: 0px 5px 0px 63px;
 }
 .redcms-conversation .redcms-conversation-content:empty {
     padding: 0;

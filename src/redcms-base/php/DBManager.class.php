@@ -17,10 +17,10 @@ class DBManager extends PDO {
 	 */
 	function DBManager($dsn, $username, $password) {
 		//parent::__construct($dsn, $username, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
-		parent::__construct($dsn, $username, $password, array(1002 => 'SET NAMES \'UTF8\''));
+		parent::__construct($dsn, $username, $password, [1002 => 'SET NAMES \'UTF8\'']);
 	}
 
-	var $_queries = array();
+	var $_queries = [];
 
 	function prepare($statement, $options = []) {
 		$this->_queries[] = $statement;
@@ -47,7 +47,7 @@ class DBManager extends PDO {
 		$return = '';
 		//get all of the tables
 		if ($tables == '*') {
-			$tables = array();
+			$tables = [];
 			$stmt = $this->query('SHOW TABLES');
 			while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
 				$tables[] = $row[0];
@@ -103,13 +103,12 @@ class DBManager extends PDO {
 	 */
 	function importFile($filename) {
 
-		$return = false;
-		$sql_start = array('INSERT', 'UPDATE', 'DELETE', 'DROP', 'GRANT', 'REVOKE', 'CREATE', 'ALTER');
-		$sql_run_last = array('INSERT');
+		$sql_start = ['INSERT', 'UPDATE', 'DELETE', 'DROP', 'GRANT', 'REVOKE', 'CREATE', 'ALTER'];
+		$sql_run_last = ['INSERT'];
 
 		if (file_exists($filename)) {
 			$lines = file($filename);
-			$queries = array();
+			$queries = [];
 			$query = '';
 
 			if (is_array($lines)) {

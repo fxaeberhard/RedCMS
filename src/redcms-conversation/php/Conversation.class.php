@@ -12,21 +12,22 @@ class ConversationBlock extends TreeStructure {
 	var $_currentFields;
 
 	function getChildBlocks($orderBy = null) {
-		if (isset($this->_currentFields))
+		if (isset($this->_currentFields)) {
 			return $this->_currentFields;
-		else
+		} else {
 			return parent::getChildBlocks($orderBy);
+		}
 	}
 
 	function render() {
-		$redCMS = RedCMS::get();
 		$param = $this->nextParam();
 		if ($param) {
 			$this->_currentFields = BlockManager::getBlocksBySelect("text1=?", array($param));
 			$template = $this->getTemplate();
 			$template->display($this->text5);
-		} else
+		} else {
 			parent::render();
+		}
 	}
 
 }
@@ -56,35 +57,36 @@ class Field extends Block {
 class ConversationField extends Field {
 
 	function getLabel() {
-		if ($this->text1)
+		if ($this->text1) {
 			return $this->text1;
-		else
+		} else {
 			return parent::getLabel();
+		}
 	}
 
 }
 
 class EventField extends ConversationField {
 
-	var $_dbFieldsMap = array('title' => 'text1', 'description' => 'longtext1');
+	var $_dbFieldsMap = ['title' => 'text1', 'description' => 'longtext1'];
 
 }
 
 class NewsField extends ConversationField {
 
-	var $_dbFieldsMap = array('title' => 'text1', 'description' => 'longtext1');
+	var $_dbFieldsMap = ['title' => 'text1', 'description' => 'longtext1'];
 
 }
 
 class ReplyField extends ConversationField {
 
-	var $_dbFieldsMap = array('title' => 'text1', 'description' => 'longtext1');
+	var $_dbFieldsMap = ['title' => 'text1', 'description' => 'longtext1'];
 
 }
 
 class TopicField extends ConversationField {
 
-	var $_dbFieldsMap = array('title' => 'text1', 'description' => 'longtext1');
+	var $_dbFieldsMap = ['title' => 'text1', 'description' => 'longtext1'];
 
 }
 
@@ -96,5 +98,3 @@ class DigestBlock extends TreeStructure {
 	}
 
 }
-
-?>

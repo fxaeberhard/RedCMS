@@ -12,26 +12,27 @@ class UserManager {
 		if ($blockId == '0') {
 			return new Guest();
 		}
-		$users = UserManager::getUsersBySelect('id=?', array($blockId));
-		if (!empty($users))
+		$users = UserManager::getUsersBySelect('id=?', [$blockId]);
+		if (!empty($users)) {
 			return $users[0];
-		else
+		} else {
 			return null;
+		}
 	}
 
 	static function getUsersByGroupId($groupId) {
 		$redCMS = RedCMS::get();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM ' . $redCMS->_dbUser .
 				' JOIN ' . $redCMS->_dbUserXGroup . ' ON redcms_user.id = idUser AND idGroup=?');
-		return UserManager::getUsersByStatement($statement, array($groupId));
+		return UserManager::getUsersByStatement($statement, [$groupId]);
 	}
 
-	static function &getUserBySelect($select, $values = array()) {
+	static function &getUserBySelect($select, $values = []) {
 		$users = UserManager::getUsersBySelect($select, $values);
 		return $users[0];
 	}
 
-	static function getUsersBySelect($select, $values = array()) {
+	static function getUsersBySelect($select, $values = []) {
 		$redCMS = RedCMS::get();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM ' . $redCMS->_dbUser . ' WHERE ' . $select);
 		return UserManager::getUsersByStatement($statement, $values);
@@ -43,13 +44,13 @@ class UserManager {
 			$users = UserManager::getUserByFields($rows);
 			return $users;
 		} else {
-			$users = array();
+			$users = [];
 			return $users;
 		}
 	}
 
 	static function &getUserByFields($fields) {
-		$users = array();
+		$users = [];
 		foreach ($fields as &$field) {
 			$users[] = new LoggedUser($field);
 		}
@@ -69,21 +70,23 @@ class UserManager {
 		$redCMS = RedCMS::get();
 		$stat = $redCMS->dbManager->prepare('SELECT *, idGroup as id FROM ' . $redCMS->_dbGroup .
 				' JOIN ' . $redCMS->_dbUserXGroup . ' on redcms_group.id = idGroup AND idUser =?');
-		if ($stat->execute(array($userId))) {
+		if ($stat->execute([$userId])) {
 			$g = UserManager::getGroupsByFields($stat->fetchAll(PDO::FETCH_ASSOC));
 			return $g;
-		} else
-			return array();
+		} else {
+			return [];
+		}
 	}
 
 	static function getGroupById($id) {
 		$redCMS = RedCMS::get();
 		$stat = $redCMS->dbManager->prepare('SELECT * FROM ' . $redCMS->_dbGroup . ' WHERE id=?');
-		if ($stat->execute(array($id))) {
+		if ($stat->execute([$id])) {
 			$g = UserManager::getGroupsByFields($stat->fetchAll(PDO::FETCH_ASSOC));
 			return $g[0];
-		} else
+		} else {
 			return null;
+		}
 	}
 
 	static function getGroups() {
@@ -92,7 +95,7 @@ class UserManager {
 	}
 
 	static function &getGroupsByFields($fields) {
-		$groups = array();
+		$groups = [];
 		foreach ($fields as &$field) {
 			$groups[] = new Group($field);
 		}
@@ -108,12 +111,12 @@ class UserManagerBlock extends TreeStructure {
 		$orderBy = ($orderBy) ? ' ORDER BY ' . $orderBy : '';
 		if ($redCMS->paramManager->hasMore()) {
 			$userId = $redCMS->paramManager->next();
-			$users = UserManager::getUsersBySelect("id=? $orderBy", array($userId));
+			$users = UserManager::getUsersBySelect("id=? $orderBy", [$userId]);
 			// FIXME This does not work since hierarchy is already displayed
 			$redCMS->currentHierarchy[] = $users[0];
 			return $users;
 		} else {
-			return UserManager::getUsersBySelect("1 $orderBy", array());
+			return UserManager::getUsersBySelect("1 $orderBy", []);
 		}
 	}
 
@@ -140,7 +143,7 @@ class CurrentUserManagerBlock extends TreeStructure {
 
 	function getChildBlocks($orderBy = NULL) {
 		$redCMS = RedCMS::get();
-		return array($redCMS->sessionManager->getCurrentUser());
+		return [$redCMS->sessionManager->getCurrentUser()];
 	}
 
 }
@@ -152,5 +155,3 @@ class GroupManagerBlock extends TreeStructure {
 	}
 
 }
-
-?>

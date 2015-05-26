@@ -69,7 +69,7 @@ YUI.add('redcms-menunav', function(Y) {
 		bindUI: function() {
 			var cb = this.get(CONTENT_BOX);
 
-			if (!cb.hasClass('yui3-redcms-canwrite')) {
+			if (!cb.hasClass('yui3-redcms-canwrite') || cb.hasClass("redcms-nodrag")) {
 				return;
 			}
 

@@ -37,12 +37,12 @@ h3 {
 
 /** Layout Styles */
 .redcms-layout {
-	padding-left: 300px; /* allow for left column (#nav) */
-	padding-right: 10px;
+	padding-left: 296px; /* allow for left column (#nav) */
+	padding-right: 8px;
 	padding-top: 7px;
 }
 .redcms-left {
-	margin-left: -295px;
+	margin-left: -290px;
 	position: relative;
 	/* workaround for IE9 not firing mouse events on #side due to negative margin */
 	width: 290px;
@@ -70,7 +70,7 @@ h3 {
 }
 
 .redcms-left .smag-members .yui3-menu-bd {
-	background: transparent url(smag-menu-title-membres.gif);
+	background: transparent url(smag-menu-title-membres.gif) no-repeat;
 }
 .yui3-skin-sam .redcms-left .yui3-menu-ft {
 	background: transparent url(smag-menu-back.gif) no-repeat;

@@ -7,16 +7,18 @@
 <div {$this->renderBlockAttributes()} widget="Block"  data-noover=true  >
   
 	
-	{$params = ['parentId' => $this->id]}
-	<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
-		params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
-		<span>
-			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('310')}" >
-				Nouveau
-			</a>
+	{if $this->canWrite()}
+		{$params = ['parentId' => $this->id]}
+		<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
+			params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
+			<span>
+				<a class="yui3-redcms-button-add" href="{ParamManager::getLink('310')}" >
+					Nouveau
+				</a>
+			</span>
 		</span>
-	</span>
-	<br /> <br />
+		<br /> <br />
+	{/if}
   
 	<div class="redcms-conversation">
 		{function name=conversation level=0}

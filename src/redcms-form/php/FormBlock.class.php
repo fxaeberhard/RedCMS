@@ -10,7 +10,7 @@ class FormBlock extends TreeStructure {
 	function parseRequest() {
 		global $_REQUEST;
 		$redCMS = RedCMS::get();
-		$fields = array();
+		$fields = [];
 
 		if (isset($_REQUEST['redaction'])) {
 			foreach ($this->getChildBlocks() as $b) {
@@ -31,8 +31,9 @@ class FormBlock extends TreeStructure {
 
 						case 'PasswordField':
 						case "password":
-							if ($newValue != '')
+							if ($newValue != '') {
 								$fields[$b->name] = $redCMS->sessionManager->generateHash($newValue);
+							}
 							break;
 
 						case 'TextareaField':
@@ -49,7 +50,7 @@ class FormBlock extends TreeStructure {
 	}
 
 	function getFormFields() {
-		$fields = array();
+		$fields = [];
 
 		foreach ($this->getChildBlocks("number1") as $b) {
 			$f = $b->toJSON();
@@ -64,7 +65,7 @@ class FormBlock extends TreeStructure {
 			$fields[] = $f;
 		}
 
-		$fields[] = array('name' => 'redaction', 'type' => 'HiddenField', 'value' => 'Submit'); // Double this field since the submit button won't be transmitted if using file upload
+		$fields[] = ['name' => 'redaction', 'type' => 'HiddenField', 'value' => 'Submit']; // Double this field since the submit button won't be transmitted if using file upload
 //		$fields[] = array('name'=>'redaction', 'type'=>'SubmitButton', 'value' => 'Submit');
 		return $fields;
 	}
@@ -80,13 +81,14 @@ class FormBlock extends TreeStructure {
 
 class FormField extends Block {
 
-	var $_dbFieldsMap = array('name' => 'text1', 'label' => 'text2', 'required' => 'text3', 'formtype' => 'text4', 'defaultValue' => 'text5');
+	var $_dbFieldsMap = ['name' => 'text1', 'label' => 'text2', 'required' => 'text3', 'formtype' => 'text4', 'defaultValue' => 'text5'];
 
 	function toJSON() {
 
 		$ret = parent::toJSON();
-		if ($ret['label'] == '')
+		if ($ret['label'] == '') {
 			$ret['label'] = $this->name;
+		}
 
 		$ret['redid'] = '' . $this->id;
 
@@ -107,9 +109,9 @@ class GroupSelectFormField extends FormField {
 
 	function toJSON() {
 		$ret = parent::toJSON();
-		$ret['choices'] = array();
+		$ret['choices'] = [];
 		foreach (UserManager::getGroups() as $g) {
-			$ret['choices'][] = array('label' => $g->name, 'value' => '' . $g->id);
+			$ret['choices'][] = ['label' => $g->name, 'value' => '' . $g->id];
 		}
 		return $ret;
 	}
@@ -120,11 +122,11 @@ class BlockSelectFormField extends FormField {
 
 	function toJSON() {
 		$ret = parent::toJSON();
-		$ret['choices'] = array();
+		$ret['choices'] = [];
 		$config = json_decode($this->longtext1, true);
 		$filter = ($config['class']) ? $config['class'] : 'PageBlock';
 		foreach (BlockManager::getBlocksBySelect('type=\'' . $filter . '\' ORDER BY link') as $b) {
-			$ret['choices'][] = array('label' => $b->getLabel(), 'value' => '' . $b->id);
+			$ret['choices'][] = ['label' => $b->getLabel(), 'value' => '' . $b->id];
 		}
 		return $ret;
 	}
@@ -136,29 +138,29 @@ class EditDBFormBlock extends FormBlock {
 	var $_targetBlock;
 
 	function onBlockSaved() {
+		
 	}
 
 	function parseRequest() {
 		global $_REQUEST;
 		$fields = parent::parseRequest();
 
-		if (isset($_REQUEST['id']))
+		if (isset($_REQUEST['id'])) {
 			$fields['id'] = $_REQUEST['id'];
-
+		}
 		return $fields;
 	}
 
 	function getFormFields() {
-
-		$redCMS = RedCMS::get();
 		$this->getTargetBlock();
 
 		$fields = parent::getFormFields();
 
 		foreach ($fields as &$f) {
 			$value = $this->_targetBlock->get($f['name']);
-			if ($value !== null)
+			if ($value !== null) {
 				$f['value'] = $value;
+			}
 
 			switch ($f['type']) {
 				case 'PasswordField': //Password fields values are never sent to the client
@@ -176,7 +178,7 @@ class EditDBFormBlock extends FormBlock {
 				  $value); */
 			}
 		}
-		$fields[] = array('name' => 'id', 'type' => 'HiddenField', 'value' => '' . $this->_targetBlock->id);
+		$fields[] = ['name' => 'id', 'type' => 'HiddenField', 'value' => '' . $this->_targetBlock->id];
 		return $fields;
 	}
 
@@ -197,10 +199,9 @@ class EditDBFormBlock extends FormBlock {
 			$ret = $this->_targetBlock->save($fields);
 			if ($ret === true) {
 				$this->onBlockSaved();
-				$ret = array('result' => 'success', 'msg' => 'Changes have been made.');
+				$ret = ['result' => 'success', 'msg' => 'Changes have been made.'];
 			} else {
-				$red = RedCMS::get();
-				$ret = array('result' => 'error', 'msg' => 'Form unsuccessfully saved.');
+				$ret = ['result' => 'error', 'msg' => 'Form unsuccessfully saved.'];
 			}
 			echo json_encode($ret);
 		} else {   //No action, we display the block in the regular way
@@ -234,8 +235,9 @@ class EditBlockFormBlock extends EditDBFormBlock {
 		global $_REQUEST;
 		$fields = parent::parseRequest();
 
-		if (isset($_REQUEST['parentId']))
+		if (isset($_REQUEST['parentId'])) {
 			$fields['parentId'] = $_REQUEST['parentId'];
+		}
 
 		return $fields;
 	}
@@ -266,15 +268,16 @@ class EditBlockFormBlock extends EditDBFormBlock {
 		$fields = parent::getFormFields();
 
 		if ($this->_targetBlock->parentId) {
-			$fields[] = array('name' => 'parentId', 'type' => 'HiddenField', 'value' => '' . $this->_targetBlock->parentId);
+			$fields[] = ['name' => 'parentId', 'type' => 'HiddenField', 'value' => '' . $this->_targetBlock->parentId];
 		}
 
 		foreach ($fields as &$f) {
 			if (strpos($f['name'], 'redcms_link_') !== false) {
 				$linkType = str_replace('redcms_link_', '', $f['name']);
 				$targetBlock = $this->_targetBlock->getLinkedBlock($linkType);
-				if ($targetBlock)
+				if ($targetBlock) {
 					$f['value'] = '' . $targetBlock->id;
+				}
 			}
 		}
 
@@ -290,18 +293,16 @@ class EditBlockPositionFormBlock extends Block { //extends EditBlockFormBlock {
 		if (!isset($this->_targetBlock)) {
 			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') { // If we are editing an existing block, we retrieve it
 				$this->_targetBlock = BlockManager::getBlockById($_REQUEST['id']);
-			} else
+			} else {
 				$this->targetBlock = null;
+			}
 		}
 		return $this->_targetBlock;
 	}
 
 	function moveField($values) {
-
 		$red = RedCMS::get();
-
-
-		$rs = $redCMS->dbManager->Execute($sql);
+		$rs = $red->dbManager->Execute($sql);
 		//		$this->log($sql);
 		return $rs;
 	}
@@ -328,7 +329,7 @@ class EditBlockPositionFormBlock extends Block { //extends EditBlockFormBlock {
 	function render() {
 		if (isset($_REQUEST['redaction'])) {  //Form has been sent for submission
 			$red = RedCMS::get();
-			$ret = array('result' => 'error', 'msg' => 'Form unsuccessfully saved.');
+			$ret = ['result' => 'error', 'msg' => 'Form unsuccessfully saved.'];
 			$targetBlock = $this->getTargetBlock();
 
 			$targetBlock->set('parentId', $_REQUEST['parentId']);
@@ -338,29 +339,30 @@ class EditBlockPositionFormBlock extends Block { //extends EditBlockFormBlock {
 				$position = $refBlock->number1;
 				if ($position === null) { //HACK If there is no position, positions are corrupted, we reset them.
 					$stat = $red->dbManager->prepare('UPDATE redcms_block SET number1=0 WHERE parentId=?');
-					$stat->execute(array($targetBlock->parentId));
+					$stat->execute([$targetBlock->parentId]);
 					$position = 0;
 				}
-				$fields = array('', $targetBlock->parentId, $targetBlock->id, $refBlock->id);
+				$fields = ['', $targetBlock->parentId, $targetBlock->id, $refBlock->id];
 				$this->recursivePropagation($position, -1, $fields);
 				$this->recursivePropagation($position + 1, 1, $fields);
 
 				$targetBlock->set('number1', $position + 1);
 				if ($targetBlock->save()) {
-					$ret = array('result' => 'success', 'msg' => 'Changes have been made.');
+					$ret = ['result' => 'success', 'msg' => 'Changes have been made.'];
 				}
 			} else {   // No target, we move the block in the first position
 				$stat = $red->dbManager->prepare('SELECT MIN(number1) FROM redcms_block WHERE parentId=?');
-				$stat->execute(array($targetBlock->parentId));
+				$stat->execute([$targetBlock->parentId]);
 				$r = $stat->fetchAll(PDO::FETCH_NUM);
 				$position = $r[0][0];
-				if (!$position)
+				if (!$position) {
 					$position = 0;
-				else
+				} else {
 					$position = $position - 1;
+				}
 				$targetBlock->set('number1', $position);
 				if ($targetBlock->save()) {
-					$ret = array('result' => 'success', 'msg' => 'Changes have been made.');
+					$ret = ['result' => 'success', 'msg' => 'Changes have been made.'];
 				}
 			}
 			echo json_encode($ret);
@@ -472,25 +474,25 @@ class EditRightsFormBlock extends EditDBFormBlock {
 	 */
 	function getFormFields() {
 		$redCMS = RedCMS::get();
-		$fields = array();
+		$fields = [];
 
 		$this->getTargetBlock();
-		$fields[] = array('name' => 'id', 'type' => 'HiddenField', 'value' => '' . $this->_targetBlock->id);
-		$fields[] = array('name' => 'publicread', 'type' => 'CheckboxField', 'label' => 'Public read', 'checked' => $this->_targetBlock->publicread === 1);
-		$fields[] = array('name' => 'publicwrite', 'type' => 'CheckboxField', 'label' => 'Public write', 'checked' => $this->_targetBlock->publicwrite === 1);
-		$fields[] = array('name' => 'read', 'type' => 'CheckboxField', 'label' => 'Registered user read', 'checked' => $this->_targetBlock->read === 1);
-		$fields[] = array('name' => 'write', 'type' => 'CheckboxField', 'label' => 'Registered user write', 'checked' => $this->_targetBlock->write === 1);
+		$fields[] = ['name' => 'id', 'type' => 'HiddenField', 'value' => '' . $this->_targetBlock->id];
+		$fields[] = ['name' => 'publicread', 'type' => 'CheckboxField', 'label' => 'Public read', 'checked' => $this->_targetBlock->publicread === 1];
+		$fields[] = ['name' => 'publicwrite', 'type' => 'CheckboxField', 'label' => 'Public write', 'checked' => $this->_targetBlock->publicwrite === 1];
+		$fields[] = ['name' => 'read', 'type' => 'CheckboxField', 'label' => 'Registered user read', 'checked' => $this->_targetBlock->read === 1];
+		$fields[] = ['name' => 'write', 'type' => 'CheckboxField', 'label' => 'Registered user write', 'checked' => $this->_targetBlock->write === 1];
 
 		foreach ($this->getRightsByGroup($this->_targetBlock->id) as $g) { //we loop through the rights to select the one corresponding to 
 			if (!isset($g['read'])) {
 				$g['read'] = 0;
 				$g['write'] = 0;
 			}
-			$fields[] = array('name' => $g['name'] . '_read', 'type' => 'CheckboxField', 'label' => $g['name'] . ' read', 'checked' => $g['read'] === 1);
-			$fields[] = array('name' => $g['name'] . '_write', 'type' => 'CheckboxField', 'label' => $g['name'] . ' write', 'checked' => $g['write'] === 1);
+			$fields[] = ['name' => $g['name'] . '_read', 'type' => 'CheckboxField', 'label' => $g['name'] . ' read', 'checked' => $g['read'] === 1];
+			$fields[] = ['name' => $g['name'] . '_write', 'type' => 'CheckboxField', 'label' => $g['name'] . ' write', 'checked' => $g['write'] === 1];
 		}
 
-		$fields[] = array('name' => 'redaction', 'type' => 'SubmitButton', 'value' => 'Submit');
+		$fields[] = ['name' => 'redaction', 'type' => 'SubmitButton', 'value' => 'Submit'];
 		return $fields;
 	}
 
@@ -513,10 +515,11 @@ class EditGroupFormBlock extends EditDBFormBlock {
 	function getTargetBlock() {
 		global $_REQUEST;
 		if (!isset($this->_targetBlock)) {
-			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '')
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
 				$this->_targetBlock = UserManager::getGroupById($_REQUEST['id']);
-			else
+			} else {
 				$this->_targetBlock = new Group();
+			}
 		}
 		return $this->_targetBlocks;
 	}
@@ -528,10 +531,11 @@ class EditUserFormBlock extends EditDBFormBlock {
 	function getTargetBlock() {
 		global $_REQUEST;
 		if (!isset($this->_targetBlock)) {
-			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '')
+			if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
 				$this->_targetBlock = UserManager::getUserById($_REQUEST['id']);
-			else
+			} else {
 				$this->_targetBlock = new User();
+			}
 		}
 		return $this->_targetblock;
 	}
@@ -555,5 +559,3 @@ class EditCurrentUserFormBlock extends EditUserFormBlock {
 	}
 
 }
-
-?>

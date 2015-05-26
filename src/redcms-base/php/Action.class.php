@@ -8,7 +8,7 @@
 
 class Action extends Block {
 
-	var $_dbFieldsMap = array('label' => 'text1', 'action' => 'text2', 'filter' => 'text3');
+	var $_dbFieldsMap = ['label' => 'text1', 'action' => 'text2', 'filter' => 'text3'];
 
 	function getLabel() {
 		return $this->label;
@@ -54,26 +54,29 @@ class TargetBlockAction extends Action {
 
 	function getLink() {
 		$target = $this->getTarget();
-		if ($target)
+		if ($target) {
 			return $target->getLink();
-		else
+		} else {
 			return parent::getLink();
+		}
 	}
 
 	function canRead() {
 		$target = $this->getTarget();
-		if ($target)
+		if ($target) {
 			return $target->canRead();
-		else
+		} else {
 			return parent::canRead();
+		}
 	}
 
 	function canWrite() {
 		$target = $this->getTarget();
-		if ($target)
+		if ($target) {
 			return $target->canWrite();
-		else
+		} else {
 			return parent::canWrite();
+		}
 	}
 
 }
@@ -99,9 +102,11 @@ class PageLinkAction extends TargetBlockAction {
 
 		return parent::getLabel();
 	}
+
 }
 
 class OpenPageAction extends PageLinkAction {
+	
 }
 
 class DeleteAction extends Action {
@@ -166,5 +171,3 @@ class NewWindowHrefAction extends Action {
 class HrefAction extends Action {
 	
 }
-
-?>

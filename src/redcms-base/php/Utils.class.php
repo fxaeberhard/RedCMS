@@ -4,11 +4,11 @@ class Utils {
 
 	// *** URL Encoding methods *** //
 	static function url_encode($str) {
-		return urlencode(str_replace(array('/', '&'), array('%2F', 'AND'), $str));
+		return urlencode(str_replace(['/', '&'], ['%2F', 'AND'], $str));
 	}
 
 	static function url_decode($str) {
-		return str_replace(array('%2F', 'AND'), array('/', '&'), urldecode($str));
+		return str_replace(['%2F', 'AND'], ['/', '&'], urldecode($str));
 	}
 
 	// *** Date methods *** //
@@ -38,10 +38,10 @@ class Utils {
 		if (!is_numeric($date))
 			$date = strtotime($date);
 		$redCMS = RedCMS::get();
-		$dico = array(
-			"fr" => array("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"),
-			"en" => array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "January", "Febrary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-		);
+		$dico = [
+			"fr" => ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+			"en" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "January", "Febrary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+		];
 		return str_replace($dico['en'], $dico[$redCMS->lang], date($dateFormat, $date));
 	}
 
@@ -51,6 +51,8 @@ class Utils {
 		if (Utils::date_todays($date1) === Utils::date_todays($date2) || !isset($date2) || $date2 == "") {
 //			return 'le ' . Utils::date('j F Y, \d\e H:i', $date1) . ' à ' . date('H:i', $date2);
 			return 'le ' . Utils::date('j F Y', $date1);
+		} else if (Utils::date_tomonth($date1) === Utils::date_tomonth($date2) || !isset($date2) || $date2 == "") {
+			return 'du ' . Utils::date('j', $date1) . ' au ' . Utils::date('j F Y', $date2);
 		} else {
 //			return 'du ' . Utils::date('j F à H:i', $date1) . ' au ' . Utils::date('j F Y à H:i', $date2);
 			return 'du ' . Utils::date('j F', $date1) . ' au ' . Utils::date('j F Y', $date2);
@@ -71,9 +73,10 @@ class Utils {
 			//			return 'aujourd\'hui, à '. date('H:i', $date);
 		} elseif ($diff < (2 * 24 * 60)) {
 			return (($date > $now) ? 'demain' : 'hier') . ', à ' . date('H:i', $date);
-		} else
+		} else {
 //			return Utils::date('\l\e j F Y', $date);
 			return Utils::date('\l\e j F Y à H:i', $date);
+		}
 	}
 
 	// *** File Functions *** //
@@ -107,7 +110,6 @@ class Utils {
 			case 'gif':
 			case 'png':
 				return true;
-				break;
 			default: return false;
 		}
 	}
@@ -133,11 +135,10 @@ class Utils {
 
 	// *** SQL FUNCTION *** //
 	static function sql_date($date = null) {
-		if (!$date)
+		if (!$date) {
 			$date = time();
+		}
 		return date('Y-m-d H:i', $date);
 	}
 
 }
-
-?>

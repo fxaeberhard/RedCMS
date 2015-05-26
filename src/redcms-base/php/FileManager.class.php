@@ -9,14 +9,15 @@
 
 class FileBlock extends Block {
 
-	var $_dbFieldsMap = array('filePath' => 'text1', 'label' => 'text2');
+	var $_dbFieldsMap = ['filePath' => 'text1', 'label' => 'text2'];
 
 	function getLabel() {
 		$a = explode('/', $this->filePath);
-		if ($this->label != '')
+		if ($this->label != '') {
 			return $this->label;
-		else
-			return end($a);  //We strip the file from its path for display
+		} else {
+			return end($a);
+		}  //We strip the file from its path for display
 	}
 
 	function getLink() {
@@ -32,8 +33,8 @@ class FileBlock extends Block {
 			$fPath = $redCMS->fullpath . $relPath;
 			foreach ($_FILES as $fieldName => $file) {
 				switch ($file['error']) {
-					case 0:	 // No error during upload, proceed with file move
-						$fName = $relPath . str_replace(array('\\', '/', ':', '*', '?', '"', '<', '>', '|'), array('', '', '', '', '', '', '', '', ''), $file['name']);  //Escape the provided file name of any unwanted chars				
+					case 0:  // No error during upload, proceed with file move
+						$fName = $relPath . str_replace(['\\', '/', ':', '*', '?', '"', '<', '>', '|'], ['', '', '', '', '', '', '', '', ''], $file['name']);  //Escape the provided file name of any unwanted chars				
 						$fParts = pathinfo($fName);
 
 						$i = 1;
@@ -42,8 +43,9 @@ class FileBlock extends Block {
 							++$i;
 						}
 
-						if (!file_exists($fPath))
+						if (!file_exists($fPath)) {
 							mkdir($fPath, 0777, true); // If the target directory does not exist, we create it
+						}
 						move_uploaded_file($file['tmp_name'], $redCMS->fullpath . $fName);
 
 						$this->fields[$fieldName] = $fName;
@@ -52,7 +54,7 @@ class FileBlock extends Block {
 					case 1:
 					case 2:
 					case 3:
-					case 4:	 // No files were provided for upload
+					case 4:  // No files were provided for upload
 				}
 			}
 		}
@@ -88,17 +90,17 @@ class BackupManager extends TreeStructure {
 				mkdir($redCMS->fullpath . $fileDir, 0777, true);
 			$redCMS->dbManager->exportTablesToFile($redCMS->fullpath . $filePath);
 
-			$backupBlock = new BackupFileBlock(array('parentId' => $this->id, 'text1' => $filePath, 'type' => 'BackupFileBlock'));
+			$backupBlock = new BackupFileBlock(['parentId' => $this->id, 'text1' => $filePath, 'type' => 'BackupFileBlock']);
 			$backupBlock->save();
 
-			$ret = array('result' => 'success', 'msg' => 'Backup successfully created');
+			$ret = ['result' => 'success', 'msg' => 'Backup successfully created'];
 			echo json_encode($ret);
 		} elseif (isset($_REQUEST['id'])) {
 			$backupBlock = BlockManager::getBlockById($_REQUEST['id']);
 
 			$redCMS->dbManager->importFile($redCMS->fullpath . $backupBlock->filePath);
 
-			$ret = array('result' => 'success', 'msg' => 'Backup successfully loaded');
+			$ret = ['result' => 'success', 'msg' => 'Backup successfully loaded'];
 			echo json_encode($ret);
 		} else {
 			parent::render();
@@ -110,5 +112,3 @@ class BackupManager extends TreeStructure {
 class BackupFileBlock extends FileBlock {
 	
 }
-
-?>

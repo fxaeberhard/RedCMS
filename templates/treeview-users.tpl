@@ -4,7 +4,7 @@
 * http://redcms.red-agent.com/license.html
 *}
 
-<div class="redcms-block yui3-redcms-loading" {$this->renderBlockAttributes()}
+<div class="redcms-block" {$this->renderBlockAttributes()}
      widget="Accordion" requires="redcms-accordion" >
 
   <button class='yui3-button' widget='OpenPanelAction' params='{ "parentId":9 }' href="/RedCMS/150/" data-cfg='{ "onSuccessEvent": "dirty" }'><i class='fa fa-plus-square'></i> Create user</button>

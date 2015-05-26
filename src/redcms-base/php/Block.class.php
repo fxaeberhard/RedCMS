@@ -10,13 +10,14 @@
 class Tuple {
 
 	var $_dbFields;
-	var $_dbFieldsMap = array();
+	var $_dbFieldsMap = [];
 	var $_dbTable;
 	var $fields;
 
-	function Tuple($fields = array()) {
-		if (!isset($fields['id']))
+	function Tuple($fields = []) {
+		if (!isset($fields['id'])) {
 			$fields['id'] = '';
+		}
 		$this->fields = $fields;
 	}
 
@@ -26,25 +27,26 @@ class Tuple {
 	}
 
 	function get($f) {
-		if (isset($this->fields[$f]))
+		if (isset($this->fields[$f])) {
 			return $this->fields[$f];
+		}
 		return null;
 	}
 
 	function __get($f) {
-		if (isset($this->fields[$f]))
+		if (isset($this->fields[$f])) {
 			return $this->fields[$f];
-		else if (isset($this->_dbFieldsMap[$f]) && isset($this->fields[$this->_dbFieldsMap[$f]]))
+		} else if (isset($this->_dbFieldsMap[$f]) && isset($this->fields[$this->_dbFieldsMap[$f]])) {
 			return $this->fields[$this->_dbFieldsMap[$f]];
-		else
+		} else {
 			return null;
+		}
 	}
 
 	// *** DB interaction methods *** //
 	function save() {
 		$redCMS = RedCMS::getInstance();
-		$values = array();
-		$cols = array();
+		$values = [];
 		foreach ($this->_dbFields as $f) {
 			if (isset($this->fields[$f])) {
 
@@ -57,21 +59,22 @@ class Tuple {
 			}
 		}
 		if (is_numeric($this->fields['id'])) {
-			$query = 'UPDATE ' . $this->_dbTable . ' SET ' . implode(',', $updateCols) . ' WHERE id = ' . $this->id;
-			$statement = $redCMS->dbManager->prepare($query);
+			$statement = $redCMS->dbManager->prepare('UPDATE ' . $this->_dbTable . ' SET ' . implode(',', $updateCols) . ' WHERE id = ' . $this->id);
 			$r = $statement->execute($values);
 			if ($r) {
 				return true;
-			} else
+			} else {
 				return $statement;
+			}
 		} else {
 			$statement = $redCMS->dbManager->prepare('INSERT INTO ' . $this->_dbTable . ' (' . implode(',', $insertCols1) . ') VALUES (' . implode(',', $insertCols2) . ')');
 			$r = $statement->execute($values);
 			if ($r) {
 				$this->fields['id'] = $redCMS->dbManager->lastInsertId();
 				return true;
-			} else
+			} else {
 				return $statement;
+			}
 		}
 	}
 
@@ -79,11 +82,11 @@ class Tuple {
 		$redCMS = RedCMS::getInstance();
 		$query = 'DELETE FROM ' . $this->_dbTable . ' WHERE id=? LIMIT 1';
 		$statement = $redCMS->dbManager->prepare($query);
-		return $statement->execute(array($this->id));
+		return $statement->execute([$this->id]);
 	}
 
 	function toJSON() {
-		$ret = array();
+		$ret = [];
 		foreach ($this->_dbFieldsMap as $f => $t) {
 			$ret[$f] = $this->fields[$t];
 		}
@@ -94,23 +97,29 @@ class Tuple {
 
 class Block extends Tuple {
 
-	var $_dbFields = array('parentId', 'type', 'text1', 'text2', 'text3', 'text4', 'text5', 'number1', 'date1', 'date2', 'longtext1',
-		'template', 'link', 'read', 'write', 'dateadded', 'dateupdated', 'owner', 'publicread', 'publicwrite');
+	var $_dbFields = ['parentId', 'type', 'text1', 'text2', 'text3', 'text4', 'text5', 'number1', 'date1', 'date2', 'longtext1',
+		'template', 'link', 'read', 'write', 'dateadded', 'dateupdated', 'owner', 'publicread', 'publicwrite'];
 	var $_dbTable = 'redcms_block';
 	var $_parent;
-	var $_linkedBlocks = array();
+	var $_linkedBlocks = [];
 	var $_childBlocks;
 
 	// *** Hierarchy and linked blocks managment methods *** //
 	function getChildBlocks($orderBy = null) {
 		if (!isset($this->_childBlocks)) {
-			$orderBy = ($orderBy) ? ' ORDER BY ' . $orderBy : '';
-			$this->_childBlocks = BlockManager::getBlocksBySelect('parentId=' . $this->id . $orderBy);
-			foreach ($this->_childBlocks as &$b) {
-				$b->_parent = $this;
-			}
+			$orderBy = $orderBy ? ' ORDER BY ' . $orderBy : '';
+			$this->_childBlocks = $this->getChildBlocksS('parentId=' . $this->id . $orderBy);
 		}
 		return $this->_childBlocks;
+	}
+
+	function getChildBlocksS($select) {
+		$select = $select ? " AND " . $select : "";
+		$blocks = BlockManager::getBlocksBySelect('parentId=' . $this->id . $select);
+		foreach ($blocks as &$b) {
+			$b->_parent = $this;
+		}
+		return $blocks;
 	}
 
 	function getLinkedBlocks($relationType) {
@@ -120,10 +129,11 @@ class Block extends Tuple {
 	function &getLinkedBlock($relationType) {
 		if (!isset($this->_linkedBlocks[$relationType])) {
 			$blocks = $this->getLinkedBlocks($relationType);
-			if (!empty($blocks))
+			if (!empty($blocks)) {
 				$this->_linkedBlocks[$relationType] = $blocks[0];
-			else
+			} else {
 				$this->_linkedBlocks[$relationType] = null;
+			}
 		}
 		return $this->_linkedBlocks[$relationType];
 	}
@@ -143,8 +153,9 @@ class Block extends Tuple {
 		$a = $this->parentBlock();
 		while (!($a instanceof $class)) {
 			$a = $a->parentBlock();
-			if (!$a)
+			if (!$a) {
 				return null;
+			}
 		}
 		return $a;
 	}
@@ -162,10 +173,20 @@ class Block extends Tuple {
 	}
 
 	function getLink() {
-		if ($this->link)
+		if ($this->link) {
 			return ParamManager::getLink($this->link);
-		else
+		} else {
 			return ParamManager::getLink($this->id);
+		}
+	}
+
+	function getPageLink() {
+		$p = $this->ancestor("PageBlock");
+		if ($p) {
+			return $p->getLink();
+		} else {
+			return "#";
+		}
 	}
 
 	function render() {
@@ -190,23 +211,25 @@ class Block extends Tuple {
 			if ($redCMS->sessionManager->currentUser->belongsToAnyGroup()) {
 				$stat = $redCMS->dbManager->prepare('SELECT max(`read`) as `read`, max(`write`) as `write` from redcms_groupxblock' .
 						' WHERE idBlock=? AND idGroup in ' . $redCMS->sessionManager->currentUser->getGroupsQuery());
-				if ($stat->execute(array($this->id))) {
+				if ($stat->execute([$this->id])) {
 					$this->_rights = $stat->fetch(PDO::FETCH_ASSOC);
-				} else
-					$this->_rights = array('read' => '0', 'write' => '0');
-			} else
-				$this->_rights = array('read' => '0', 'write' => '0');
+				} else {
+					$this->_rights = ['read' => '0', 'write' => '0'];
+				}
+			} else {
+				$this->_rights = ['read' => '0', 'write' => '0'];
+			}
 		}
 		return $this->_rights;
 	}
 
 	function canRead() {
 		$redCMS = RedCMS::get();
-		if ($this->publicread == '1')
+		if ($this->publicread == '1') {
 			return true;
-		else if ($this->read == '1' && $redCMS->sessionManager->isLoggedIn())
+		} else if ($this->read == '1' && $redCMS->sessionManager->isLoggedIn()) {
 			return true;
-		else {
+		} else {
 			$this->getRights();
 			return $this->_rights['read'] == '1';
 		}
@@ -215,14 +238,15 @@ class Block extends Tuple {
 	function canWrite() {
 		// FIXME shortcut for development only, to remove
 		$redCMS = RedCMS::getInstance();
-		if ($redCMS->sessionManager->currentUser->isAMember('1') || $redCMS->sessionManager->currentUser->isAMember('2'))
+		if ($redCMS->sessionManager->currentUser->isAMember('1') || $redCMS->sessionManager->currentUser->isAMember('2')) {
 			return true;
+		}
 
-		if ($this->publicwrite == '1')
+		if ($this->publicwrite == '1') {
 			return true;
-		else if ($this->write == '1' && $redCMS->sessionManager->isLoggedIn())
+		} else if ($this->write == '1' && $redCMS->sessionManager->isLoggedIn()) {
 			return true;
-		else {
+		} else {
 			$this->getRights();
 			return $this->_rights['write'] == '1';
 		}
@@ -243,10 +267,11 @@ class Block extends Tuple {
 	// *** Admin Menu Managment *** //
 	function getAdminJSON() {
 		$admin = $this->getLinkedBlock('admin');
-		if (isset($admin))
+		if (isset($admin)) {
 			$admin = $admin->toJSON();
-		else
-			$admin = array();
+		} else {
+			$admin = [];
+		}
 		return $admin;
 	}
 
@@ -260,7 +285,7 @@ class Block extends Tuple {
 
 	// *** Parameters Stack Managment *** //
 
-	var $paramsStack = array();
+	var $paramsStack = [];
 
 	function nextParam() {
 		$redCMS = RedCMS::get();
@@ -268,8 +293,9 @@ class Block extends Tuple {
 			$param = $redCMS->paramManager->next();
 			$this->paramsStack['p1'] = $param;
 			return $param;
-		} else
+		} else {
 			return null;
+		}
 	}
 
 	function getParamsJSON() {
@@ -311,28 +337,28 @@ class WrapperBlock extends Block {
 
 class Group extends Tuple {
 
-	var $_dbFields = array('name', 'title');
+	var $_dbFields = ['name', 'title'];
 	var $_dbTable = 'redcms_group';
 
 }
 
 class GroupXBlock extends Tuple {
 
-	var $_dbFields = array('idBlock', 'idGroup', 'read', 'write');
+	var $_dbFields = ['idBlock', 'idGroup', 'read', 'write'];
 	var $_dbTable = 'redcms_groupxblock';
 
 }
 
 class BlockXBlock extends Tuple {
 
-	var $_dbFields = array('blockId', 'subBlockId', 'relationType');
+	var $_dbFields = ['blockId', 'subBlockId', 'relationType'];
 	var $_dbTable = 'redcms_blockxblock';
 
 }
 
 class UserXGroup extends Tuple {
 
-	var $_dbFields = array('idUser', 'idGroup');
+	var $_dbFields = ['idUser', 'idGroup'];
 	var $_dbTable = 'redcms_userxgroup';
 
 }
@@ -342,21 +368,21 @@ class LoginManagerBlock extends Block {
 	function render() {
 		global $_REQUEST;
 		$redCMS = RedCMS::getInstance();
-		$ret = array();
+		$ret = [];
 		switch ($_REQUEST['action']) {
 			case 'login':
 				if ($redCMS->sessionManager->login($_REQUEST['username'], $_REQUEST['password'])) {
-					$ret = array('result' => 'success', 'msg' => 'Vous êtes maintenant connecté');
+					$ret = ['result' => 'success', 'msg' => 'Vous êtes maintenant connecté'];
 				} else {
-					$ret = array('result' => 'error', 'msg' => 'Mot de passe ou nom d\'utilisateur incorrect');
+					$ret = ['result' => 'error', 'msg' => 'Mot de passe ou nom d\'utilisateur incorrect'];
 				}
 				break;
 			case 'logout':
 				$redCMS->sessionManager->logout();
-				$ret = array('result' => 'success', 'msg' => 'Vous avez été déconnecté');
+				$ret = ['result' => 'success', 'msg' => 'Vous avez été déconnecté'];
 				break;
 			default:
-				$ret = array('result' => 'error', 'msg' => 'Unknown or missing action parameter');
+				$ret = ['result' => 'error', 'msg' => 'Unknown or missing action parameter'];
 				break;
 		}
 		echo json_encode($ret);
@@ -371,5 +397,3 @@ class TextBlock extends Block {
 	}
 
 }
-
-?>

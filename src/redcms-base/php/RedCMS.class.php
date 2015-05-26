@@ -14,14 +14,14 @@
  */
 class RedCMS {
 
-	var $defaultConfg = array(
+	var $defaultConfg = [
 		'path' => '/',
 		'homePageId' => 3,
 		'notFoundPageId' => 22,
 		'accessRestrictedPageId' => 23,
 		'defaultPageTemplate' => 'page-default.tpl',
 		'defaultLang' => 'en',
-		'availableLang' => array('en'),
+		'availableLang' => ['en'],
 		'charset' => 'utf-8',
 		'debugMode' => false,
 		'windowTitleSuffix' => '',
@@ -38,7 +38,7 @@ class RedCMS {
 		'smtpPassword' => '',
 		'version' => '0.2.2',
 		'cacheEnabled' => false
-	);
+	];
 
 	/*	 * *************************************All utilities objects ****************** */
 	var $sessionManager;
@@ -52,7 +52,7 @@ class RedCMS {
 	var $path;
 	var $fullpath;
 	var $currentBlock;
-	var $currentHierarchy = array();
+	var $currentHierarchy = [];
 
 	/*	 * *************************************DATABASE TABLE DECLARATION *************** */
 	var $_dbBlock = 'redcms_block';
@@ -62,6 +62,9 @@ class RedCMS {
 	var $_dbRight = 'redcms_rights';
 	var $_dbUser = 'redcms_user';
 	var $_dbUserXGroup = 'redcms_userxgroup';
+
+	/** Private vars */
+	var $host;   // Hold an instance of the class
 
 	function init($config, $dsn, $username, $password) {
 		$this->config = array_merge($this->defaultConfg, $config);
@@ -80,18 +83,19 @@ class RedCMS {
 
 		if ($cParam && ($cParam == 'fr' || $cParam == 'en')) { // First retrive the lang of the current page if available
 			$this->lang = $cParam;
-			$cParam = $this->paramManager->next();	// Then retrieves the page parameter 
+			$cParam = $this->paramManager->next(); // Then retrieves the page parameter 
 		} else {
 			$this->lang = $this->config['defaultLang'];
 		}
 
-		if ($cParam == null)
-			$cParam = $this->config['homePageId'];   // If there is no param available, we use the homepage id instead
+		if ($cParam == null) {
+			$cParam = $this->config['homePageId']; // If there is no param available, we use the homepage id instead
+		}
 
-		if (is_numeric($cParam)) {	 // If the parameter is a number, use it as an id
+		if (is_numeric($cParam)) {  // If the parameter is a number, use it as an id
 			$this->currentBlock = BlockManager::getBlockById($cParam);
-		} else {	  // Otherwise use the link
-			$this->currentBlock = BlockManager::getBlockBySelect('link = ?', array($cParam));
+		} else {   // Otherwise use the link
+			$this->currentBlock = BlockManager::getBlockBySelect('link = ?', [$cParam]);
 		}
 		$this->currentHierarchy[] = $this->currentBlock;
 	}
@@ -107,10 +111,10 @@ class RedCMS {
 		ob_start('ob_gzhandler');
 		header("Content-Type: text/html; charset=" . $this->config['charset']);
 
-		if ($this->currentBlock) {	 // If the block was correctly pulled
+		if ($this->currentBlock) {  // If the block was correctly pulled
 			if ($this->currentBlock->canRead()) {
 				$this->currentBlock->renderHeaders();
-				$this->currentBlock->render();	// we render it
+				$this->currentBlock->render(); // we render it
 			} else {
 				die('Authorization refusedssss');
 			}
@@ -120,7 +124,7 @@ class RedCMS {
 	}
 
 	//	***	Singleton methods *** //
-	private static $instance;   // Hold an instance of the class
+	private static $instance;
 
 	private function __construct() {
 		
@@ -132,7 +136,7 @@ class RedCMS {
 		return RedCMS::get();
 	}
 
-	public static function get() {	 // The singleton method
+	public static function get() {  // The singleton method
 		if (!isset(self::$instance)) {
 			$c = __CLASS__;
 			self::$instance = new $c;
@@ -140,10 +144,8 @@ class RedCMS {
 		return self::$instance;
 	}
 
-	public function __clone() {	// Prevent users to clone the instance
+	public function __clone() { // Prevent users to clone the instance
 		trigger_error('Clone is not allowed.', E_USER_ERROR);
 	}
 
 }
-
-?>

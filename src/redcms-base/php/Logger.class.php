@@ -2,8 +2,8 @@
 
 class Logger {
 
-	var $logWriters = array();
-	var $verbose = array('log', 'info', 'warn', 'error');
+	var $logWriters = [];
+	var $verbose = ['log', 'info', 'warn', 'error'];
 	var $startTime;
 
 	function Logger() {
@@ -22,8 +22,9 @@ class Logger {
 
 	function doCheckPoint($name = 'Checkpoint') {
 		$add = '';
-		if (function_exists('memory_get_usage'))
+		if (function_exists('memory_get_usage')) {
 			$add = "mem usage " . memory_get_usage();
+		}
 		echo $this->log($name . ":temps " . round(microtime(true) - $this->startTime, 4) . $add);
 	}
 
@@ -50,11 +51,10 @@ class FirePHPLogWriter extends LogWriter {
 	function FirePHPLogWriter() {
 		$this->firephp = FirePHP::getInstance(true);
 
-		$this->firephp->setOptions(array(
-			'maxObjectDepth' => 4,
+		$this->firephp->setOptions(['maxObjectDepth' => 4,
 			'maxArrayDepth' => 4,
 			'useNativeJsonEncode' => true,
-			'includeLineNumbers' => true));
+			'includeLineNumbers' => true]);
 		//This line is present in firebug documentation, but seems to be unuseful for us
 		//		ob_start();
 	}
@@ -83,4 +83,3 @@ class FirePHPLogWriter extends LogWriter {
 
 }
 
-?>

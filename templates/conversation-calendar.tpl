@@ -7,12 +7,22 @@
 <div {$this->renderBlockAttributes()} widget="Block"  data-noover=true >
 
 	{$params = ['parentId' => $this->id]}
-	<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
-		  params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
-		<span>
-			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('280')}" >Nouveau</a>
+	{if $this->canWrite()}
+		<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
+			  params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
+			<span>
+				<a class="yui3-redcms-button-add" href="{ParamManager::getLink('280')}" >Nouveau</a>
+			</span>
 		</span>
-	</span>
+	{/if}
+
+	{if !isset($smarty.get.past)}
+		<a style="float:right" href="{$this->getPageLink()}?past=true">Archives</a>
+		{$childBlocks=$this->getChildBlocksS("date1 > NOW() ORDER BY date1")}
+	{else}
+		<a style="float:right" href="{$this->getPageLink()}">Futur dates</a>
+		{$childBlocks=$this->getChildBlocksS('date1 < NOW() ORDER BY date1')}
+	{/if}
 	<br /><br />
 
 	<div class="redcms-conversation">
@@ -25,11 +35,11 @@
 				  <div class="redcms-conversation-title">
 					
 					{if $block instanceof EventField}
-						<h1><a name="{$block->title|escape:url}" href="{$block->text3|default:'#'}">{$block->title}</a></h1>
+						<h1><a name="{$block->title|escape:url}" href="{$block->text3|default:'#'}" target="_blank">{$block->title}</a></h1>
 						<h2>
 							{if $block->text2}{$block->text2}, {/if}
 							{*{Utils::date('\l\e j F Y', $block->date1)}*}
-							{Utils::date_formatinterval($block->date1, $block->date2)}{if $block->text3}, <a href="{$block->text3}">link</a>{/if}
+							{Utils::date_formatinterval($block->date1, $block->date2)}{if $block->text3}, <a href="{$block->text3}" target="_blank">website</a>{/if}
 						</h2>
 					{else}		
 						<img src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" width="40" height="40" />
@@ -43,17 +53,18 @@
 
 					{call conversation blocks=$block->getChildBlocks('dateadded') level=$level+1}
 
-					<div class="redcms-conversation-footer">
-						{$params = ['parentId' => $block->id]}
-						<span widget="OpenPanelAction" params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
-							<a href="{ParamManager::getLink('290')}">Commenter</a>
-						</span>
-					</div>	
+					{if $this->canWrite()}
+						<div class="redcms-conversation-footer">
+							{$params = ['parentId' => $block->id]}
+							<span widget="OpenPanelAction" params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
+								<a href="{ParamManager::getLink('290')}">Commenter</a>
+							</span>
+						</div>	
+					{/if}
 				</div>
 			{/foreach}
 		{/function}
 
-		{$childBlocks=$this->getChildBlocks('date1 DESC')}
 		{if sizeof($childBlocks)>0} 
 			{call conversation blocks=$childBlocks}
 		{else}

@@ -8,7 +8,7 @@
 
 class TreeStructure extends Block {
 
-	var $_dbFieldsMap = array('orderBy' => 'text1');
+	var $_dbFieldsMap = ['orderBy' => 'text1'];
 
 	public function getPages($orderBy = null) {
 //		if (!isset($this->_childBlocks)) {
@@ -34,20 +34,22 @@ class MenuBlock extends TreeStructure {
 	}
 
 	function toJSON0($node) {
-		$ret = array();
+		$ret = [];
 		if (get_class($node) == 'Action' || $node instanceof TreeStructure) { // This optim allows to look for child nodes only when required
 			foreach ($node->getChildBlocks() as $it) { // cuts a lot of queries, but what if a new type is used?
-				$r = array('widget' => $it->type,
+				$r = ['widget' => $it->type,
 					'label' => $it->label,
 					'href' => $it->getLink(),
 					'action' => $it->action
-				);
-				if ($it->filter)
+				];
+				if ($it->filter) {
 					$r['filter'] = $it->filter;
+				}
 
 				$c = $this->toJSON0($it);
-				if (sizeof($c) > '')
+				if (sizeof($c) > '') {
 					$r['children'] = $c;
+				}
 				$ret[] = $r;
 			}
 		}
@@ -77,5 +79,3 @@ class MenuBlock extends TreeStructure {
 	}
 
 }
-
-?>
