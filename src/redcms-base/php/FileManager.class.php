@@ -21,12 +21,12 @@ class FileBlock extends Block {
 	}
 
 	function getLink() {
-		return RedCMS::getInstance()->path . $this->filePath;
+		return RedCMS::get()->path . $this->filePath;
 	}
 
 	function save() {
 		global $_FILES;
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 
 		if (!empty($_FILES)) {
 			$relPath = $redCMS->config['publicFilePath'] . $this->parentId . '/';
@@ -80,7 +80,7 @@ class BackupManager extends TreeStructure {
 
 	function render() {
 		global $_REQUEST;
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 
 		if (isset($_REQUEST['parentId'])) {
 			$fileDir = $redCMS->config['privateFilePath'] . $this->id . '/';

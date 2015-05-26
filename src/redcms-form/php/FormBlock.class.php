@@ -9,7 +9,6 @@ class FormBlock extends TreeStructure {
 
 	function parseRequest() {
 		global $_REQUEST;
-		$redCMS = RedCMS::get();
 		$fields = [];
 
 		if (isset($_REQUEST['redaction'])) {
@@ -32,7 +31,7 @@ class FormBlock extends TreeStructure {
 						case 'PasswordField':
 						case "password":
 							if ($newValue != '') {
-								$fields[$b->name] = $redCMS->sessionManager->generateHash($newValue);
+								$fields[$b->name] = RedCMS::get()->sessionManager->generateHash($newValue);
 							}
 							break;
 
@@ -280,7 +279,6 @@ class EditBlockFormBlock extends EditDBFormBlock {
 				}
 			}
 		}
-
 		return $fields;
 	}
 
@@ -301,8 +299,7 @@ class EditBlockPositionFormBlock extends Block { //extends EditBlockFormBlock {
 	}
 
 	function moveField($values) {
-		$red = RedCMS::get();
-		$rs = $red->dbManager->Execute($sql);
+		$rs = RedCMS::get()->dbManager->Execute($sql);
 		//		$this->log($sql);
 		return $rs;
 	}
@@ -473,7 +470,6 @@ class EditRightsFormBlock extends EditDBFormBlock {
 	 * TODO Not sure this is working... (not in use)
 	 */
 	function getFormFields() {
-		$redCMS = RedCMS::get();
 		$fields = [];
 
 		$this->getTargetBlock();
@@ -541,9 +537,7 @@ class EditUserFormBlock extends EditDBFormBlock {
 	}
 
 	function onBlockSaved() {
-		$red = RedCMS::get();
-		echo "saved";
-		$red->sessionManager->refreshCurrentUser();
+		RedCMS::get()->sessionManager->refreshCurrentUser();
 	}
 
 }

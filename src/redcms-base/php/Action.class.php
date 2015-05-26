@@ -20,8 +20,7 @@ class Action extends Block {
 
 	function save() {
 		if (!is_numeric($this->id)) {
-			$red = RedCMS::getInstance();
-			$stat = $red->dbManager->prepare('SELECT MAX(number1) FROM redcms_block WHERE parentId=?');
+			$stat = RedCMS::get()->dbManager->prepare('SELECT MAX(number1) FROM redcms_block WHERE parentId=?');
 			$stat->execute(array($this->parentId));
 			$r = $stat->fetchAll(PDO::FETCH_NUM);
 			$this->fields['number1'] = $r[0][0] + 1;
@@ -36,8 +35,7 @@ class LoginAction extends Action {
 	var $_dbFieldsMap = array('loginLabel' => 'text1', 'logoutLabel' => 'text2');
 
 	function getLabel() {
-		$redCMS = RedCMS::getInstance();
-		if ($redCMS->sessionManager->isLoggedIn()) {
+		if (RedCMS::get()->sessionManager->isLoggedIn()) {
 			return $this->logoutLabel;
 		} else {
 			return $this->loginLabel;
@@ -93,12 +91,14 @@ class PageLinkAction extends TargetBlockAction {
 
 	function getLabel() {
 
-		if ($this->label)
+		if ($this->label) {
 			return $this->label;
+		}
 
 		$target = $this->getTarget();
-		if ($target)
+		if ($target) {
 			return $target->getLabel();
+		}
 
 		return parent::getLabel();
 	}
@@ -139,7 +139,6 @@ class DeleteBlockAction extends DeleteAction {
 	function getTargetTuple() {
 		global $_REQUEST;
 		return BlockManager::getBlockById($_REQUEST['id']);
-		;
 	}
 
 }
@@ -149,7 +148,6 @@ class DeleteGroupAction extends DeleteAction {
 	function getTargetTuple() {
 		global $_REQUEST;
 		return UserManager::getGroupById($_REQUEST['id']);
-		;
 	}
 
 }
@@ -159,7 +157,6 @@ class DeleteUserAction extends DeleteAction {
 	function getTargetTuple() {
 		global $_REQUEST;
 		return UserManager::getUserById($_REQUEST['id']);
-		;
 	}
 
 }

@@ -23,8 +23,10 @@
         <div class="smag-footer-center">
           SMAG-Societé des Médecins Anesthésistes Genevois - 
           <a href="mailto:contact@smagonline.ch">contact@smagonline.ch</a>
-          - Dernière mise à jour: 28.02.11
-          - Visiteur 8637
+          - Dernière mise à jour {Utils::date_formatduration($redCMS->getLastUpdate())}
+			{*{$redCMS->getLastUpdate()|date_format:"%e %b %Y"}*}
+		  
+          - Visiteurs {$redCMS->sessionManager->getVisitorCount()}
         </div>
       </div>
       <div class="redcms-clear"></div>

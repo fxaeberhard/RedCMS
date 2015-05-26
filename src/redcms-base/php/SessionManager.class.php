@@ -26,6 +26,10 @@ class SessionManager {
 			//	$this->login($ckie['user'], $ckie['pass']);
 		} else {
 			$this->currentUser = $_SESSION['currentUser'] = new Guest();  // otherwise, we use a Guest user
+
+			$cVisitorCount = $this->getVisitorCount();
+			$statement = RedCMS::get()->dbManager->query("UPDATE redcms_variable SET value =  '" . ($cVisitorCount + 1) . "' WHERE name = 'visitorcount'");
+			$statement->fetchAll(PDO::FETCH_BOTH);
 		}
 	}
 
@@ -96,6 +100,12 @@ class SessionManager {
 		shuffle($pass);
 		shuffle($pass);
 		return implode('', $pass);
+	}
+
+	function getVisitorCount() {
+		$statement = RedCMS::get()->dbManager->query("SELECT value FROM redcms_variable WHERE name = 'visitorcount'");
+		$rows = $statement->fetchAll(PDO::FETCH_BOTH);
+		return $rows[0][0];
 	}
 
 	/*

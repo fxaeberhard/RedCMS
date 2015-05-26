@@ -29,13 +29,13 @@ class BlockManager {
 	}
 
 	static function getBlocksBySelect($select, $values = array()) {
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM ' . $redCMS->_dbBlock . ' WHERE ' . $select);
 		return BlockManager::getBlockByStatement($statement, $values);
 	}
 
 	static function getLinkerBlocks($blockId, $relationType) {
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM ' . $redCMS->_dbBlockXBlock . ' JOIN ' . $redCMS->_dbBlock
 				. " ON " . $redCMS->_dbBlock . ".id = blockId"
 				. ' WHERE subBlockId=? AND relationType=?');
@@ -43,7 +43,7 @@ class BlockManager {
 	}
 
 	static function getLinkedBlocks($blockId, $relationType) {
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		$statement = $redCMS->dbManager->prepare('SELECT * FROM ' . $redCMS->_dbBlockXBlock . ' JOIN ' . $redCMS->_dbBlock
 				. " ON " . $redCMS->_dbBlock . ".id = subBlockId"
 				. ' WHERE blockId=? AND relationType=?');

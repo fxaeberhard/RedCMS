@@ -39,15 +39,13 @@ class ComboBlock extends FileProxyBlock {
 	}
 
 	function render() {
-		$redCMS = RedCMS::getInstance();
-
 		$queryString = getenv('QUERY_STRING') ? urldecode(getenv('QUERY_STRING')) : '';
 		$files = explode('&', $queryString);
 
 		//Detect and load the required components now
 		foreach ($files as $f) {
 			$f = substr($f, 1);
-			require($redCMS->fullpath . $f);
+			require(RedCMS::get()->fullpath . $f);
 		}
 	}
 

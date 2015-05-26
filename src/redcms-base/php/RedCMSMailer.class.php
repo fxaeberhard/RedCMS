@@ -12,7 +12,7 @@ class RedCMSMailer extends PHPMailer {
 	function __construct() {
 		parent::__construct(false);
 		//parent::__construct(true);
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		$this->IsHTML(true);
 		$this->From = $redCMS->config['adminMail'];
 		$this->FromName = 'Administrator';

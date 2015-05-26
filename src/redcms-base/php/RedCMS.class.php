@@ -148,4 +148,10 @@ class RedCMS {
 		trigger_error('Clone is not allowed.', E_USER_ERROR);
 	}
 
+	function getLastUpdate() {
+		$statement = $this->dbManager->query('SELECT MAX(dateupdated) FROM ' . $this->_dbBlock);
+		$rows = $statement->fetchAll(PDO::FETCH_BOTH);
+		return $rows[0][0];
+	}
+
 }

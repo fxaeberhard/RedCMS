@@ -16,7 +16,7 @@ class ParamManager {
 
 	function init() {
 		global $_SERVER, $_REQUEST;
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		if (isset($_SERVER['REDIRECT_URL'])) {  // REDIRECT_URL is provided by Apache when a URL has been rewritten
 			$redirUrl = $_SERVER['REDIRECT_URL'];
 			if ($redCMS->path != '/') {
@@ -57,7 +57,7 @@ class ParamManager {
 	}
 
 	static function &getLink($param1 = null, $param2 = null, $param3 = null, $param4 = null) {
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		$ret = $redCMS->path;
 		//echo $redCMS->config['defaultLang']."**".$redCMS->lang;
 		if ($param1 && $redCMS->config['defaultLang'] != $redCMS->lang) {

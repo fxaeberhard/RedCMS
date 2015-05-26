@@ -45,7 +45,7 @@ class Tuple {
 
 	// *** DB interaction methods *** //
 	function save() {
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		$values = [];
 		foreach ($this->_dbFields as $f) {
 			if (isset($this->fields[$f])) {
@@ -79,9 +79,8 @@ class Tuple {
 	}
 
 	function delete() {
-		$redCMS = RedCMS::getInstance();
 		$query = 'DELETE FROM ' . $this->_dbTable . ' WHERE id=? LIMIT 1';
-		$statement = $redCMS->dbManager->prepare($query);
+		$statement = RedCMS::get()->dbManager->prepare($query);
 		return $statement->execute([$this->id]);
 	}
 
@@ -114,8 +113,7 @@ class Block extends Tuple {
 	}
 
 	function getChildBlocksS($select) {
-		$select = $select ? " AND " . $select : "";
-		$blocks = BlockManager::getBlocksBySelect('parentId=' . $this->id . $select);
+		$blocks = BlockManager::getBlocksBySelect('parentId=' . $this->id . ($select ? " AND " . $select : ""));
 		foreach ($blocks as &$b) {
 			$b->_parent = $this;
 		}
@@ -224,10 +222,9 @@ class Block extends Tuple {
 	}
 
 	function canRead() {
-		$redCMS = RedCMS::get();
 		if ($this->publicread == '1') {
 			return true;
-		} else if ($this->read == '1' && $redCMS->sessionManager->isLoggedIn()) {
+		} else if ($this->read == '1' && RedCMS::get()->sessionManager->isLoggedIn()) {
 			return true;
 		} else {
 			$this->getRights();
@@ -237,7 +234,7 @@ class Block extends Tuple {
 
 	function canWrite() {
 		// FIXME shortcut for development only, to remove
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		if ($redCMS->sessionManager->currentUser->isAMember('1') || $redCMS->sessionManager->currentUser->isAMember('2')) {
 			return true;
 		}
@@ -253,11 +250,10 @@ class Block extends Tuple {
 	}
 
 	function save() {
-		$redCMS = RedCMS::getInstance();
 		//Could be useful
 		//if (!$this->type) $this->set('type', get_class($this));
 		if (!is_numeric($this->fields['id'])) {
-			$this->set('owner', $redCMS->sessionManager->getCurrentUser()->id);
+			$this->set('owner', RedCMS::get()->sessionManager->getCurrentUser()->id);
 			$this->set('dateadded', Utils::sql_date());
 		}
 		$this->set('dateupdated', Utils::sql_date());
@@ -300,8 +296,7 @@ class Block extends Tuple {
 
 	function getParamsJSON() {
 		global $_REQUEST;
-		$redCMS = RedCMS::get();
-		return array_merge($_REQUEST, $this->paramsStack, $redCMS->paramManager->currentStackJSON());
+		return array_merge($_REQUEST, $this->paramsStack, RedCMS::get()->paramManager->currentStackJSON());
 	}
 
 	function renderParamsJSON() {
@@ -367,7 +362,7 @@ class LoginManagerBlock extends Block {
 
 	function render() {
 		global $_REQUEST;
-		$redCMS = RedCMS::getInstance();
+		$redCMS = RedCMS::get();
 		$ret = [];
 		switch ($_REQUEST['action']) {
 			case 'login':
