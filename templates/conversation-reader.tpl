@@ -40,7 +40,7 @@
 					<div class="yui3-u" style="width:100%;margin-top:3px">
 						<img width="50" height="50" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=50&d=mm" style="float: left;margin: -2px 6px 1px 0;"/>
 			
-						<a style="font-weight: bold;">{$block->getLabel()}</a>
+						<a style="font-weight: bold;display: inline-block;padding-top: 7px;">{$block->getLabel()}</a>
 						
 						<div class="redcms-small">
 							posté par <a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>

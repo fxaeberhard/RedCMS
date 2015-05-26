@@ -26,6 +26,7 @@ h2 {
 	font-weight: bold;
 	font-size: 15px;
 	color: #1C5AA9;
+	margin-bottom: -0.5em;
 }
 
 h3 {
@@ -36,10 +37,8 @@ h3 {
 
 
 /** Layout Styles */
-.redcms-layout {
-	padding-left: 296px; /* allow for left column (#nav) */
-	padding-right: 8px;
-	padding-top: 7px;
+.redcms-layout { /* allow for left column (#nav) */
+	padding: 7px 8px 7px 296px;
 }
 .redcms-left {
 	margin-left: -290px;
@@ -61,6 +60,7 @@ h3 {
 	border:none;
 	border-left: 2px solid black;
 	border-right: 2px solid black;
+	text-align: justify;
 }
 
 /** Menu Styles */

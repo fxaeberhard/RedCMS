@@ -17,10 +17,10 @@
 	{/if}
 
 	{if !isset($smarty.get.past)}
-		<a style="float:right" href="{$this->getPageLink()}?past=true">Archives</a>
+		<a style="float:right;margin-top:15px;" href="{$this->getPageLink()}?past=true">Archives</a>
 		{$childBlocks=$this->getChildBlocksS("date1 > NOW() ORDER BY date1")}
 	{else}
-		<a style="float:right" href="{$this->getPageLink()}">Futur dates</a>
+		<a style="float:right;margin-top:15px;" href="{$this->getPageLink()}">Futur dates</a>
 		{$childBlocks=$this->getChildBlocksS('date1 < NOW() ORDER BY date1')}
 	{/if}
 	<br /><br />

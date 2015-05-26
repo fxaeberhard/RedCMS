@@ -42,7 +42,7 @@ YUI.add('redcms-treeview', function(Y) {
 				//startCollapsed: false,
 				children: fields
 			}).render(cb);
-			this._treeview.on("nodeclick", this.treenodeClick);
+			this._treeview.on("nodeclick", this.treenodeClick, this);
 
 			cb.removeClass('yui3-redcms-loading');
 

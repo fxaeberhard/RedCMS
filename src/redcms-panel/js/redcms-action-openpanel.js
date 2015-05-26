@@ -25,91 +25,33 @@ YUI.add('redcms-panel', function(Y) {
 			target.on(CLICK, function(e) {
 				e.preventDefault();
 
-				var cb = this.get(CONTENT_BOX),
-					paramsString = cb.getAttribute('params'),
+				var paramsString = this.get(CONTENT_BOX).getAttribute('params'),
 					params = paramsString ? Y.JSON.parse(paramsString) : [];
 
-				this._overlay = new Y.Panel({
-					headerContent: target.get("text"),
-					bodyContent: "",
-					width: 900,
-					x: Y.DOM.winWidth() / 2 - 450,
-					y: 30,
-					modal: true,
-					zIndex: 100 + counter,
-					focusOn: []
-						//hideOn: [{
-						//        node: Y.one("document"),
-						//        eventName: "key",
-						//        keyCode: "esc"
-						//    }, {
-						//        eventName: 'clickoutside'
-						//    }]
-				}).render();
-				counter++;
-
-				this._overlay.getStdModNode(BODY).addClass(OPENPANELACTIONCLASSES);
-
-				//console.log("OpenPanelAction.bindUI():", this, cb, cb.getAttribute('params'));
-
-				Y.io(target.getAttribute('href'), {//Then request its content to the server
-					data: params,
-					on: {
-						success: function(id, o) {
-							var body = this._overlay.getStdModNode(BODY);
-							body.append(o.responseText);
-							Y.RedCMS.RedCMSManager.render(body, Y.bind(this._onWidgetsRendered, this));
-						}
-					},
-					context: this
-				});
+				this._overlay = new Y.RedCMS.Panel({
+					headerContent: target.get("text")
+				})
+					.render()
+					.load(target.getAttribute('href'), params)
+					.on("success", function() {
+						this.fire(this.get("onSuccessEvent"));
+					}, this);
 			}, this);
 		},
 		destructor: function() {
-			this._destroyOverlay();
-		},
-		_destroyOverlay: function() {
-			try {
-				for (var i = 0; i < this._widgets.length; i++) {
-					this._widgets[i].destroy();
-				}
-				this._overlay.destroy();
-			} catch (e) {
-				// FIXME Need to find a way to destroy overlay without triggering dd error
-				//Y.log("OverlayWindow._closeNode.onClick(): Uncaught error destroying plugin host", "error");
-			}
-		},
-		_onWidgetsRendered: function(widgets) {
-			var onSuccess = Y.bind(this._onSuccess, this),
-				onReload = Y.bind(this._onWidgetsRendered, this),
-				onSelect = Y.bind(this._onSelect, this),
-				onCancel = Y.bind(this._destroyOverlay, this),
-				i = 0;
-			for (; i < widgets.length; i++) {
-				widgets[i].on("cancel", onCancel);
-				widgets[i].on("success", onSuccess);
-				widgets[i].on("reload", onReload);
-				widgets[i].on("redcms:select", onSelect);
-			}
-			this._overlay.getStdModNode(BODY).removeClass(OPENPANELACTIONCLASSES);
-
-			this._widgets = widgets;
-		},
-		_onSelect: function(selectedItem) {
-			var evt = this.getEvent('redcms:select'),
-				hasSubscribers = false, o;
-			for (o in evt.subscribers) {
-				hasSubscribers = true;
-			}
-			if (hasSubscribers) {
-				this.fire("redcms:select", selectedItem);
-				this._destroyOverlay();
-			}
-		},
-		_onSuccess: function() {
-			this.fire(this.get("onSuccessEvent"));
-			this._destroyOverlay();
+			this._overlay && this._overlay.destroy();
 		}
+//		_onSelect: function(selectedItem) {
+//			var evt = this.getEvent('redcms:select'),
+//				hasSubscribers = false, o;
+//			for (o in evt.subscribers) {
+//				hasSubscribers = true;
+//			}
+//			if (hasSubscribers) {
+//				this.fire("redcms:select", selectedItem);
+//				this._overlay.destroy();
+//			}
+//		}
 	}, {
 		ATTRS: {
 			onSuccessEvent: {
@@ -117,6 +59,95 @@ YUI.add('redcms-panel', function(Y) {
 			}
 		}
 	});
-	Y.namespace('RedCMS').OpenPanelAction = OpenPanelAction;
+	Y.RedCMS.OpenPanelAction = Y.RedCMS.OpenPanel = OpenPanelAction;
+
+	var counter = 0;
+	Y.RedCMS.Panel = Y.Base.create("panel", Y.Panel, [Y.RedCMS.RedCMSWidget], {
+		initializer: function() {
+			this.widgets = [];
+		},
+		load: function(href, params) {
+			this.getStdModNode(BODY).addClass(OPENPANELACTIONCLASSES);
+			Y.io(href, {//Then request its content to the server
+				data: params,
+				on: {
+					success: function(id, o) {
+						var body = this.getStdModNode(BODY);
+						body.append(o.responseText);
+						Y.RedCMS.RedCMSManager.render(body, Y.bind(this._onWidgetsRendered, this));
+					}
+				},
+				context: this
+			});
+			return this;
+		},
+		_onWidgetsRendered: function(widgets) {
+			this.getStdModNode(BODY).removeClass(OPENPANELACTIONCLASSES);
+
+			var onSuccess = Y.bind(this._onSuccess, this),
+				onReload = Y.bind(this._onWidgetsRendered, this),
+				onSelect = Y.bind(this._onSelect, this),
+				onCancel = Y.bind(this.destroy, this),
+				i = 0;
+			for (; i < widgets.length; i++) {
+				widgets[i].on("cancel", onCancel);
+				widgets[i].on("success", onSuccess);
+				widgets[i].on("reload", onReload);
+				widgets[i].on("redcms:select", onSelect);
+			}
+			this.widgets = widgets;
+		},
+		_onSelect: function(selectedItem) {
+			if (Y.Object.size(this.getEvent('redcms:select')._subscribers) > 0) {
+				this.fire("redcms:select", selectedItem);
+				this.destroy();
+			}
+		},
+		_onSuccess: function() {
+			this.fire("success");
+			this.destroy();
+		},
+		destructor: function() {
+			Y.Array.each(this.widgets, function(w) {
+				w.destroy();
+			});
+		}
+	}, {
+		ATTRS: {
+			bodyContent: {
+				value: ""
+			},
+			width: {
+				value: 900
+			},
+			x: {
+				valueFn: function() {
+					return Y.DOM.winWidth() / 2 - 450;
+				}
+			},
+			y: {
+				value: 30
+			},
+			modal: {
+				value: true
+			},
+			zIndex: {
+				valueFn: function() {
+					counter++;
+					return 100 + counter;
+				}
+			},
+			focusOn: {
+				value: []
+			}
+			//hideOn: [{
+			//        node: Y.one("document"),
+			//        eventName: "key",
+			//        keyCode: "esc"
+			//    }, {
+			//        eventName: 'clickoutside'
+			//    }]
+		}
+	});
 
 }, '0.1.1');

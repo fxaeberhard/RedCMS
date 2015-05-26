@@ -110,7 +110,9 @@ fieldset legend {
 
 /* Panel styles */
 .yui3-skin-sam .yui3-panel-content {
-    border: 1px solid white;
+    border: 1px solid #a40000;
+    /* box-shadow: none; */
+    /* border: none; */
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-hd {
     background: none;
@@ -121,12 +123,24 @@ fieldset legend {
 .yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-widget-buttons {
     padding: 15px;
 }
-.yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close:before {
-    content:"x";
+.yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close {
+    width: 22px;
+    height: 22px;
+    border: 1px solid white;
+}
+.yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close:hover {
+	border: 1px solid #a40000;
+} 
+.yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close:before {	
+	content: url(icon-close.png);
     font-size: 23px;
     color: #A40000;
-    vertical-align: top;
-    margin-top: 5px;
+    
+	vertical-align: middle;
+    
+	margin-top: 0px;
+	width: 20px;
+	height: 28px;
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-bd {
     padding: 10px 15px 20px;
@@ -524,7 +538,7 @@ fieldset legend {
 }
 .redcms-conversation-title img {
 	float: left;
-	margin: 0px 6px 0 0px;
+	margin: -4px 6px 0 0px;
 }
 .redcms-conversation .redcms-conversation-title h2 {
     margin: 0;
@@ -536,7 +550,7 @@ fieldset legend {
 .redcms-conversation .redcms-conversation-title h1 {
     margin: 0;
     font-weight: bolder;
-    /* font-size: 18px; */
+    font-size: 110%;
     color: #1C5AA9;
 }
 .redcms-conversation .redcms-conversation-content {
@@ -560,7 +574,7 @@ fieldset legend {
     background: transparent url(conversation-sprite.png) no-repeat scroll 0 -1px;
     width: 48px;
     height: 46px;
-    margin: 2px 9px 0 5px;
+    margin: 0px 9px -1px 5px;
     float: left;
 }
 .redcms-conversation .redcms-conversation-topicfield .redcms-icon span {
@@ -591,7 +605,8 @@ fieldset legend {
 .yui3-redcms-conversation-reader .redcms-icon {
 	display: inline-block;
 	margin-left: -50px;    
-	width: 42px;    padding-left: 8px;    padding-top: 16px;
+	width: 42px;    padding-left: 8px;    
+	padding-top: 15px;
 }
 .redcms-conversation-replyfield .redcms-conversation-title {
     background: none
