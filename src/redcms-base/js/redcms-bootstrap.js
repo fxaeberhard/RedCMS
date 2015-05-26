@@ -82,6 +82,10 @@ var Y = YUI({
 				'redcms-form': {
 					path: 'src/redcms-form/js/redcms-form.js',
 					requires: ['redcms-base', "inputex", 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json']
+				},
+				'redcms-tabview': {
+					path: "src/redcms-base/js/recms-treeview",
+					requires: ["redmcs-base", "tabview"]
 				}
 			}
 		}
