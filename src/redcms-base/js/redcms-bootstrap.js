@@ -6,9 +6,8 @@
 var Y = YUI({
 	charset: 'utf-8',
 	loadOptional: true,
-	filter: 'raw',
+	//filter: 'raw',
 	//filter: 'debug',
-	//combine: false,
 	useBrowserConsole: true,
 	debug: true,
 	// debug: Config.debug,
@@ -16,11 +15,16 @@ var Y = YUI({
 	gallery: 'gallery-2012.08.29-20-10',
 	//lang: 'en-US',
 	//timeout: 10000,
+	combine: true,
+	comboSep: ",",
+	base: Config.path + "lib/yui3/build/",
+	root: "lib/yui3/build/",
+	comboBase: Config.path + 'lib/min/f=',
 	groups: {
 		redcms: {
-//            combine: true,
+			combine: true,
 			base: Config.path,
-			comboBase: Config.path + 'lib/min/f=',
+			//comboBase: Config.path + 'lib/min/f=',
 			root: '/',
 			modules: {
 				// *** BASE MODULES *** //	
@@ -81,16 +85,21 @@ var Y = YUI({
 				// *** FORM MODULES *** //
 				'redcms-form': {
 					path: 'src/redcms-form/js/redcms-form.js',
-					requires: ['redcms-base', "inputex", 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json']
+					requires: ['redcms-base', "inputex", 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json', "tinymce"]
 				},
 				'redcms-tabview': {
 					path: "src/redcms-base/js/recms-treeview",
 					requires: ["redmcs-base", "tabview"]
+				},
+				tinymce: {
+					path: "lib/tinymce/jscripts/tiny_mce/tiny_mce.js"
 				}
 			}
 		}
 	}
 }).use('redcms-menunav', 'redcms-base', function(Y) {
+
+	YUI_config.groups.inputex.base = Config.path + 'lib/inputex/src/';
 
 	var URLSEPARATOR = '/', RedCMS = Y.namespace('RedCMS'),
 		RedCMSManager;
@@ -106,10 +115,8 @@ var Y = YUI({
 	RedCMSManager = function() {
 		return {
 			urldecode: function(psEncodeString) {
-				// Create a regular expression to search all +s in the string
-				var lsRegExp = /\+/g;
-				// Return the decoded string
-				return unescape(String(psEncodeString).replace(lsRegExp, " "));
+				var lsRegExp = /\+/g;											// Create a regular expression to search all +s in the string
+				return unescape(String(psEncodeString).replace(lsRegExp, " "));	// Return the decoded string
 			},
 			escapeAttribute: function(text) {
 				if (text) {
@@ -123,20 +130,20 @@ var Y = YUI({
 			},
 			getParentBlock: function(n) {
 				return n.ancestor(function(e) {
-					return  (e.getAttribute('redid') !== '');
+					return e.getAttribute('redid') !== '';
 				});
 			},
 			getParentAdminBlock: function(n) {
 				return n.ancestor(function(e) {
-					return  (e.getAttribute('redadmin') !== '');
+					return e.getAttribute('redadmin') !== '';
 				});
 			},
 			reload: function(node) {
 				var targetAdmin = node.ancestor(function(e) {
-					return  e.getAttribute('redadmin') !== '';
+					return e.getAttribute('redadmin') !== '';
 				}, true);
 
-				RedCMS.RedCMSManager.reloadWidget(Y.Widget.getByNode(targetAdmin));
+				RedCMSManager.reloadWidget(Y.Widget.getByNode(targetAdmin));
 			},
 			reloadWidget: function(widget) {
 				var cb = widget.get('contentBox'),
@@ -149,14 +156,14 @@ var Y = YUI({
 					requestData = Y.merge(requestData, bParams);
 				}
 				widget.showReloadOverlay();
-				request = Y.io(RedCMS.RedCMSManager.getLink(cb.getAttribute("redid")), {
+				request = Y.io(RedCMSManager.getLink(cb.getAttribute("redid")), {
 					data: requestData,
 					on: {
 						success: function(id, o) {
 							//	Y.log("RedCMS.onWidgetReloadContentReceived():"+  o.responseText, 'log');
 							var newNode = Y.Node.create(o.responseText);
 							bb.replace(newNode);
-							RedCMS.RedCMSManager.render(newNode, Y.bind(function(widgets) {
+							RedCMSManager.render(newNode, Y.bind(function(widgets) {
 								this.fire('reload', widgets);
 								this.destroy();
 							}, widget));
@@ -175,7 +182,7 @@ var Y = YUI({
 					}
 					var widget = new widgetClass(Y.mix({
 						srcNode: node
-					}, cfg ? Y.JSON.parse(RedCMS.RedCMSManager.urldecode(cfg)) : {})).render();
+					}, cfg ? Y.JSON.parse(RedCMSManager.urldecode(cfg)) : {})).render();
 					return widget;
 				} catch (e) {
 					Y.log('Error creating widget with class: Y.RedCMS.' + node.getAttribute('widget'), 'error', 'RedCMSManager');
