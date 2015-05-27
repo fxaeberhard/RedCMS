@@ -5,21 +5,21 @@
  */
 var Y = YUI({
 	charset: 'utf-8',
-	loadOptional: true,
-	//filter: 'raw',
-	//filter: 'debug',
 	useBrowserConsole: true,
-	debug: true,
-	// debug: Config.debug,
 	insertBefore: 'customstyles',
+	loadOptional: true,
 	gallery: 'gallery-2012.08.29-20-10',
-	//lang: 'en-US',
-	//timeout: 10000,
-	combine: true,
-	comboSep: ",",
 	base: Config.path + "lib/yui3/build/",
 	root: "lib/yui3/build/",
+	combine: true,
+	comboSep: ",",
 	comboBase: Config.path + 'lib/min/f=',
+	//debug: true,
+	filter: 'raw',
+	//filter: 'debug',
+	//debug: Config.debug,
+	//lang: 'en-US',
+	//timeout: 10000,
 	groups: {
 		redcms: {
 			combine: true,
@@ -52,7 +52,12 @@ var Y = YUI({
 				},
 				"redcms-treeview": {
 					path: 'src/redcms-menu/js/redcms-treeview.js',
-					requires: ['gallery-yui3treeview-ng', 'redcms-tooltip', "json"]
+					requires: ['treeview', 'redcms-tooltip', "json"]
+				},
+				"treeview": {
+					path: 'src/redcms-menu/js/treeview.js',
+					requires: ["substitute", "widget", "widget-parent", "widget-child",
+						"node-focusmanager", "array-extras"]
 				},
 				// *** ADMIN MODULES *** //
 				"redcms-admin": {

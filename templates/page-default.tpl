@@ -22,7 +22,7 @@
 		{*<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssnormalize/cssnormalize-min.css" />
 		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssgrids/cssgrids-min.css" />*}
 		{*<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.18.1/build/cssnormalize/cssnormalize-min.css&3.18.1/build/cssgrids/cssgrids-min.css" />*}
-		<link rel="stylesheet" type="text/javascript" href="http://localhost/RedCMS/lib/min/f=/lib/yui3/build/cssnormalize/cssnormalize-min.css,/lib/yui3/build/cssgrids/cssgrids-min.css" />
+		<link rel="stylesheet" type="text/javascript" href="http://localhost/RedCMS/lib/min/f=/lib/yui3/build/cssnormalize/cssnormalize-min.css,/lib/yui3/build/cssgrids/cssgrids-min.css,lib/yui3/build/node-menunav/assets/skins/sam/node-menunav.css,lib/yui3/build/widget-base/assets/skins/sam/widget-base.css" />
 
 		<!-- Font awesome -->
 		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/font-awesome/css/font-awesome.min.css" />
@@ -36,18 +36,18 @@
 
 	  </head>
 
-	  {$rootAdmin = [
-		['widget' => 'OpenPanelAction', 'label' => '[root]Edit block', 'href' => ParamManager::getLink('210'), 'action' => 'editCurrent'], 
-		['widget' => 'OpenPanelAction', 'label' => '[root]Edit rights', 'href' => ParamManager::getLink('109'), 'action' => 'editCurrent'], 
-		['widget' => 'OpenPanelAction', 'label' => '[root]Add sibling', 'href' => ParamManager::getLink('210'), 'action' => 'addSibling'],
-		['widget' => 'OpenPanelAction', 'label' => '[root]Add child', 'href' => ParamManager::getLink('210'), 'action' => 'addChild'], 
-		['widget' => 'DeleteBlockAction', 'label' => '[root]Delete', 'href' => ParamManager::getLink('103'), 'action' => 'editCurrent' ]]}
+	  {*{$rootAdmin = [
+	  ['widget' => 'OpenPanelAction', 'label' => '[root]Edit block', 'href' => ParamManager::getLink('210'), 'action' => 'editCurrent'], 
+	  ['widget' => 'OpenPanelAction', 'label' => '[root]Edit rights', 'href' => ParamManager::getLink('109'), 'action' => 'editCurrent'], 
+	  ['widget' => 'OpenPanelAction', 'label' => '[root]Add sibling', 'href' => ParamManager::getLink('210'), 'action' => 'addSibling'],
+	  ['widget' => 'OpenPanelAction', 'label' => '[root]Add child', 'href' => ParamManager::getLink('210'), 'action' => 'addChild'], 
+	  ['widget' => 'DeleteBlockAction', 'label' => '[root]Delete', 'href' => ParamManager::getLink('103'), 'action' => 'editCurrent' ]]}*}
 
 	  <body class="yui3-skin-sam yui-skin-sam" {*redadmin="{if $redCMS->sessionManager->currentUser->isAMember(1)}{htmlspecialchars(json_encode($rootAdmin))}{/if}"*}> 
 
 		{block name='header'}
 			<div class="redcms-hd">
-			  RedCMS-v0.2
+			  RedCMS
 			</div>
 		{/block}
 

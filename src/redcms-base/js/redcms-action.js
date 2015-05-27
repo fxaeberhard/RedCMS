@@ -144,8 +144,8 @@ YUI.add('redcms-action', function(Y) {
 							method: 'POST',
 							action: RedCMS.RedCMSManager.getLink("LoginManager"),
 							children: [
-								{name: "username", required: true, label: "User name", size: 20},
-								{name: "password", type: 'password', required: true, label: "Password", size: 20},
+								{name: "lusername", required: true, label: "User name", size: 20},
+								{name: "lpassword", type: 'password', required: true, label: "Password", size: 20},
 								{name: "action", type: 'hidden', value: 'login'},
 								{name: 'rememberme', type: 'boolean', label: ".", rightLabel: 'Remember me', value: true}
 							],

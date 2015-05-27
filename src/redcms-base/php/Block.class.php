@@ -366,7 +366,7 @@ class LoginManagerBlock extends Block {
 		$ret = [];
 		switch ($_REQUEST['action']) {
 			case 'login':
-				if ($redCMS->sessionManager->login($_REQUEST['username'], $_REQUEST['password'])) {
+				if ($redCMS->sessionManager->login($_REQUEST['lusername'], $_REQUEST['lpassword'])) {
 					$ret = ['result' => 'success', 'msg' => 'Vous êtes maintenant connecté'];
 				} else {
 					$ret = ['result' => 'error', 'msg' => 'Mot de passe ou nom d\'utilisateur incorrect'];
