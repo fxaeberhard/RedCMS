@@ -24,6 +24,7 @@ YUI.add('redcms-form', function(Y) {
 			try {
 				fields = Y.JSON.parse(Y.RedCMS.RedCMSManager.urldecode(cb.getContent()));
 				this.set("children", fields);
+				console.log(fields);
 
 				Y.Array.each(fields, function(f) {
 					f.type = f.type.replace("Field", "").toLowerCase();
@@ -41,7 +42,7 @@ YUI.add('redcms-form', function(Y) {
 						case "datepicker":
 							if (f.value) {
 								var date = f.value.replace(" 00:00:00", "").split("-");
-								f.value = date[1] + "/" + date[2] + "/" + date[0];
+								f.value = date[2] + "/" + date[1] + "/" + date[0];
 							}
 							break;
 					}

@@ -532,11 +532,11 @@ fieldset legend {
 .redcms-conversation .redcms-conversation-title h1 {
     margin: 0;
     font-weight: bolder;
-    font-size: 110%;
+    font-size: 100%;
     color: #1C5AA9;
 }
 .redcms-conversation .redcms-conversation-content {
-    padding: 0px 5px 0px 63px;
+    padding: 0px 5px 1px 63px;
 }
 .redcms-conversation .redcms-conversation-content:empty {
     padding: 0;
@@ -556,7 +556,7 @@ fieldset legend {
     background: transparent url(conversation-sprite.png) no-repeat scroll 0 -1px;
     width: 48px;
     height: 46px;
-    margin: 0px 9px -1px 5px;
+    margin: -1px 9px -2px 5px;
     float: left;
 }
 .redcms-conversation .redcms-conversation-topicfield .redcms-icon span {
@@ -569,7 +569,7 @@ fieldset legend {
     background-position: 0 -61px;
 }
 .redcms-conversation > .redcms-conversation-fragment {
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
     background: white;
     margin-bottom: 10px;
 }

@@ -97,7 +97,7 @@ var Y = YUI({
 					requires: ["redmcs-base", "tabview"]
 				},
 				tinymce: {
-					path: "lib/tinymce/jscripts/tiny_mce/tiny_mce.js"
+					path: "lib/tinymce/jscripts/tiny_mce/tiny_mce_src.js"
 				}
 			}
 		}
@@ -182,7 +182,7 @@ var Y = YUI({
 					var widgetClass = RedCMS[node.getAttribute('widget')],
 						cfg = node.getAttribute("data-cfg");
 					if (!widgetClass) {
-						Y.log('Unable to find widget with class: Y.RedCMS.' + node.getAttribute('widget'), 'info', 'RedCMSManager');
+//						Y.log('Unable to find widget with class: Y.RedCMS.' + node.getAttribute('widget'), 'info', 'RedCMSManager');
 						return;
 					}
 					var widget = new widgetClass(Y.mix({

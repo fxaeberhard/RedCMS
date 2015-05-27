@@ -21,6 +21,8 @@ class FormBlock extends TreeStructure {
 						case 'datepicker':
 						case 'date':
 							if ($newValue != "") {
+								$splitted = explode("/", $newValue);
+								$newValue = $splitted[1] . "/" . $splitted[0] . "/" . $splitted[2]; // d/m/Y to m/d/Y
 								$t = strtotime($newValue);
 								$fields[$b->name] = Utils::sql_date($t);
 							} else {
@@ -85,6 +87,14 @@ class FormField extends Block {
 	function toJSON() {
 
 		$ret = parent::toJSON();
+
+		if ($this->longtext1) {
+			$params = json_decode($this->longtext1);
+			foreach ($params as $k => $v) {
+				$ret[$k] = $v;
+			}
+		}
+
 		if ($ret['label'] == '') {
 			$ret['label'] = $this->name;
 		}
