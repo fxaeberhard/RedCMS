@@ -126,17 +126,14 @@ YUI.add('redcms-action', function(Y) {
 						}
 					});
 				} else {
-					Y.use('json', 'redcms-form', "panel", function(Y) {
+					Y.use('json', 'redcms-form', "redcms-panel", function(Y) {
 						/** First create an overlay window widget */
-						var panel = new Y.Panel({
+						var panel = new Y.RedCMS.Panel({
 							headerContent: 'Login',
-							bodyContent: "",
 							width: 400,
 							constrain: true,
-							modal: true,
 							x: Y.DOM.winWidth() / 2 - 200,
-							y: 150,
-							zIndex: 100
+							y: 150
 						}).render();
 
 						/** Then fill it with a custom form */
@@ -155,6 +152,9 @@ YUI.add('redcms-action', function(Y) {
 									if (ret.result === 'success') {
 										window.location.reload();
 									}
+								},
+								cancel: function() {
+									panel.destroy();
 								}
 							}
 						}).render(panel.getStdModNode(BODY));

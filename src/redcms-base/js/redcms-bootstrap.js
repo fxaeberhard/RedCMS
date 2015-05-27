@@ -90,7 +90,7 @@ var Y = YUI({
 				// *** FORM MODULES *** //
 				'redcms-form': {
 					path: 'src/redcms-form/js/redcms-form.js',
-					requires: ['redcms-base', "inputex", 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json', "tinymce"]
+					requires: ['redcms-base', "inputex", 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json']
 				},
 				'redcms-tabview': {
 					path: "src/redcms-base/js/recms-treeview",
@@ -105,6 +105,9 @@ var Y = YUI({
 }).use('redcms-menunav', 'redcms-base', function(Y) {
 
 	YUI_config.groups.inputex.base = Config.path + 'lib/inputex/src/';
+	YUI_config.groups.inputex.combine = true;
+	YUI_config.groups.inputex.comboBase = Config.path + 'lib/min/f=';
+	YUI_config.groups.inputex.root = 'lib/inputex/src/';
 
 	var URLSEPARATOR = '/', RedCMS = Y.namespace('RedCMS'),
 		RedCMSManager;
@@ -131,7 +134,7 @@ var Y = YUI({
 				return "";
 			},
 			getLink: function() {
-				return Config.path + Config.lang + URLSEPARATOR + Array.prototype.join.call(arguments, URLSEPARATOR) + URLSEPARATOR;
+				return Config.path + /*Config.lang + URLSEPARATOR + */Array.prototype.join.call(arguments, URLSEPARATOR) + URLSEPARATOR;
 			},
 			getParentBlock: function(n) {
 				return n.ancestor(function(e) {

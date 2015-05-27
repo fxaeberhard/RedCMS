@@ -9,8 +9,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="Content-Language" content="{$redCMS->lang}" />
 		<title>{$this->getLabel()}{$redCMS->config['windowTitleSuffix']}</title>
-		<meta name="DESCRIPTION" content="" />
-		<meta name="KEYWORDS" content="{$redCMS->config['keywordSuffix']}" />     
+		<meta name="description" content="" />
+		<meta name="keywords" content="{$redCMS->config['keywordSuffix']}" />     
 		<meta name="robots" content="index, follow" />
 		<meta name="contact" content="{$redCMS->config['adminMail']}" />
 		<meta name="Audience" content="General" />
@@ -19,10 +19,10 @@
 		{*<meta name="expires" content="never" /> *}
 
 		<!-- YUI3 -->
-		{*<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssnormalize/cssnormalize-min.css" />
-		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssgrids/cssgrids-min.css" />*}
-		{*<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.18.1/build/cssnormalize/cssnormalize-min.css&3.18.1/build/cssgrids/cssgrids-min.css" />*}
-		<link rel="stylesheet" type="text/javascript" href="http://localhost/RedCMS/lib/min/f=/lib/yui3/build/cssnormalize/cssnormalize-min.css,/lib/yui3/build/cssgrids/cssgrids-min.css,lib/yui3/build/node-menunav/assets/skins/sam/node-menunav.css,lib/yui3/build/widget-base/assets/skins/sam/widget-base.css" />
+{*		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssnormalize/cssnormalize-min.css" />*}
+{*		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssgrids/cssgrids-min.css" />*}
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.18.1/build/cssnormalize/cssnormalize-min.css&3.18.1/build/cssgrids/cssgrids-min.css&3.18.1/build/widget-base/assets/skins/sam/widget-base.css&3.18.1/build/node-menunav/assets/skins/sam/node-menunav.css" />
+{*		<link rel="stylesheet" type="text/javascript" href="http://localhost/RedCMS/lib/min/f=lib/yui3/build/node-menunav/assets/skins/sam/node-menunav.css,lib/yui3/build/widget-base/assets/skins/sam/widget-base.css" />*}
 
 		<!-- Font awesome -->
 		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/font-awesome/css/font-awesome.min.css" />

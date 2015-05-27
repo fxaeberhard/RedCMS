@@ -24,7 +24,6 @@ YUI.add('redcms-form', function(Y) {
 			try {
 				fields = Y.JSON.parse(Y.RedCMS.RedCMSManager.urldecode(cb.getContent()));
 				this.set("children", fields);
-				console.log(fields);
 
 				Y.Array.each(fields, function(f) {
 					f.type = f.type.replace("Field", "").toLowerCase();
@@ -68,10 +67,10 @@ YUI.add('redcms-form', function(Y) {
 							var ret = Y.JSON.parse(o.responseText);
 							if (ret.result === 'success') {
 								this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.success, ret.msg);
+								this.fire("success", {response: o});
 							} else {
 								this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, ret.msg);
 							}
-							this.fire("success", {response: o});
 						}, this),
 						failure: function() {
 							this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, 'Error sending form content');

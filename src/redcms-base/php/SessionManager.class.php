@@ -10,26 +10,34 @@ class SessionManager {
 
 	var $currentUser;
 	var $_SALTLENGTH = 9;
+	var $REMEMBERDURATION = 604800; // One month
 
 	/*
 	 * TODO update the visitor counter
 	 */
 
 	function SessionManager() {
-		session_start();
-
 		global $_COOKIE, $_SESSION;
 
+		ini_set('session.gc_maxlifetime', time() + $this->REMEMBERDURATION);
+		ini_set('session.cookie_lifetime', time() + $this->REMEMBERDURATION);
+
+		if (session_status() !== PHP_SESSION_ACTIVE) {
+			session_start();
+		}
 		if (isset($_SESSION['currentUser'])) {   // If the user is stored in the session var, we load it
 			$this->currentUser = $_SESSION['currentUser'];
-			//} else if (isset($_COOKIE['redcms'])) {								// or if there is a cookie, we log using it
-			//	$this->login($ckie['user'], $ckie['pass']);
 		} else {
 			$this->currentUser = $_SESSION['currentUser'] = new Guest();  // otherwise, we use a Guest user
 
 			$cVisitorCount = $this->getVisitorCount();
 			$statement = RedCMS::get()->dbManager->query("UPDATE redcms_variable SET value =  '" . ($cVisitorCount + 1) . "' WHERE name = 'visitorcount'");
 			$statement->fetchAll(PDO::FETCH_BOTH);
+		}
+		if (isset($_SESSION["remember"])) {  // Extend cookie lifetime if it is persistent
+			setcookie(session_name(), session_id(), time() + $this->REMEMBERDURATION);
+		} else {
+			setcookie(session_name(), session_id(), 0);
 		}
 	}
 
@@ -41,17 +49,14 @@ class SessionManager {
 		return $this->currentUser;
 	}
 
-	function login($username, $password) {
+	function login($username, $password, $remember) {
 		$select = (strpos($username, '@') === false) ? 'userName=?' : 'email=?';
 		$user = UserManager::getUserBySelect($select, [$username]);
 		if ($user && strcmp($user->password, $this->generateHash($password, $user->password)) == 0) {
-
+			if ($remember) {
+				$_SESSION["remember"] = true;
+			}
 			$this->currentUser = $_SESSION['currentUser'] = $user;
-
-			//FIXME THIS PHASE REQUIRES A MUCH BETTER SECURITY
-			//(stock hashed password, userid instead of email, etc...)
-			//TODO add log for user connection
-			//$CURRENTUC->DBManager->insertFields($CURRENTUC->DB_LOG, array(array('idUser', $field['id'])));
 			return true;
 		} else {
 			return false;
@@ -65,7 +70,7 @@ class SessionManager {
 	function logout() {
 		global $_SESSION;
 		$this->currentUser = $_SESSION['currentUser'] = new Guest();
-		//setcookie("redcms-session[user]", "", time()-3600);
+		unset($_SESSION["remember"]);
 	}
 
 	function generateHash($plainText, $salt = null) {
