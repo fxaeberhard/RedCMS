@@ -136,28 +136,54 @@ YUI.add('redcms-action', function(Y) {
 							y: 150
 						}).render();
 
-						/** Then fill it with a custom form */
-						new RedCMS.Form({
-							method: 'POST',
-							action: RedCMS.RedCMSManager.getLink("LoginManager"),
-							children: [
-								{name: "lusername", required: true, label: "User name", size: 20},
-								{name: "lpassword", type: 'password', required: true, label: "Password", size: 20},
-								{name: "action", type: 'hidden', value: 'login'},
-								{name: 'rememberme', type: 'boolean', label: ".", rightLabel: 'Remember me', value: true}
-							],
-							on: {
-								success: function(args) {
-									var ret = Y.JSON.parse(args.response.responseText);
-									if (ret.result === 'success') {
-										window.location.reload();
+						var form, form2,
+							showLoginForm = function() {
+								/** Then fill it with a custom form */
+								form = new RedCMS.Form({
+									method: 'POST',
+									action: RedCMS.RedCMSManager.getLink("LoginManager"),
+									children: [
+										{name: "lusername", required: true, label: "User name", size: 20},
+										{name: "lpassword", type: 'password', required: true, label: "Password", size: 20},
+										{name: "action", type: 'hidden', value: 'login'},
+										{name: 'rememberme', type: 'boolean', label: ".", rightLabel: 'Remember me', value: true}
+									],
+									on: {
+										success: function() {
+											window.location.reload();
+										},
+										cancel: function() {
+											form.destroy();
+											panel.destroy();
+										},
+										loaded: function() {
+											panel.getStdModNode(BODY).one("fieldset").insert('<a href="#" class="login-resetpassword" style="display: block;padding-left: 117px;">Mot de passe oublié?</a>');
+										}
 									}
-								},
-								cancel: function() {
-									panel.destroy();
-								}
-							}
-						}).render(panel.getStdModNode(BODY));
+								}).render(panel.getStdModNode(BODY));
+							},
+							showResetForm = function() {
+								form.destroy();
+								form2 = new RedCMS.Form({
+									action: RedCMS.RedCMSManager.getLink("LoginManager"),
+									children: [
+										{name: "lmail", required: true, label: "Your mail", typeInvite: "a new password will be sent to this address", size: 28},
+										{name: "action", type: 'hidden', value: 'resetpassword'}
+									],
+									on: {
+										success: function() {
+											panel.getStdModNode(BODY).one(".inputEx-Group").hide();
+										},
+										cancel: function() {
+											form2.destroy();
+											panel.destroy();
+										}
+									}
+								}).render(panel.getStdModNode(BODY));
+							};
+
+						showLoginForm();
+						panel.getStdModNode(BODY).delegate("click", showResetForm, ".login-resetpassword");
 					});
 				}
 			});

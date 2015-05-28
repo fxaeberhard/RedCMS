@@ -125,7 +125,7 @@ fieldset legend {
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close {
     width: 22px;
-    height: 22px;
+    height: 23px;
     border: 1px solid white;
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close:hover {
@@ -139,7 +139,7 @@ fieldset legend {
 	vertical-align: middle;
 
 	margin-top: 0px;
-	width: 20px;
+	width: 19px;
 	height: 28px;
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-bd {
@@ -482,7 +482,7 @@ fieldset legend {
     font-weight: bolder;
     border-bottom: 2px groove grey;	
     padding: 4px;
-    padding-left: 60px;
+    padding: 6px 24px;
 }
 .yui3-redcms-accordion-title {
     cursor: pointer;

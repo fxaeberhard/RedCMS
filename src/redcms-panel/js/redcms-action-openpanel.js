@@ -96,6 +96,7 @@ YUI.add('redcms-panel', function(Y) {
 				widgets[i].on("redcms:select", onSelect);
 			}
 			this.widgets = widgets;
+			this.fire("loaded");
 		},
 		_onSelect: function(selectedItem) {
 			if (Y.Object.size(this.getEvent('redcms:select')._subscribers) > 0) {

@@ -105,9 +105,9 @@ var Y = YUI({
 }).use('redcms-menunav', 'redcms-base', function(Y) {
 
 	YUI_config.groups.inputex.base = Config.path + 'lib/inputex/src/';
-	YUI_config.groups.inputex.combine = true;
-	YUI_config.groups.inputex.comboBase = Config.path + 'lib/min/f=';
-	YUI_config.groups.inputex.root = 'lib/inputex/src/';
+//	YUI_config.groups.inputex.combine = true;
+//	YUI_config.groups.inputex.comboBase = Config.path + 'lib/min/f=';
+//	YUI_config.groups.inputex.root = 'lib/inputex/src/';
 
 	var URLSEPARATOR = '/', RedCMS = Y.namespace('RedCMS'),
 		RedCMSManager;

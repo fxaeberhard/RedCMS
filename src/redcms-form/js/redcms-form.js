@@ -64,16 +64,20 @@ YUI.add('redcms-form', function(Y) {
 					contentType: "application/x-www-form-urlencoded",
 					callback: {
 						success: Y.bind(function(tId, o) {
-							var ret = Y.JSON.parse(o.responseText);
-							if (ret.result === 'success') {
-								this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.success, ret.msg);
-								this.fire("success", {response: o});
-							} else {
-								this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, ret.msg);
+							try {
+								var ret = Y.JSON.parse(o.responseText);
+								if (ret.result === 'success') {
+									this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.success, ret.msg);
+									this.fire("success", {response: o});
+								} else {
+									this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, ret.msg);
+								}
+							} catch (e) {
+								this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, "Error sending request");
 							}
 						}, this),
 						failure: function() {
-							this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, 'Error sending form content');
+							this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, 'Error sending request');
 						}
 					},
 					showMask: true
@@ -94,6 +98,7 @@ YUI.add('redcms-form', function(Y) {
 
 			Y.inputEx.use(cfg, Y.bind(function(cfg) {                           // Load form dependencies
 				Y.inputEx(cfg);                                                 // Initialize and render form
+				this.fire("loaded");
 			}, this, cfg));
 
 			this.get(CONTENTBOX).removeClass('redcms-hidden');

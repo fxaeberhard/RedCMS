@@ -113,36 +113,29 @@ class SessionManager {
 		return $rows[0][0];
 	}
 
-	/*
-	  function isRoot() {
-	  return $this->getCurrentUser()->name == "root";
-	  }
-	  function resetPassword($email){
+	function resetPassword($email) {
+		$user = UserManager::getUserBySelect("email=?", [$email]);
+		if ($user) {
+			$mail = new RedCMSMailer();
+			$passwd = $this->genpassword();
+			$mail->Subject = 'Réinitialisation de votre password';
+			$mail->Body = 'Votre password a été mis à jour. Vos nouvelles coordonnées sont les suivantes:' .
+					'<br />' .
+					'<br />Username: ' . $user->get('userName') .
+					'<br />E-mail: ' . $user->get('email') .
+					'<br />Password: ' . $passwd;
+			$mail->AddUser($user);
+			$retour = $mail->Send();
+			if (!$retour) {
+				return false;
+			} else {
+				$user->set('password', $this->generateHash($passwd));
+				$user->save();
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
 
-	  $redCMS = RedCMS::getInstance();
-	  $user = $this->getUserByEmail($email);
-	  //		print_r($user);
-	  if ( $user ){
-	  $mail = new RedMailer();
-	  $passwd = $this->genpassword();
-	  $redCMS->logger->log($passwd);
-	  $mail->AddAddress($user);
-	  $mail->setSubject('Réinitialisation de votre passworda');
-	  $mail->setBody('Votre password a été mis à jour. Vos nouvelles coordonnées sont les suivantes:'.
-	  '<br />'.
-	  '<br />Username: '.$user->get('userName').
-	  '<br />E-mail: '.$user->get('email').
-	  '<br />Password: '.$passwd
-	  );
-	  $retour = $mail->Send();
-	  if(!$retour) return $retour;
-	  else {
-	  $user->set('password', $passwd);
-	  $user->save();
-	  return 'passwordsent';
-	  }
-	  } else return 'wrongemail';
-	  }
-
-	 */
 }

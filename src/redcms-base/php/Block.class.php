@@ -366,7 +366,7 @@ class LoginManagerBlock extends Block {
 		$ret = [];
 		switch ($_REQUEST['action']) {
 			case 'login':
-				if ($redCMS->sessionManager->login($_REQUEST['lusername'], $_REQUEST['lpassword'], $_REQUEST['rememberme']=== "true")) {
+				if ($redCMS->sessionManager->login($_REQUEST['lusername'], $_REQUEST['lpassword'], $_REQUEST['rememberme'] === "true")) {
 					$ret = ['result' => 'success', 'msg' => 'Vous êtes maintenant connecté'];
 				} else {
 					$ret = ['result' => 'error', 'msg' => 'Mot de passe ou nom d\'utilisateur incorrect'];
@@ -375,6 +375,13 @@ class LoginManagerBlock extends Block {
 			case 'logout':
 				$redCMS->sessionManager->logout();
 				$ret = ['result' => 'success', 'msg' => 'Vous avez été déconnecté'];
+				break;
+			case 'resetpassword':
+				if ($redCMS->sessionManager->resetPassword($_REQUEST['lmail'])) {
+					$ret = ['result' => 'success', 'msg' => 'Un nouveau mot de passe a été envoyé.'];
+				} else {
+					$ret = ['result' => 'error', 'msg' => 'Aucun utilisateur ne correspond à cette addresse.'];
+				}
 				break;
 			default:
 				$ret = ['result' => 'error', 'msg' => 'Unknown or missing action parameter'];
