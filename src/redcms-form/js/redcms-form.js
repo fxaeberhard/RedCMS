@@ -21,6 +21,8 @@ YUI.add('redcms-form', function(Y) {
 			var fields = this.get("children"),
 				cb = this.get(CONTENTBOX);
 
+			this.get(BOUNDING_BOX).addClass("yui3-redcms-loading");
+
 			try {
 				fields = Y.JSON.parse(Y.RedCMS.RedCMSManager.urldecode(cb.getContent()));
 				this.set("children", fields);
@@ -54,10 +56,18 @@ YUI.add('redcms-form', function(Y) {
 			this._msgBox = new Y.RedCMS.MsgBox({visible: false}).render();
 			cb.appendChild(this._msgBox.get(BOUNDING_BOX));
 
+			var forceBlockType;
+			if (Y.Array.find(fields, function(f) {
+				return f.type === "file";
+			})) {
+				forceBlockType = "form";
+			}
+
 			var cfg = {
 				type: "form",
 				parentEl: cb,
 				fields: fields,
+				blockType: forceBlockType || this.get("blockType"),
 				ajax: {
 					method: 'POST',
 					uri: this.get("action"),
@@ -99,8 +109,8 @@ YUI.add('redcms-form', function(Y) {
 			Y.inputEx.use(cfg, Y.bind(function(cfg) {                           // Load form dependencies
 				Y.inputEx(cfg);                                                 // Initialize and render form
 				this.fire("loaded");
+				this.get(BOUNDING_BOX).removeClass("yui3-redcms-loading");
 			}, this, cfg));
-
 			this.get(CONTENTBOX).removeClass('redcms-hidden');
 		}
 	}, {
@@ -114,7 +124,8 @@ YUI.add('redcms-form', function(Y) {
 			},
 			children: {},
 			action: {},
-			method: {}
+			method: {},
+			blockType: {}
 		}
 	});
 	Y.namespace('RedCMS').Form = Form;

@@ -90,7 +90,7 @@ var Y = YUI({
 				// *** FORM MODULES *** //
 				'redcms-form': {
 					path: 'src/redcms-form/js/redcms-form.js',
-					requires: ['redcms-base', "inputex", 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json']
+					requires: ['redcms-base', "inputex", 'io-upload-iframe', 'io-form', 'redcms-msgbox', 'json', "array-extras"]
 				},
 				'redcms-tabview': {
 					path: "src/redcms-base/js/recms-treeview",

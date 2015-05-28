@@ -142,6 +142,7 @@ YUI.add('redcms-action', function(Y) {
 								form = new RedCMS.Form({
 									method: 'POST',
 									action: RedCMS.RedCMSManager.getLink("LoginManager"),
+									blockType: "form",
 									children: [
 										{name: "lusername", required: true, label: "User name", size: 20},
 										{name: "lpassword", type: 'password', required: true, label: "Password", size: 20},

@@ -15,7 +15,6 @@ class FormBlock extends TreeStructure {
 			foreach ($this->getChildBlocks() as $b) {
 				if (isset($_REQUEST[$b->name])) {
 					$newValue = $_REQUEST[$b->name];
-
 					switch ($b->formtype) {
 						case 'DateField':
 						case 'datepicker':
@@ -25,8 +24,6 @@ class FormBlock extends TreeStructure {
 								$newValue = $splitted[1] . "/" . $splitted[0] . "/" . $splitted[2]; // d/m/Y to m/d/Y
 								$t = strtotime($newValue);
 								$fields[$b->name] = Utils::sql_date($t);
-							} else {
-								$newValue = null;
 							}
 							break;
 
@@ -62,7 +59,6 @@ class FormBlock extends TreeStructure {
 					$f['value'] = '';
 					break;
 			}
-
 			$fields[] = $f;
 		}
 
