@@ -47,6 +47,9 @@ class Tuple {
 	function save() {
 		$redCMS = RedCMS::get();
 		$values = [];
+		$insertCols1 = [];
+		$insertCols2 = [];
+		$updateCols = [];
 		foreach ($this->_dbFields as $f) {
 			if (isset($this->fields[$f])) {
 

@@ -62,6 +62,7 @@ class RedCMS {
 	var $_dbRight = 'redcms_rights';
 	var $_dbUser = 'redcms_user';
 	var $_dbUserXGroup = 'redcms_userxgroup';
+	var $_dbSession = 'redcms_session';
 
 	/** Private vars */
 	var $host;   // Hold an instance of the class

@@ -19,30 +19,35 @@ class SessionManager {
 	function SessionManager() {
 		global $_COOKIE, $_SESSION;
 
-		ini_set('session.gc_maxlifetime', time() + $this->REMEMBERDURATION);
-		ini_set('session.cookie_lifetime', time() + $this->REMEMBERDURATION);
-
-		if (session_status() !== PHP_SESSION_ACTIVE) {
-			session_start();
+		//if (session_status() !== PHP_SESSION_ACTIVE) {
+		session_start();
+		//}
+		if (isset($_COOKIE["remember"])) {
+			setcookie("remember", $_COOKIE["remember"], time() + $this->REMEMBERDURATION, "/"); // Extend cookie lifetime
 		}
 		if (isset($_SESSION['currentUser'])) {   // If the user is stored in the session var, we load it
+			//$firephp = FirePHP::getInstance(true);
+			//$firephp->fb('userid' . $_SESSION['currentUser']->id, FirePHP::LOG);
+
 			$this->currentUser = $_SESSION['currentUser'];
+		} else if (isset($_COOKIE["remember"])) {
+			$session = $this->findSessions("userHash=?", [ $_COOKIE["remember"]])[0];
+			if ($session) {
+				$this->currentUser = $_SESSION['currentUser'] = UserManager::getUserById($session->userId);  // otherwise, we use a Guest user
+			} else {
+				$this->currentUser = $_SESSION['currentUser'] = new Guest();  // otherwise, we use a Guest user
+				setcookie("remember", "", time() - 3600, "/");
+			}
 		} else {
 			$this->currentUser = $_SESSION['currentUser'] = new Guest();  // otherwise, we use a Guest user
-
 			$cVisitorCount = $this->getVisitorCount();
 			$statement = RedCMS::get()->dbManager->query("UPDATE redcms_variable SET value =  '" . ($cVisitorCount + 1) . "' WHERE name = 'visitorcount'");
 			$statement->fetchAll(PDO::FETCH_BOTH);
 		}
-		if (isset($_SESSION["remember"])) {  // Extend cookie lifetime if it is persistent
-			setcookie(session_name(), session_id(), time() + $this->REMEMBERDURATION);
-		} else {
-			setcookie(session_name(), session_id(), 0);
-		}
 	}
 
 	function isLoggedIn() {
-		return ($this->currentUser instanceof LoggedUser);
+		return $this->currentUser instanceof LoggedUser;
 	}
 
 	function getCurrentUser() {
@@ -53,10 +58,18 @@ class SessionManager {
 		$select = (strpos($username, '@') === false) ? 'userName=?' : 'email=?';
 		$user = UserManager::getUserBySelect($select, [$username]);
 		if ($user && strcmp($user->password, $this->generateHash($password, $user->password)) == 0) {
-			if ($remember) {
-				$_SESSION["remember"] = true;
-			}
 			$this->currentUser = $_SESSION['currentUser'] = $user;
+			if ($remember) {
+				$userHash = md5($user->id);
+				setcookie("remember", $userHash, time() + $this->REMEMBERDURATION, "/");
+				$session = $this->findSessions("userHash=?", [$userHash]);
+				if (!isset($session[0])) {
+					$s = new Session();
+					$s->fields["userHash"] = $userHash;
+					$s->fields["userId"] = $user->id;
+					$s->save();
+				}
+			}
 			return true;
 		} else {
 			return false;
@@ -70,7 +83,7 @@ class SessionManager {
 	function logout() {
 		global $_SESSION;
 		$this->currentUser = $_SESSION['currentUser'] = new Guest();
-		unset($_SESSION["remember"]);
+		setcookie("remember", "", time() - 3600, "/");
 	}
 
 	function generateHash($plainText, $salt = null) {
@@ -137,5 +150,28 @@ class SessionManager {
 			return false;
 		}
 	}
+
+	function findSessions($select, $values) {
+		$redCMS = RedCMS::get();
+		$statement = $redCMS->dbManager->prepare('SELECT * FROM ' . $redCMS->_dbSession . ' WHERE ' . $select);
+		if ($statement->execute($values)) {
+			$rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+			$sessions = [];
+			foreach ($rows as &$r) {
+				$sessions[] = new Session($r);
+			}
+			return $sessions;
+		} else {
+			return false;
+		}
+	}
+
+}
+
+class Session extends Tuple {
+
+	var $_groups;
+	var $_dbFields = ['userId', 'userHash', 'time'];
+	var $_dbTable = 'redcms_session';
 
 }

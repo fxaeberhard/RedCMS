@@ -44,12 +44,14 @@
 
 					{call conversation blocks=$block->getChildBlocks('dateadded') level=$level+1}
 
+					{if $this->canWrite()}
 					<div class="redcms-conversation-footer">
 						{$params = ['parentId' => $block->id]}
 						<span widget="OpenPanelAction" params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
 							<a href="{ParamManager::getLink('290')}">Commenter</a>
 						</span>
 					</div>
+					{/if}
 				</div>
 			{/foreach}
 		{/function}

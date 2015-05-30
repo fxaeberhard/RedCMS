@@ -144,8 +144,8 @@ YUI.add('redcms-action', function(Y) {
 									action: RedCMS.RedCMSManager.getLink("LoginManager"),
 									blockType: "form",
 									children: [
-										{name: "lusername", required: true, label: "User name", size: 20},
-										{name: "lpassword", type: 'password', required: true, label: "Password", size: 20},
+										{name: "lusername", required: true, label: "User", size: 20, typeInvite: "username or e-mail", showMsg: false},
+										{name: "lpassword", type: 'password', required: true, label: "Password", size: 20, showMsg: false},
 										{name: "action", type: 'hidden', value: 'login'},
 										{name: 'rememberme', type: 'boolean', label: ".", rightLabel: 'Remember me', value: true}
 									],
@@ -158,7 +158,7 @@ YUI.add('redcms-action', function(Y) {
 											panel.destroy();
 										},
 										loaded: function() {
-											panel.getStdModNode(BODY).one("fieldset").insert('<a href="#" class="login-resetpassword" style="display: block;padding-left: 117px;">Mot de passe oublié?</a>');
+											panel.getStdModNode(BODY).one("fieldset").insert('<a href="#" class="login-resetpassword" style="display:block;padding:10px 0 10px 117px;">Mot de passe oublié?</a>');
 										}
 									}
 								}).render(panel.getStdModNode(BODY));
@@ -168,7 +168,7 @@ YUI.add('redcms-action', function(Y) {
 								form2 = new RedCMS.Form({
 									action: RedCMS.RedCMSManager.getLink("LoginManager"),
 									children: [
-										{name: "lmail", required: true, label: "Your mail", typeInvite: "a new password will be sent to this address", size: 28},
+										{name: "lmail", required: true, label: "Your mail", typeInvite: "a new password will be sent", size: 28, showMessage: false},
 										{name: "action", type: 'hidden', value: 'resetpassword'}
 									],
 									on: {
