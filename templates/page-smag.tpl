@@ -9,7 +9,10 @@
 {block name='bd-header'}
     <div class="smag-header">
       <div>
-        <div class="smag-header-left"></div>
+		<div class="smag-header-left">
+		  <h1>SMAG</h1>
+		  Société des médecins anesthésistes genevois
+		</div>
         <div class="smag-header-right"></div>
         <div class="redcms-clear"></div>
       </div>
@@ -24,8 +27,8 @@
           SMAG-Societé des Médecins Anesthésistes Genevois - 
           <a href="mailto:contact@smagonline.ch">contact@smagonline.ch</a>
           - Dernière mise à jour {Utils::date_formatduration($redCMS->getLastUpdate())}
-			{*{$redCMS->getLastUpdate()|date_format:"%e %b %Y"}*}
-		  
+		  {*{$redCMS->getLastUpdate()|date_format:"%e %b %Y"}*}
+
           - Visiteurs {$redCMS->sessionManager->getVisitorCount()}
         </div>
       </div>

@@ -130,21 +130,36 @@ h3 {
 	background: #E3EBF4;
 }
 .smag-header > div {
-	background: transparent url(sprite-smag.png) repeat scroll 0 -100px;
+	/* background: transparent url(sprite-smag.png) repeat scroll 0 -100px; */
+	background-color: white;
+	border: 2px solid black;
 }
 .smag-header .smag-header-left {
 	float: left;
 	display: block;
-	height: 63px;
-	width: 95px;
-	background: transparent url(smag-banner-logo.gif);
+	/* height: 63px; */
+	width: 116px;
+	/* background: transparent url(smag-banner-logo.gif); */
+	letter-spacing: 0.1px;
+	padding-top: 13px;
+	padding-left: 5px;
+	font-size: 10px;
+}
+.smag-header .smag-header-left h1 {
+	padding: 0;
+  color: black;
+  line-height: 21px;
+  font-size: 23px;
+  margin: 0;
+  letter-spacing: -1px;
+  font-weight: 700;
 }
 .smag-header .smag-header-right {
 	float: right;
 	display: block;
-	height: 63px;
+	height: 58px;
 	width: 485px;
-	background: transparent url(smag-banner-img.jpg);
+	background: transparent url(smag-banner-img.jpg) no-repeat 2px -2px;
 }
 /* Footer */
 .smag-footer {
@@ -199,9 +214,13 @@ h3 {
 }
 
 .redcms-bd .redcms-bd-title-content {
-	background: transparent url(sprite-smag.png) repeat scroll 0 -30px;
+	/* background: transparent url(sprite-smag.png) repeat scroll 0 -30px; */
 	float: left;
 	display: inline-block;
+	background-color: white;
+	border: 2px solid black;
+	border-left: none;
+	border-right: none;
 }
 .redcms-bd .redcms-bd-title-item {
 	float: left;
@@ -209,7 +228,7 @@ h3 {
 	font-size: 12px;
 	font-style: italic;
 	font-weight: bold;
-	padding: 6px 0px 0px 3px;
+	padding: 6px 3px 0px 10px;
 	height: 20px;
 }
 .redcms-bd .redcms-bd-title-separator {
@@ -225,7 +244,7 @@ h3 {
 .redcms-bd-title-right {
 	float: left;
 	width: 20px;
-	height: 22px;
+	height: 26px;
 	/* background: transparent url(sprite-smag.png) no-repeat scroll 0 0; */
 	border: 2px solid black;
 	border-left: 0;
