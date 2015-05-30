@@ -22,7 +22,7 @@
 {*		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssnormalize/cssnormalize-min.css" />*}
 {*		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssgrids/cssgrids-min.css" />*}
 		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.18.1/build/cssnormalize/cssnormalize-min.css&3.18.1/build/cssgrids/cssgrids-min.css&3.18.1/build/widget-base/assets/skins/sam/widget-base.css&3.18.1/build/node-menunav/assets/skins/sam/node-menunav.css" />
-{*		<link rel="stylesheet" type="text/javascript" href="http://localhost/RedCMS/lib/min/f=lib/yui3/build/node-menunav/assets/skins/sam/node-menunav.css,lib/yui3/build/widget-base/assets/skins/sam/widget-base.css" />*}
+{*		<link rel="stylesheet" type="text/javascript" href="{$redCMS->path}lib/min/f=lib/yui3/build/node-menunav/assets/skins/sam/node-menunav.css,lib/yui3/build/widget-base/assets/skins/sam/widget-base.css" />*}
 
 		<!-- Font awesome -->
 		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/font-awesome/css/font-awesome.min.css" />
@@ -148,10 +148,10 @@
 
 	{* RedCMS JS *}
 	{*<script type="text/javascript" src="{$redCMS->path}src/redcms-base/js/redcms-bootstrap.js"></script> *}
-	{*<script type="text/javascript" src="http://localhost/RedCMS/lib/min/f=/src/redcms-base/js/redcms-bootstrap.js,/src/redcms-base/js/redcms-widget.js,/src/redcms-base/js/redcms-action.js,/src/redcms-menu/js/redcms-menunav.js"></script>*}
+	{*<script type="text/javascript" src="{$redCMS->path}lib/min/f=/src/redcms-base/js/redcms-bootstrap.js,/src/redcms-base/js/redcms-widget.js,/src/redcms-base/js/redcms-action.js,/src/redcms-menu/js/redcms-menunav.js"></script>*}
 
 	{* Combined *}
-	<script type="text/javascript" src="http://localhost/RedCMS/lib/min/f=/lib/yui3/build/yui/yui.js,/lib/inputex/src/loader.js,/src/redcms-base/js/redcms-bootstrap.js"></script>
+	<script type="text/javascript" src="{$redCMS->path}lib/min/f=/lib/yui3/build/yui/yui.js,/lib/inputex/src/loader.js,/src/redcms-base/js/redcms-bootstrap.js"></script>
 
 	{* Tinymce *}
 	{*<script src="{$redCMS->path}lib/tinymce/jscripts/tiny_mce/tiny_mce.js" type='text/javascript'></script>*}
