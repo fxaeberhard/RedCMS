@@ -12,14 +12,13 @@ $root = str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']);
 
 require($root . 'lib/Smarty/libs/Smarty.class.php');
 require($root . 'lib/phpmailer/class.phpmailer.php');
-
+require( $root . 'lib/FirePHPCore/FirePHP.class.php');
 
 require($root . 'src/redcms-base/php/RedCMS.class.php');
 require($root . 'src/redcms-base/php/RedCMSMailer.class.php');
 require($root . 'src/redcms-base/php/TemplateManager.class.php');
 require($root . 'src/redcms-base/php/DBManager.class.php');
 require($root . 'src/redcms-base/php/BlockManager.class.php');
-require($root . 'src/redcms-base/php/SessionManager.class.php');
 require($root . 'src/redcms-base/php/ParamManager.class.php');
 require($root . 'src/redcms-base/php/Utils.class.php');
 
@@ -33,6 +32,7 @@ require($root . 'src/redcms-base/php/FileProxyBlock.class.php');
 require($root . 'src/redcms-form/php/FormBlock.class.php');
 require($root . 'src/redcms-form/php/MailFormBlock.class.php');
 require($root . 'src/redcms-conversation/php/Conversation.class.php');
+require($root . 'src/redcms-base/php/User.class.php');
 
 require($root . 'src/redcms-base/php/UserManager.class.php');
-require($root . 'src/redcms-base/php/User.class.php');
+require($root . 'src/redcms-base/php/SessionManager.class.php');
