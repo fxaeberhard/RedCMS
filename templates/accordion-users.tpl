@@ -6,7 +6,7 @@
 
 <div class="redcms-block" {$this->renderBlockAttributes()} widget="Accordion" requires="redcms-accordion" >
 	
-	<button class='yui3-button' widget='OpenPanelAction' params='{ "parentId":9 }' href="/RedCMS/150/" data-cfg='{ "onSuccessEvent": "dirty" }'><i class='fa fa-plus-square'></i> Create user</button>
+	<button class='yui3-button' widget='OpenPanelAction' params='{ "parentId":9 }' href="{$redCMS->path}150/" data-cfg='{ "onSuccessEvent": "dirty" }'><i class='fa fa-plus-square'></i> Create user</button>
 	<br /><br />
 	
 	<div class="yui3-g yui3-redcms-accordion-bd">

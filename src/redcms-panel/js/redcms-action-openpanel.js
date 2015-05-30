@@ -8,8 +8,7 @@ YUI.add('redcms-panel', function(Y) {
 
 	var OpenPanelAction,
 		CONTENT_BOX = 'contentBox', BODY = 'body', CLICK = 'click',
-		OPENPANELACTIONCLASSES = 'yui3-redcms-loading',
-		counter = 0;
+		OPENPANELACTIONCLASSES = 'yui3-redcms-loading';
 
 	OpenPanelAction = Y.Base.create("redcms-panel", Y.Widget, [Y.RedCMS.RedCMSWidget], {
 		//	***	Instance members ***	//
@@ -41,17 +40,6 @@ YUI.add('redcms-panel', function(Y) {
 		destructor: function() {
 			this._overlay && this._overlay.destroy();
 		}
-//		_onSelect: function(selectedItem) {
-//			var evt = this.getEvent('redcms:select'),
-//				hasSubscribers = false, o;
-//			for (o in evt.subscribers) {
-//				hasSubscribers = true;
-//			}
-//			if (hasSubscribers) {
-//				this.fire("redcms:select", selectedItem);
-//				this._overlay.destroy();
-//			}
-//		}
 	}, {
 		ATTRS: {
 			onSuccessEvent: {
@@ -61,7 +49,9 @@ YUI.add('redcms-panel', function(Y) {
 	});
 	Y.RedCMS.OpenPanelAction = Y.RedCMS.OpenPanel = OpenPanelAction;
 
-	var counter = 0;
+	/**
+	 * 
+	 */
 	Y.RedCMS.Panel = Y.Base.create("panel", Y.Panel, [Y.RedCMS.RedCMSWidget], {
 		initializer: function() {
 			this.widgets = [];
@@ -135,8 +125,11 @@ YUI.add('redcms-panel', function(Y) {
 			},
 			zIndex: {
 				valueFn: function() {
-					counter++;
-					return 100 + counter;
+					var maxZ = 100;
+					Y.all(".yui3-panel").each(function(n) {
+						maxZ = Math.max(maxZ, +n.getStyle("zIndex"));
+					});
+					return maxZ + 1;
 				}
 			},
 			focusOn: {

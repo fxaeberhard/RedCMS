@@ -7,7 +7,7 @@ http://redcms.red-agent.com/license.html
 <div {$this->renderBlockAttributes()} class="redcms-block yui3-redcms-loading yui3-redcms-treeview-content" 
                                       widget="TreeView" requires="redcms-treeview" data-noover=true >
 	{block name="buttons"}
-	<button class='yui3-button' widget='OpenPanelAction' params='{ "parentId":6 }' href="/RedCMS/170/" data-cfg='{ "onSuccessEvent": "dirty" }'><i class='fa fa-upload'></i> Upload file</button>
+	<button class='yui3-button' widget='OpenPanelAction' params='{ "parentId":6 }' href="{$redCMS->path}170/" data-cfg='{ "onSuccessEvent": "dirty" }'><i class='fa fa-upload'></i> Upload file</button>
 	{/block}
 	<br /><br />
 	
