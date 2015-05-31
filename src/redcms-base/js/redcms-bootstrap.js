@@ -63,7 +63,7 @@ var Y = YUI({
 				"redcms-admin": {
 					path: 'src/redcms-admin/js/redcms-admin.js',
 					requires: ["widget", "widget-position", "widget-stack", "widget-position-align",
-						'json', 'redcms-menunav', 'redcms-panel']
+						'json', 'redcms-menunav', 'redcms-panel', "event-key"]
 				},
 				"redcms-context": {
 					path: 'src/redcms-admin/js/redcms-context.js',

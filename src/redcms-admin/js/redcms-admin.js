@@ -21,6 +21,10 @@ YUI.add('redcms-admin', function(Y) {
 			this.get(CONTENTBOX).one('.yui3-menu').plug(Y.Plugin.NodeMenuNav);
 		},
 		bindUI: function() {
+			Y.one("doc").on("key", function() {
+				Y.one("body").toggleClass("redcms-debugmode");
+			}, "167");
+
 			Y.one('body').delegate('mouseover', function(e) {
 				if (!e.treated) {
 					var menuCB = this.get(CONTENTBOX).one('div'),
@@ -30,7 +34,7 @@ YUI.add('redcms-admin', function(Y) {
 
 					if (targetAdminNodes) {
 						e.treated = true;
-						if (e.currentTarget.getAttribute("data-noover"))
+						if (e.currentTarget.getAttribute("data-noover") && !Y.one(".redcms-debugmode"))
 							return;
 						menuCB.setContent(this._getMenuMarkupFromAdminNodesList(e.currentTarget, targetAdminNodes));
 						Y.RedCMS.RedCMSManager.render(menuCB, Y.bind(this._onContextMenuItemsRendered, this, e.currentTarget));
@@ -112,6 +116,16 @@ YUI.add('redcms-admin', function(Y) {
 				jsonConf = Y.JSON.parse(decodeURI(currentAdminNode.getAttribute('redadmin')));
 			} catch (e) {
 				Y.log('RedCMSAdmin._getMenuMarkupFromAdminNodesList(): Unable to parse admin menu JSON configuration', 'error');
+			}
+
+			if (Y.one(".redcms-debugmode")) {
+				jsonConf = jsonConf.concat([
+					{widget: 'OpenPanelAction', label: '[root]Edit', href: Y.RedCMS.Config.path + '210', action: 'editCurrent'},
+					{widget: 'OpenPanelAction', label: '[root]Permission', href: Y.RedCMS.Config.path + '109', action: 'editCurrent'},
+					{widget: 'OpenPanelAction', label: '[root]New sibling', href: Y.RedCMS.Config.path + '210', action: 'addSibling'},
+					{widget: 'OpenPanelAction', label: '[root]New child', href: Y.RedCMS.Config.path + '210', action: 'addChild'},
+					{widget: 'DeleteBlockAction', label: '[root]Delete', href: Y.RedCMS.Config.path + '103', action: 'editCurrent'}
+				]);
 			}
 
 			ret = ret.concat(this._getMenuMarkupFromAdminNode(targetNode, currentAdminNode, jsonConf));

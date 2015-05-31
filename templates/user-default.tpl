@@ -31,6 +31,9 @@
                 {if $block->poPhone NEQ ''}
                     Tél. mobile: {$block->poPhone}<br />
                 {/if}
+                {*{if $block->userName NEQ ''}
+                    Username: {$block->userName}<br />
+                {/if}*}
               </fieldset>
             </div>
         </div>

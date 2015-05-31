@@ -31,19 +31,11 @@
 
 		<link rel="stylesheet" type="text/css" href="{$redCMS->path}src/redcms-base/assets/default-skin.css" />
 
-		{block name="stylesheets"}
-		{/block}
+		{block name="stylesheets"}{/block}
 
 	  </head>
 
-	  {*{$rootAdmin = [
-	  ['widget' => 'OpenPanelAction', 'label' => '[root]Edit block', 'href' => ParamManager::getLink('210'), 'action' => 'editCurrent'], 
-	  ['widget' => 'OpenPanelAction', 'label' => '[root]Edit rights', 'href' => ParamManager::getLink('109'), 'action' => 'editCurrent'], 
-	  ['widget' => 'OpenPanelAction', 'label' => '[root]Add sibling', 'href' => ParamManager::getLink('210'), 'action' => 'addSibling'],
-	  ['widget' => 'OpenPanelAction', 'label' => '[root]Add child', 'href' => ParamManager::getLink('210'), 'action' => 'addChild'], 
-	  ['widget' => 'DeleteBlockAction', 'label' => '[root]Delete', 'href' => ParamManager::getLink('103'), 'action' => 'editCurrent' ]]}*}
-
-	  <body class="yui3-skin-sam yui-skin-sam" {*redadmin="{if $redCMS->sessionManager->currentUser->isAMember(1)}{htmlspecialchars(json_encode($rootAdmin))}{/if}"*}> 
+	  <body class="yui3-skin-sam"> 
 
 		{block name='header'}
 			<div class="redcms-hd">

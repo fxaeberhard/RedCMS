@@ -12,7 +12,7 @@
 	<div class="yui3-g yui3-redcms-accordion-bd">
 		<div class="yui3-u-1-3">Name</div>
 		<div class="yui3-u-1-3">Email</div>
-		<div class="yui3-u-1-3">Status</div>
+		<div class="yui3-u-1-3">Groups</div>
 	</div>
 	
 	<ul>
@@ -25,8 +25,10 @@
 							{$block->name} {$block->surname}
 						</div>
 						<div class="yui3-u-1-3">{$block->email}</div>
-						<div class="yui3-u-1-3">{if $block->isAMember('1')}Root{else}
-						{if $block->isAMember('2')}Administrator{/if}{/if}</div>
+						<div class="yui3-u-1-3">{foreach $block->getGroups() as $group name="groups"}
+							{$group->name}{if not $smarty.foreach.groups.last}, {/if} 
+						{/foreach}
+						</div>
 					</div>
 				</div> 
 				<div class="yui3-redcms-accordion-item">
