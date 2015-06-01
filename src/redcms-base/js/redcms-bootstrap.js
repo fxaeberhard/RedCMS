@@ -3,6 +3,8 @@
  Code licensed under the BSD License:
  http://redcms.red-agent.com/license.html
  */
+var debug = /[\\?&]debug/.exec(window.location.href) !== null;
+
 var Y = YUI({
 	charset: 'utf-8',
 	useBrowserConsole: true,
@@ -14,15 +16,15 @@ var Y = YUI({
 	combine: true,
 	comboSep: ",",
 	comboBase: Config.path + 'lib/min/f=',
-	//debug: true,
 	filter: 'raw',
+	//debug: true,
 	//filter: 'debug',
 	//debug: Config.debug,
 	//lang: 'en-US',
 	//timeout: 10000,
 	groups: {
 		redcms: {
-			combine: true,
+			combine: !debug,
 			base: Config.path,
 			//comboBase: Config.path + 'lib/min/f=',
 			root: '/',

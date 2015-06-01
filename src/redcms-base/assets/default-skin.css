@@ -426,12 +426,26 @@ fieldset legend {
 }
 .yui3-redcms-icon-html {
     background: url(file-icons.png) no-repeat scroll 0px -320px;
+    /* background: url(file-icons.png) no-repeat scroll 0px -575px; */
 }
 .yui3-redcms-icon-folder {
-    background: url(file-icons.png) no-repeat scroll 1px -297px;
-    background: url(tree_view_icons_blue_01_arrow_beside_folders.gif) -16px -1px;
+    background: url(file-icons.png) no-repeat scroll 1px -527px;
 }
-
+.yui3-redcms-icon-ppt,
+.yui3-redcms-icon-pptx {
+    background: url(file-icons.png) no-repeat scroll 1px -470px;
+}
+.yui3-redcms-icon-doc,
+.yui3-redcms-icon-docx {
+    background: url(file-icons.png) no-repeat scroll 1px -500px;
+}
+.yui3-redcms-icon-xsl,
+.yui3-redcms-icon-xslx {
+    background: url(file-icons.png) no-repeat scroll 1px -553px;
+}
+.yui3-redcms-icon-swf {
+    background: url(file-icons.png) no-repeat scroll 1px -602px;
+}
 /** ToolTip Styles **/
 .redcms-tooltip-content {
     display:none;
