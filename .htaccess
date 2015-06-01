@@ -40,17 +40,23 @@ DirectoryIndex index.php
 
 <IfModule mod_headers.c>
 	### Enable Force download for some file types
-	<FilesMatch "\.(pdf|sql)$">
+	<FilesMatch "\.(pdf|sql|doc|docx)$">
 		Header set Content-Disposition "attachment"
 		# for older browsers
 		Header set Content-Type "application/octet-stream"
 	</FilesMatch>
 
 	### Enable cache
-	<FilesMatch "\.(gif|jpe?g|png|ico|css|js|swf)$">
+	<FilesMatch "\.(gif|GIF|JPE?G|jpe?g|png|ico|css|js|swf)$">
 		Header set Cache-Control "public, max-age=290304000"
 		Header unset Vary
 	</FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+	#SetOutputFilter DEFLATE
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+	#text/javascript application/javascript
 </IfModule>
 
 ### Activate gzip if possible

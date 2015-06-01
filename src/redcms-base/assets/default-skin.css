@@ -16,7 +16,7 @@ input[type=submit] {}
 input[type=file] {
     min-width: 350px;
 }
-input[type=text], input[type=password], select {
+input[type=text], input[type=password], select, textarea {
     border: 1px solid #ccc;
     padding: 6px 7px;
 }

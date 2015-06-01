@@ -1,12 +1,11 @@
 <?php
+
 /**
  * Configuration for "min", the default application built with the Minify
  * library
  * 
  * @package Minify
  */
-
-
 /**
  * Allow use of the Minify URI Builder app. Only set this to true while you need it.
  */
@@ -103,6 +102,8 @@ $min_serveOptions['bubbleCssImports'] = false;
  * querystring, maxAge will be set to one year. E.g. /min/f=hello.css&123456
  */
 $min_serveOptions['maxAge'] = 1800;
+//$min_serveOptions['maxAge'] = 60 * 60 * 24 * 365;
+$min_serveOptions['maxAge'] = 60 * 60 * 6;
 
 
 /**
