@@ -5,8 +5,7 @@ require('redcms-include.php');
 //ini_set('display_errors', '1');
 
 $redConfig = [
-	'path' => '/',
-	'defaultPageTemplate' => 'page-smag.tpl',
+	'pageTemplate' => 'page-smag.tpl',
 	'defaultLang' => 'fr',
 	'adminMail' => 'contact@smagonline.ch',
 	'windowTitleSuffix' => ' - smagonline.ch',
@@ -24,7 +23,7 @@ $redCMS = RedCMS::get();
 
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
 	$redConfig['path'] = '/RedCMS/';
-	$redCMS->init($redConfig, 'mysql:host=localhost;dbname=redcms_default;', 'root', '');
+	$redCMS->init($redConfig, 'mysql:host=localhost;dbname=redcms_smag;', 'root', '');
 } else {
 	$redCMS->init($redConfig, 'mysql:host=mysql.smagonline.ch;dbname=smagonlinech5;', 'dbuser2', 'dbpass');
 }

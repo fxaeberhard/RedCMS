@@ -31,6 +31,10 @@
 
 		<link rel="stylesheet" type="text/css" href="{$redCMS->path}src/redcms-base/assets/default-skin.css" />
 
+		{foreach $redCMS->config["stylesheets"] as $s}
+			<link rel="stylesheet" type="text/css" href="{$redCMS->path}{$s}" />
+		{/foreach}
+		
 		{block name="stylesheets"}{/block}
 
 	  </head>
@@ -38,9 +42,7 @@
 	  <body class="yui3-skin-sam"> 
 
 		{block name='header'}
-			<div class="redcms-hd">
-			  RedCMS
-			</div>
+			<div class="redcms-hd"><i class="redcms-logo"></i>Redcms</div>
 		{/block}
 
 		{flush()}
@@ -107,8 +109,7 @@
 	<div class="redcms-ft">
 	  <div class="redcms-ft-content">
 		{block name='ft-content'}
-			<hr />
-			Powered by <a href="http://redcms.red-agent.com">RedCMS</a> | Version {$redCMS->config['version']} | &copy; 2011, Francois-Xavier Aeberhard
+			Powered by <a href="http://redcms.red-agent.com">RedCMS</a> &copy; 2015 Francois-Xavier Aeberhard
 		{/block}
 	  </div>
 

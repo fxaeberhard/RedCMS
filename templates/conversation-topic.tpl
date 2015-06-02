@@ -11,10 +11,11 @@
 		params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
 		<span>
 			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('290')}" >
-				Répondre
+				Reply
 			</a>
 		</span>
 	</span>
+	<br /><br />
 	
 	<div class="redcms-conversation">
 		{function name=conversation level=0}
@@ -23,13 +24,13 @@
 
 				<div class="redcms-conversation-fragment redcms-conversation-{get_class($block)|lower}" redid="{$block->id}" widget="{get_class($block)}">
 					
-					<div class="redcms-icon"><span /></div>
+					{*<div class="redcms-icon"><span /></div>*}
 					
 					<div class="redcms-conversation-title">
 						<img width="40" height="40" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm"/>
 						<h1><a name="{$block->title|escape:url}">{$block->title}</a></h1>
-						<h2>par <a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>, 
-						posté {Utils::date_formatduration($block->dateadded)} 
+						<h2><a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>, 
+						{Utils::date_formatduration($block->dateadded)} 
 						</h2>
 					</div>
 
@@ -43,7 +44,7 @@
 					<div class="redcms-conversation-footer">
 						{$params = ['parentId' => $block->id]}
 						<span widget="OpenPanelAction" params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
-							<a href="{ParamManager::getLink('290')}">Répondre</a>
+							<a href="{ParamManager::getLink('290')}">Reply</a>
 						</span>
 					</div>	
 				</div>

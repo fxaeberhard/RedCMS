@@ -4,14 +4,14 @@
  * http://redcms.red-agent.com/license.html
  *}
 
-<div {$this->renderBlockAttributes()} widget="Block"  data-noover=true  >
+<div {$this->renderBlockAttributes()} widget="Block" data-noover=true>
 	
 	{$params = ['parentId' => $this->id]}
 	<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
 		params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
 		<span>
 			<a class="yui3-redcms-button-add" href="{ParamManager::getLink('300')}" >
-				Poster un nouveau message
+				New post
 			</a>
 		</span>
 	</span>
@@ -45,13 +45,13 @@
 				<div class="yui3-u topiclist-col1">
 					<div class="yui3-g" style="text-align:center">
 						<div class="yui3-u-1-3">
-							Auteur
+							Author
 						</div>
 						<div class="yui3-u-1-3">
-							Réponses
+							Replies
 						</div>
 						<div class="yui3-u-1-3">
-							Dernière réponse
+							Last reply
 						</div>
 					</div>
 				</div>
@@ -72,7 +72,7 @@
 			
 						<a href="{ParamManager::getLink($this->parentBlock()->link, $block->title)}">{$block->title}</a><br />
 						<span style="font-size: 8pt;">
-						posté {Utils::date_formatduration($block->dateadded)} <br />
+						{Utils::date_formatduration($block->dateadded)} <br />
 						{$block->description|strip_tags|truncate}
 						</span>
 					</div>
@@ -89,8 +89,8 @@
 									{$replyAuthor = UserManager::getUserById($replies[0]->owner)}
 									{$replies[0]->title}<br />
 									<span style="font-size: 8pt;">
-										par <a href="{ParamManager::getLink('User Profile', $replyAuthor->id)}">{$replyAuthor->getLabel()}</a>, 
-										posté {Utils::date_formatduration($replies[0]->dateadded)}
+										by <a href="{ParamManager::getLink('User Profile', $replyAuthor->id)}">{$replyAuthor->getLabel()}</a>, 
+										{Utils::date_formatduration($replies[0]->dateadded)}
 									</span>
 								{else}
 									-
@@ -109,11 +109,11 @@
 		{call conversation blocks=$childBlocks}
 	{else}
 		<div class="redcms-conversation-fragment">
-			<center><em>Il n'y a pas de messages dans ce forum.</em></center>
+		  <center><em><br />Empty</em></center>
 		</div>
 	{/if}
 	</div>
-	
+	{*
 	{$params = ['parentId' => $this->id]}
 	<span class="yui3-redcms-button" widget="OpenPanelAction" requires="redcms-panel" 
 		params="{htmlspecialchars(json_encode($params))}" data-cfg='{ "onSuccessEvent": "dirty" }'>
@@ -122,6 +122,6 @@
 				Poster un nouveau message
 			</a>
 		</span>
-	</span>
+	</span>*}
 	
 </div>

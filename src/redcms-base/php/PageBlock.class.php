@@ -43,7 +43,7 @@ class PageBlock extends Block {
 		if ($this->template) {
 			$template->display($this->template);
 		} else {
-			$template->display($redCMS->config['defaultPageTemplate']);
+			$template->display($redCMS->config['pageTemplate']);
 		}
 	}
 

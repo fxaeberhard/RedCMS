@@ -19,7 +19,7 @@ class RedCMS {
 		'homePageId' => 3,
 		'notFoundPageId' => 22,
 		'accessRestrictedPageId' => 23,
-		'defaultPageTemplate' => 'page-default.tpl',
+		'pageTemplate' => 'page-default.tpl',
 		'defaultLang' => 'en',
 		'availableLang' => ['en'],
 		'charset' => 'utf-8',
@@ -37,7 +37,8 @@ class RedCMS {
 		'smtpUsername' => '',
 		'smtpPassword' => '',
 		'version' => '0.2.2',
-		'cacheEnabled' => false
+		'cacheEnabled' => false,
+		'stylesheets' => []
 	];
 
 	/*	 * *************************************All utilities objects ****************** */
@@ -117,7 +118,7 @@ class RedCMS {
 				$this->currentBlock->renderHeaders();
 				$this->currentBlock->render(); // we render it
 			} else {
-				die('Authorization refusedssss');
+				die('Authorization refused');
 			}
 		} else {
 			die('Page Not Found');

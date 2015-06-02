@@ -25,10 +25,12 @@ http://redcms.red-agent.com/license.html
 
                     {$liClass=(!$isCategory)?'class="yui3-menuitem"':''}
                     {$aClass=(!$isCategory)?'yui3-menuitem-content':'yui3-menu-label'}
+					{$link=$block->getLink()}
+
+					{$currentClass = ($redCMS->currentBlock->getLink() === $link) ? "yui3-menuitem-current": ""}
 
                     <li {$liClass} redid="{$block->id}"  widget="{get_class($block)}">
-                      <a class="{$aClass}" href="{$block->getLink()|default:'#'}">{$block->getLabel()|default:'No label'}</a>
-
+                      <a class="{$aClass} {$currentClass}" href="{$link|default:'#'}">{$block->getLabel()|default:'No label'}</a>
                       {if $isCategory}
                           <div class="yui3-menu yui3-menu-hidden">
                             <div class="yui3-menu-content">

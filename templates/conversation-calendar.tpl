@@ -31,7 +31,9 @@
 				{$user = UserManager::getUserById($block->owner)}
 
 				<div class="redcms-conversation-fragment redcms-conversation-{get_class($block)|lower}" redid="{$block->id}" widget="{get_class($block)}">
-				  <div class="redcms-icon" ><span /></div>
+				  
+				   <div class="redcms-icon" ><span /></div>
+				  
 				  <div class="redcms-conversation-title">
 					
 					{if $block instanceof EventField}

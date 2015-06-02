@@ -6,18 +6,6 @@
 
 <div {*{$this->renderBlockAttributes()} widget="Block"*} >
 
-	<style type="text/css">		
-		.yui3-redcms-conversation-reader-item {
-			background-color: white;
-			border-top: 1px solid lightgray;
-			cursor:pointer;
-			padding: 2px 2px 2px 50px;
-		}
-		.yui3-redcms-conversation-reader-item:hover {
-			background-color: #eee;
-		}
-	</style>
-	
 	<div class="redcms-conversation yui3-redcms-conversation-reader">
 	
 		{* Headers *}
@@ -64,7 +52,7 @@
 		{call conversation blocks=$childBlocks}
 	{else}
 		<div class="yui3-redcms-conversation-reader-item">
-			<center><em>No recent activity</em></center>
+		  <center><em><br /><br />Empty<br /><br /></em></center>
 		</div>
 	{/if}
 	</div>

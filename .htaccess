@@ -47,7 +47,7 @@ DirectoryIndex index.php
 	</FilesMatch>
 
 	### Enable cache
-	<FilesMatch "\.(gif|GIF|JPE?G|jpe?g|png|ico|css|js|swf)$">
+	<FilesMatch "\.(gif|GIF|JPE?G|PNG|jpe?g|png|ico|css|js|swf)$">
 		Header set Cache-Control "public, max-age=290304000"
 		Header unset Vary
 	</FilesMatch>
