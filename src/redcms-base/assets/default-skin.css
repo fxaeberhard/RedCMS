@@ -6,7 +6,7 @@ ul, dl {
     margin:0;
 }
 li {
-	list-style: none;disp
+	list-style: none;
 }
 hr {
 	border: 1px solid lightgray;
@@ -384,10 +384,11 @@ fieldset legend {
     border-top: 0;
 }
 .yui3-skin-sam .yui3-menu-horizontal .yui3-menu-label {
-    background: white;
+    background: none;
     color: #A40000;
-    border-color: #A40000;
+    /* border-color: #A40000; */
     padding: 4px 8px;
+    border: none;
 }
 
 /* Custom Icons */
@@ -465,11 +466,14 @@ fieldset legend {
     cursor:pointer;
 }
 .yui3-skin-sam .yui3-menu-label, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-label, .yui3-skin-sam .yui3-menuitem-content, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menuitem-content {
-    padding: 4px 1em;
+    padding: 4px 1.5em;
 }
 .yui3-skin-sam .yui3-menu-content, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-content {
 	border: 1px solid #a40000;
 	padding: 0;
+}
+ .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-content {
+	padding: 4px 0;
 }
 
 .yui3-skin-sam .yui3-menu-label-active,

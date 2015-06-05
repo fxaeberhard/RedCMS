@@ -114,14 +114,16 @@ h3 {
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menu-label, 
 .yui3-skin-sam .redcms-left .yui3-menuitem-content, 
 .yui3-skin-sam .redcms-left .yui3-menu .yui3-menu .yui3-menuitem-content {
-	padding: 3px 20px 2px 35px;
+	padding: 4px 35px 3px 35px;
 	margin: 0;
 	/* font-size: 104%; */
 	font-size: 96%;
 	/* overflow: visible; */
 	position: relative;
 }
-
+.yui3-menuitem-current {
+	font-weight: bold;
+}
 /** Header */
 .smag-header {
 	padding: 5px;
@@ -266,4 +268,9 @@ h3 {
 }
 .yui3-redcms-conversation-reader-hd {
 	background: #c8d7ea;
+}
+
+/* inputex */ 
+.yui3-skin-sam .inputEx-Button {
+	background: #1958a8;
 }

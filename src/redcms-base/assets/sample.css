@@ -12,7 +12,6 @@ a {
 	letter-spacing: -0.1px;
 	margin-top: 16px;
 	margin-bottom: 9px;
-	/* text-align: center; */
 }
 .redcms-logo {
 	background: url(redagent-logo.png) no-repeat;	
@@ -27,10 +26,6 @@ a {
 	color: #a40000;
 	border-bottom: none;
 	padding: 9px 8px 6px;
-}
-.redcms-bd .redcms-bd-content {
-	/* padding-top: 0; */
-	/* padding-bottom: 0; */
 }
 .redcms-ft .redcms-ft-content {
 	color: #a40000;
@@ -71,10 +66,6 @@ hr {
 .yui3-redcms-button span {
 	border: none;
 }
-.yui3-redcms-button span a {
-	/* color: white; */
-}
-
 .yui3-menuitem-current {
 	background: #a40000;
 	color: white !important;

@@ -146,9 +146,6 @@
 	{* Combined *}
 	<script type="text/javascript" src="{$redCMS->path}lib/min/f=/lib/yui3/build/yui/yui.js,/lib/inputex/src/loader.js,/src/redcms-base/js/redcms-bootstrap.js"></script>
 
-	{* Tinymce *}
-	{*<script src="{$redCMS->path}lib/tinymce/jscripts/tiny_mce/tiny_mce.js" type='text/javascript'></script>*}
-
 </body>
 </html>
 {/if}
