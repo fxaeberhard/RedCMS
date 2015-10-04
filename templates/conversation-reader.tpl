@@ -12,8 +12,7 @@
 		<div class="yui3-redcms-conversation-reader-hd">
 			Activité récente sur le site
 		</div>
-	
-	
+		
 	{function name=conversation level=0}
 		{$counter = 0}
 		{foreach $blocks as $block}
@@ -25,12 +24,13 @@
 					{*redid="{$block->id}" widget="{get_class($block)}"*} >
 					
 					<div class="redcms-icon yui3-u"><span></span></div>
-					<div class="yui3-u" style="width:100%;margin-top:3px">
+					<div class="yui3-u" style="width:100%;margin-top:3px;text-align:left;">
 						<img width="50" height="50" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=50&d=mm" style="float: left;margin: -2px 6px 1px 0;"/>
 			
-						<a style="font-weight: bold;display: inline-block;padding-top: 7px;">{$block->getLabel()}</a>
+						<a style="font-weight: bold;display: inline-block;padding-top: 1px;line-height:13px;max-width:380px;" class="truncate">{$block->getLabel()}</a>
 						
 						<div class="redcms-small">
+							{if $block instanceof EventField}{Utils::date_formatduration($block->date1)}, {/if}
 							posté par <a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>
 							{*{if $block instanceof EventField} a posté un événement
 							{elseif $block instanceof ReplyField} a posté un commentaire

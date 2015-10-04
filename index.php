@@ -21,7 +21,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 	$redConfig['path'] = '/RedCMS/';
 	$redCMS->init($redConfig, 'mysql:host=localhost;dbname=redcms_default;', 'root', '');
 } else {
-	$redCMS->init($redConfig, 'mysql:host=mysql.red-agent.com;dbname=redagentcom4;', 'redadmin', '78hzu45e');
+	$redCMS->init($redConfig, 'mysql:host=cajx.myd.infomaniak.com;dbname=redagentcom4;', 'cajx_red', 'mi8ui7io9');
 }
 
 $redCMS->render();

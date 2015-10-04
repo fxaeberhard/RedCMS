@@ -39,6 +39,11 @@ p, pre {
 }
 
 /* CSS BASE CLASSES FOR REDCMS */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .redcms-small {
     color: gray;
     font-size: 13px;

@@ -72,10 +72,11 @@ class Utils {
 			//		}elseif ($diff < 2*24){
 			//			return 'aujourd\'hui, à '. date('H:i', $date);
 		} elseif ($diff < (2 * 24 * 60)) {
-			return (($date > $now) ? 'demain' : 'hier') . ', à ' . date('H:i', $date);
+			//return (($date > $now) ? 'demain' : 'hier') . ', à ' . date('H:i', $date);
+			return (($date > $now) ? 'demain' : 'hier');
 		} else {
-//			return Utils::date('\l\e j F Y', $date);
-			return Utils::date('\l\e j F Y à H:i', $date);
+			return Utils::date('\l\e j F Y', $date);
+//			return Utils::date('\l\e j F Y à H:i', $date);
 		}
 	}
 
