@@ -5,7 +5,7 @@
  */
 require('redcms-include.php');
 
-$redConfig = [
+$config = [
 	'pageTemplate' => 'page-default.tpl',
 	'adminMail' => 'fx@red-agent.com',
 	'windowTitleSuffix' => ' - RedCMS',
@@ -15,13 +15,13 @@ $redConfig = [
 
 $redCMS = RedCMS::get();
 
-//$redCMS->init($redConfig, 'mysql:host=localhost;dbname=redcms_default;', 'root', '');
+//$redCMS->init($config, 'mysql:host=localhost;dbname=redcms;', 'root', '');
 
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
 	$redConfig['path'] = '/RedCMS/';
-	$redCMS->init($redConfig, 'mysql:host=localhost;dbname=redcms_default;', 'root', '');
+	$redCMS->init($config, 'mysql:host=localhost;dbname=redcms;', 'root', '');
 } else {
-	$redCMS->init($redConfig, 'mysql:host=cajx.myd.infomaniak.com;dbname=redagentcom4;', 'cajx_red', 'mi8ui7io9');
+	$redCMS->init($config, 'mysql:host=cajx.myd.infomaniak.com;dbname=cajx_redagentcom4;', 'cajx_redadmin', '78hzu45e');
 }
 
 $redCMS->render();

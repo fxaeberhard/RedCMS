@@ -1,0 +1,21 @@
+{
+  "name": "redcms",
+  "homepage": "redcms.red-agent.com",
+  "authors": [
+    "Francois-Xavier Aeberhard <fx@red-agent.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "yui": "^3.18.1"
+  }
+}

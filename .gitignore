@@ -1,7 +1,3 @@
 files/*
-.project*
-.settings
-.buildpath
-*build_tmp*
 google*.html
-/nbproject/private/
+bower_components/
