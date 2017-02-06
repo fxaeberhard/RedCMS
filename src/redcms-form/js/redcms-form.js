@@ -9,7 +9,8 @@
 YUI.add('redcms-form', function(Y) {
 
 	var Form, SimpleForm,
-		BOUNDING_BOX = 'boundingBox', CONTENTBOX = 'contentBox';
+		BOUNDING_BOX = 'boundingBox',
+		CONTENTBOX = 'contentBox';
 
 	Form = Y.Base.create('redcms-form', Y.Widget, [Y.RedCMS.RedCMSWidget], {
 		// *** Instance members *** //
@@ -55,13 +56,13 @@ YUI.add('redcms-form', function(Y) {
 			}
 			cb.setContent('');
 
-			this._msgBox = new Y.RedCMS.MsgBox({visible: false}).render();
+			this._msgBox = new Y.RedCMS.MsgBox({ visible: false }).render();
 			cb.appendChild(this._msgBox.get(BOUNDING_BOX));
 
 			var forceBlockType;
 			if (Y.Array.find(fields, function(f) {
-				return f.type === "file";
-			})) {
+					return f.type === "file";
+				})) {
 				forceBlockType = "form";
 			}
 
@@ -80,7 +81,7 @@ YUI.add('redcms-form', function(Y) {
 								var ret = Y.JSON.parse(o.responseText);
 								if (ret.result === 'success') {
 									this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.success, ret.msg);
-									this.fire("success", {response: o});
+									this.fire("success", { response: o });
 								} else {
 									this.get('msgBox').setMessage(Y.RedCMS.MsgBox.CLASSES.error, ret.msg);
 								}
@@ -95,21 +96,21 @@ YUI.add('redcms-form', function(Y) {
 					showMask: true
 				},
 				buttons: [{
-						type: 'submit',
-						cssClass: "redcms-submit",
-						value: 'Submit'
-					}, {
-						type: 'submit',
-						value: 'Cancel',
-						onClick: Y.bind(function() { // e === clickEvent (inputEx.widget.Button custom event)
-							this.fire("cancel");
-							return false;                                       // stop clickEvent, to prevent form submitting
-						}, this)
-					}]
+					type: 'submit',
+					cssClass: "redcms-submit",
+					value: 'Submit'
+				}, {
+					type: 'submit',
+					value: 'Cancel',
+					onClick: Y.bind(function() { // e === clickEvent (inputEx.widget.Button custom event)
+						this.fire("cancel");
+						return false; // stop clickEvent, to prevent form submitting
+					}, this)
+				}]
 			};
 
-			Y.inputEx.use(cfg, Y.bind(function(cfg) {                           // Load form dependencies
-				Y.inputEx(cfg);                                                 // Initialize and render form
+			Y.inputEx.use(cfg, Y.bind(function(cfg) { // Load form dependencies
+				Y.inputEx(cfg); // Initialize and render form
 				this.fire("loaded");
 				this.get(BOUNDING_BOX).removeClass("yui3-redcms-loading");
 			}, this, cfg));

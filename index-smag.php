@@ -4,7 +4,7 @@ require('redcms-include.php');
 //error_reporting(E_ALL);
 //ini_set('display_errors', '1');
 
-$redConfig = [
+$config = [
 	'pageTemplate' => 'page-smag.tpl',
 	'defaultLang' => 'fr',
 	'adminMail' => 'contact@smagonline.ch',
@@ -21,11 +21,11 @@ $redConfig = [
 
 $redCMS = RedCMS::get();
 
-if ($_SERVER['SERVER_NAME'] == 'localhost') {
-	$redConfig['path'] = '/RedCMS/';
-	$redCMS->init($redConfig, 'mysql:host=localhost;dbname=redcms_smag;', 'root', '');
+if (RedCMS::isLocalhost()) {
+	$config['path'] = '/edsa-Work/RedCMS/';
+	$redCMS->init($config, 'mysql:host=localhost;dbname=redcms_smag;', 'root', '');
 } else {
-	$redCMS->init($redConfig, 'mysql:host=mysql.smagonline.ch;dbname=smagonlinech5;', 'dbuser2', 'dbpass');
+	$redCMS->init($config, 'mysql:host=bljr.myd.infomaniak.com;dbname=bljr_smagonlinech5;', 'bljr_dbuser2', 'dbpass');
 }
 
 

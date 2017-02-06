@@ -20,10 +20,9 @@ class FormBlock extends TreeStructure {
 						case 'datepicker':
 						case 'date':
 							if ($newValue != "") {
-								$splitted = explode("/", $newValue);
-								$newValue = $splitted[1] . "/" . $splitted[0] . "/" . $splitted[2]; // d/m/Y to m/d/Y
-								$t = strtotime($newValue);
-								$fields[$b->name] = Utils::sql_date($t);
+								$newValue = strstr($newValue, " (", true); // Remove trailing dates because it causes DateTime constuctor to bug
+								$dt = new DateTime($newValue);
+								$fields[$b->name] = Utils::sql_date($dt->getTimestamp());
 							}
 							break;
 
@@ -157,12 +156,12 @@ class EditDBFormBlock extends FormBlock {
 	}
 
 	function getFormFields() {
-		$this->getTargetBlock();
+		$targetBlock = $this->getTargetBlock();
 
 		$fields = parent::getFormFields();
 
 		foreach ($fields as &$f) {
-			$value = $this->_targetBlock->get($f['name']);
+			$value = $targetBlock->get($f['name']);
 			if ($value !== null) {
 				$f['value'] = $value;
 			}
@@ -183,7 +182,7 @@ class EditDBFormBlock extends FormBlock {
 				  $value); */
 			}
 		}
-		$fields[] = ['name' => 'id', 'type' => 'HiddenField', 'value' => '' . $this->_targetBlock->id];
+		$fields[] = ['name' => 'id', 'type' => 'HiddenField', 'value' => '' . $targetBlock->id];
 		return $fields;
 	}
 
@@ -193,15 +192,15 @@ class EditDBFormBlock extends FormBlock {
 	}
 
 	function render() {
-		$this->getTargetBlock();
+		$targetBlock = $this->getTargetBlock();
 		$fields = $this->parseRequest();   // We parse the provided fields and merge them with the target block
 
-		if ($this->_targetBlock) {
-			$this->_targetBlock->fields = array_merge($this->_targetBlock->fields, $fields);
+		if ($targetBlock) {
+			$targetBlock->fields = array_merge($targetBlock->fields, $fields);
 		}
 
 		if (isset($_REQUEST['redaction'])) {  //Form has been sent for submission
-			$ret = $this->_targetBlock->save($fields);
+			$ret = $targetBlock->save($fields);
 			if ($ret === true) {
 				$this->onBlockSaved();
 				$ret = ['result' => 'success', 'msg' => 'Changes have been made.'];

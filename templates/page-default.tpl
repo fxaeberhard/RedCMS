@@ -16,16 +16,20 @@
 		<meta name="Audience" content="General" />
 		<meta name="Distribution" content="Global" />
 		<meta name="revisit-after" content="30 days" />
+
+		<link rel="icon" type="image/png" href="{$redCMS->path}favicon.png">
 		{*<meta name="expires" content="never" /> *}
 
 		<!-- YUI3 -->
-{*		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssnormalize/cssnormalize-min.css" />*}
-{*		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/yui3/build/cssgrids/cssgrids-min.css" />*}
-		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.18.1/build/cssnormalize/cssnormalize-min.css&3.18.1/build/cssgrids/cssgrids-min.css&3.18.1/build/widget-base/assets/skins/sam/widget-base.css&3.18.1/build/node-menunav/assets/skins/sam/node-menunav.css" />
-{*		<link rel="stylesheet" type="text/javascript" href="{$redCMS->path}lib/min/f=lib/yui3/build/node-menunav/assets/skins/sam/node-menunav.css,lib/yui3/build/widget-base/assets/skins/sam/widget-base.css" />*}
+		<!-- <link rel="stylesheet" type="text/css" href="{$redCMS->path}bower_components/yui3/build/cssnormalize/cssnormalize-min.css" /> -->
+		<!-- <link rel="stylesheet" type="text/css" href="{$redCMS->path}bower_components/yui/build/cssgrids/cssgrids-min.css" /> -->
+
+		<!-- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.18.1/build/cssnormalize/cssnormalize-min.css&3.18.1/build/cssgrids/cssgrids-min.css&3.18.1/build/widget-base/assets/skins/sam/widget-base.css&3.18.1/build/node-menunav/assets/skins/sam/node-menunav.css" /> -->
+		<!-- <link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/min/f=bower_components/yui/build/cssnormalize/cssnormalize-min.css,bower_components/yui/build/cssgrids/cssgrids-min.css,bower_components/yui/build/node-menunav/assets/skins/sam/node-menunav.css,bower_components/yui/build/widget-base/assets/skins/sam/widget-base.css" /> -->
+		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/min/f=bower_components/yui/build/cssnormalize/cssnormalize-min.css,bower_components/yui/build/cssgrids/cssgrids-min.css,bower_components/yui/build/node-menunav/assets/skins/sam/node-menunav.css" />
 
 		<!-- Font awesome -->
-		<link rel="stylesheet" type="text/css" href="{$redCMS->path}lib/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="{$redCMS->path}bower_components/font-awesome/css/font-awesome.min.css" />
 
 		<meta id="customstyles" />
 
@@ -131,20 +135,19 @@
 		};
 	</script>
 
-	{* YUI JS *}
-	{*<script type="text/javascript" src="{$redCMS->path}lib/yui3/build/yui/yui-min.js"></script>*}
-	{*<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.18.1/build/yui/yui-min.js"></script>*}
+	<!-- YUI JS  -->
+	<!-- <script type="text/javascript" src="{$redCMS->path}bower_components/yui/build/yui/yui-min.js"></script> -->
+	<!-- <script type="text/javascript" src="http://yui.yahooapis.com/combo?3.18.1/build/yui/yui-min.js"></script> -->
 
-	{* InputEx *}
-	{*<script type="text/javascript" src="{$redCMS->path}lib/inputex/src/loader.js"></script>*}
+	<!-- InputEx -->
+	<!-- <script type="text/javascript" src="{$redCMS->path}lib/inputex/src/loader.js"></script> -->
 
+	<!-- RedCMS JS -->
+	<!-- <script type="text/javascript" src="{$redCMS->path}src/redcms-base/js/redcms-bootstrap.js"></script> -->
+	<!-- <script type="text/javascript" src="{$redCMS->path}lib/min/f=/src/redcms-base/js/redcms-bootstrap.js,/src/redcms-base/js/redcms-widget.js,/src/redcms-base/js/redcms-action.js,/src/redcms-menu/js/redcms-menunav.js"></script> -->
 
-	{* RedCMS JS *}
-	{*<script type="text/javascript" src="{$redCMS->path}src/redcms-base/js/redcms-bootstrap.js"></script> *}
-	{*<script type="text/javascript" src="{$redCMS->path}lib/min/f=/src/redcms-base/js/redcms-bootstrap.js,/src/redcms-base/js/redcms-widget.js,/src/redcms-base/js/redcms-action.js,/src/redcms-menu/js/redcms-menunav.js"></script>*}
-
-	{* Combined *}
-	<script type="text/javascript" src="{$redCMS->path}lib/min/f=/lib/yui3/build/yui/yui.js,/lib/inputex/src/loader.js,/src/redcms-base/js/redcms-bootstrap.js"></script>
+	<!-- Combined -->
+	<script type="text/javascript" src="{$redCMS->path}lib/min/f=/bower_components/yui/build/yui/yui.js,/lib/inputex/src/loader.js,/src/redcms-base/js/redcms-bootstrap.js"></script>
 
 </body>
 </html>

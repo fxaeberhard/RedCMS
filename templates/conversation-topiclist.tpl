@@ -68,7 +68,7 @@
 				redid="{$block->id}" widget="{get_class($block)}">
 				<div class="yui3-g topiclist-layout">
 					<div class="yui3-u topiclist-main">
-						<img width="40" height="40" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" style="float: left;margin: 2px 3px 0 0;border:1px solid gray"/>
+						<img class="avatar" width="40" height="40" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" style="float: left;margin: 2px 3px 0 0;border:1px solid gray"/>
 			
 						<a href="{ParamManager::getLink($this->parentBlock()->link, $block->title)}">{$block->title}</a><br />
 						<span style="font-size: 8pt;">

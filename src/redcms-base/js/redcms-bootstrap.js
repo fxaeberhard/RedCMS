@@ -11,8 +11,8 @@ var Y = YUI({
 	insertBefore: 'customstyles',
 	loadOptional: true,
 	gallery: 'gallery-2012.08.29-20-10',
-	base: Config.path + "lib/yui3/build/",
-	root: "lib/yui3/build/",
+	base: Config.path + "bower_components/yui/build/",
+	root: "bower_components/yui/build/",
 	combine: true,
 	comboSep: ",",
 	comboBase: Config.path + 'lib/min/f=',
@@ -59,18 +59,21 @@ var Y = YUI({
 				"treeview": {
 					path: 'src/redcms-menu/js/treeview.js',
 					requires: ["substitute", "widget", "widget-parent", "widget-child",
-						"node-focusmanager", "array-extras"]
+						"node-focusmanager", "array-extras"
+					]
 				},
 				// *** ADMIN MODULES *** //
 				"redcms-admin": {
 					path: 'src/redcms-admin/js/redcms-admin.js',
 					requires: ["widget", "widget-position", "widget-stack", "widget-position-align",
-						'json', 'redcms-menunav', 'redcms-panel', "event-key"]
+						'json', 'redcms-menunav', 'redcms-panel', "event-key"
+					]
 				},
 				"redcms-context": {
 					path: 'src/redcms-admin/js/redcms-context.js',
 					requires: ["widget", "widget-position", "widget-stack", "widget-position-align", "async-queue",
-						'json', 'redcms-menunav', 'gallery-outside-events', 'redcms-panel']
+						'json', 'redcms-menunav', 'gallery-outside-events', 'redcms-panel'
+					]
 				},
 				// *** PANEL MODULES *** //
 				'redcms-msgbox': {
@@ -79,7 +82,7 @@ var Y = YUI({
 				},
 				'redcms-panel': {
 					path: 'src/redcms-panel/js/redcms-action-openpanel.js',
-					requires: ["panel", 'json', 'io-base']
+					requires: ["panel", 'json', 'io-base', 'event-resize']
 				},
 				'redcms-overlay-window': {
 					path: 'src/redcms-panel/js/redcms-overlay-window.js',
@@ -107,26 +110,27 @@ var Y = YUI({
 }).use('redcms-menunav', 'redcms-base', function(Y) {
 
 	YUI_config.groups.inputex.base = Config.path + 'lib/inputex/src/';
-//	YUI_config.groups.inputex.combine = true;
-//	YUI_config.groups.inputex.comboBase = Config.path + 'lib/min/f=';
-//	YUI_config.groups.inputex.root = 'lib/inputex/src/';
+	YUI_config.groups.inputex.combine = true;
+	YUI_config.groups.inputex.comboBase = Config.path + 'lib/min/f=';
+	YUI_config.groups.inputex.root = 'lib/inputex/src/';
 
-	var URLSEPARATOR = '/', RedCMS = Y.namespace('RedCMS'),
+	var URLSEPARATOR = '/',
+		RedCMS = Y.namespace('RedCMS'),
 		RedCMSManager;
 
 	RedCMS.Config = Config;
 
 	if (Config.debug)
 		Y.use('console', function() {
-			new Y.Console({logSource: Y.Global}).render();						// Render a console for debug purpose
+			new Y.Console({ logSource: Y.Global }).render(); // Render a console for debug purpose
 		});
 
 	// Singleton
 	RedCMSManager = function() {
 		return {
 			urldecode: function(psEncodeString) {
-				var lsRegExp = /\+/g;											// Create a regular expression to search all +s in the string
-				return unescape(String(psEncodeString).replace(lsRegExp, " "));	// Return the decoded string
+				var lsRegExp = /\+/g; // Create a regular expression to search all +s in the string
+				return unescape(String(psEncodeString).replace(lsRegExp, " ")); // Return the decoded string
 			},
 			escapeAttribute: function(text) {
 				if (text) {
@@ -136,7 +140,7 @@ var Y = YUI({
 				return "";
 			},
 			getLink: function() {
-				return Config.path + /*Config.lang + URLSEPARATOR + */Array.prototype.join.call(arguments, URLSEPARATOR) + URLSEPARATOR;
+				return Config.path + /*Config.lang + URLSEPARATOR + */ Array.prototype.join.call(arguments, URLSEPARATOR) + URLSEPARATOR;
 			},
 			getParentBlock: function(n) {
 				return n.ancestor(function(e) {
@@ -159,12 +163,12 @@ var Y = YUI({
 				var cb = widget.get('contentBox'),
 					bb = widget.get('boundingBox'),
 					request, bParams,
-					requestData = {'redreload': true};
+					requestData = { 'redreload': true };
 
-				if (cb.getAttribute('redparams') !== '') {
-					bParams = Y.JSON.parse(cb.getAttribute('redparams'));
-					requestData = Y.merge(requestData, bParams);
-				}
+				// if (cb.getAttribute('redparams') !== '') {
+				// 	bParams = Y.JSON.parse(cb.getAttribute('redparams'));
+				// 	requestData = Y.merge(requestData, bParams);
+				// }
 				widget.showReloadOverlay();
 				request = Y.io(RedCMSManager.getLink(cb.getAttribute("redid")), {
 					data: requestData,
@@ -187,7 +191,7 @@ var Y = YUI({
 					var widgetClass = RedCMS[node.getAttribute('widget')],
 						cfg = node.getAttribute("data-cfg");
 					if (!widgetClass) {
-//						Y.log('Unable to find widget with class: Y.RedCMS.' + node.getAttribute('widget'), 'info', 'RedCMSManager');
+						//Y.log('Unable to find widget with class: Y.RedCMS.' + node.getAttribute('widget'), 'info', 'RedCMSManager');
 						return;
 					}
 					var widget = new widgetClass(Y.mix({

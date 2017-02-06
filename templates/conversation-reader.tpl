@@ -25,7 +25,7 @@
 					
 					<div class="redcms-icon yui3-u"><span></span></div>
 					<div class="yui3-u" style="width:100%;margin-top:3px;text-align:left;">
-						<img width="50" height="50" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=50&d=mm" style="float: left;margin: -2px 6px 1px 0;"/>
+						<img class="avatar" width="50" height="50" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=50&d=mm" style="float: left;margin: -2px 6px 1px 0;"/>
 			
 						<a style="font-weight: bold;display: inline-block;padding-top: 1px;line-height:13px;max-width:380px;" class="truncate">{$block->getLabel()}</a>
 						

@@ -44,7 +44,7 @@
 							{Utils::date_formatinterval($block->date1, $block->date2)}{if $block->text3}, <a href="{$block->text3}" target="_blank">website</a>{/if}
 						</h2>
 					{else}		
-						<img src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" width="40" height="40" />
+						<img class="avatar" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm" width="40" height="40" />
 						<h1><a name="{$block->title|escape:url}">{$block->title}</a></h1>
 						<h2>par <a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>, posté {Utils::date_formatduration($block->dateadded)}</h2>						
 					{/if}

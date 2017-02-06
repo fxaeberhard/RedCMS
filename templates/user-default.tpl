@@ -8,7 +8,7 @@
     <div class="yui3-u-1-2">
       <fieldset>
         <legend>Profile</legend>
-        <img src="http://www.gravatar.com/avatar/{md5(strtolower($block->email))}?s=80&d=mm" style="float: left;margin-right: 10px;border:1px solid gray"/>
+        <img class="avatar" src="http://www.gravatar.com/avatar/{md5(strtolower($block->email))}?s=80&d=mm" style="float: left;margin-right: 10px;border:1px solid gray"/>
         {$block->name} {$block->surname}<br />
                 {$block->text1}
                 </fieldset>

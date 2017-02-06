@@ -11,14 +11,10 @@ class ParamManager {
 	var $parameters = [];
 
 	function ParamManager() {
-		$this->init();
-	}
-
-	function init() {
-		global $_SERVER, $_REQUEST;
+		global $_REQUEST;
 		$redCMS = RedCMS::get();
-		if (isset($_SERVER['REDIRECT_URL'])) {  // REDIRECT_URL is provided by Apache when a URL has been rewritten
-			$redirUrl = $_SERVER['REDIRECT_URL'];
+		if (isset($_REQUEST['q'])) {
+			$redirUrl = $_REQUEST['q'];
 			if ($redCMS->path != '/') {
 				$redirUrl = str_replace($redCMS->path, '', $redirUrl);
 			}

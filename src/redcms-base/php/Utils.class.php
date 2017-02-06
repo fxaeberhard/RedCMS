@@ -4,11 +4,11 @@ class Utils {
 
 	// *** URL Encoding methods *** //
 	static function url_encode($str) {
-		return urlencode(str_replace(['/', '&'], ['%2F', 'AND'], $str));
+		return urlencode(str_replace(['/', '&'], ['--', 'AND'], $str));
 	}
 
 	static function url_decode($str) {
-		return str_replace(['%2F', 'AND'], ['/', '&'], urldecode($str));
+		return str_replace(['--', 'AND'], ['/', '&'], urldecode($str));
 	}
 
 	// *** Date methods *** //

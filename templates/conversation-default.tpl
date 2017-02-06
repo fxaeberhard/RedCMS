@@ -30,7 +30,7 @@
 					<div class="redcms-icon"><span /></div>
 
 					<div class="redcms-conversation-title">
-						<img width="40" height="40" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm"/>
+						<img class="avatar" width="40" height="40" src="http://www.gravatar.com/avatar/{md5(strtolower($user->email))}?s=40&d=mm"/>
 						<h1><a name="{$block->title|escape:url}">{$block->title}</a></h1>
 						<h2>par <a href="{ParamManager::getLink('User Profile', $user->id)}">{$user->getLabel()}</a>, 
 						posté {Utils::date_formatduration($block->dateadded)} 

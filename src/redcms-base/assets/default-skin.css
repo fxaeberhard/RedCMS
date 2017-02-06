@@ -1,48 +1,58 @@
 /* Base styles */
-menu, ol, ul {
-    padding:0;
+
+menu,
+ol,
+ul {
+    padding: 0;
 }
-ul, dl {
-    margin:0;
+ul,
+dl {
+    margin: 0;
 }
 li {
-	list-style: none;
+    list-style: none;
 }
 hr {
-	border: 1px solid lightgray;
-	border-top: none;
+    border: 1px solid lightgray;
+    border-top: none;
 }
 input[type=submit] {}
 input[type=file] {
     min-width: 350px;
 }
-input[type=text], input[type=password], select, textarea {
+input[type=text],
+input[type=password],
+select,
+textarea {
     border: 1px solid #ccc;
     padding: 6px 7px;
 }
 select {
     padding: 6px 2px;
 }
-p, pre {
-	/*margin: 0;*/
+p,
+pre {
+    /*margin: 0;*/
 }
 
 /* CSS shortcuts for RedCMS */
+
 .redcms-clear {
-    clear:both;
+    clear: both;
 }
 .redcms-center {
-    text-align:center;
+    text-align: center;
 }
 .redcms-hidden {
-    display:none;	
+    display: none;
 }
 
 /* CSS BASE CLASSES FOR REDCMS */
+
 .truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .redcms-small {
     color: gray;
@@ -52,19 +62,22 @@ p, pre {
 }
 
 /* Fluid Grids layout */
+
 .redcms-layout {
-    padding-left: 200px; /* allow for left column (#nav) */
+    padding-left: 200px;
+    /* allow for left column (#nav) */
     padding-right: 10px;
 }
 .redcms-left {
     margin-left: -200px;
-    width: 200px;	/* workaround for IE9 not firing mouse events on #side due to negative margin */
+    width: 200px;
+    /* workaround for IE9 not firing mouse events on #side due to negative margin */
 }
 .redcms-left .redcms-content {
     margin: 0 10px;
 }
 .redcms-bd {
-    width:100%;
+    width: 100%;
 }
 .redcms-hd {
     margin: 10px 8px 5px 10px;
@@ -90,6 +103,7 @@ p, pre {
 }
 
 /* Default fieldset view */
+
 fieldset {
     border: none;
     margin: 0;
@@ -106,6 +120,7 @@ fieldset legend {
 }
 
 /* Panel styles */
+
 .yui3-skin-sam .yui3-panel-content {
     border: 1px solid #a40000;
 }
@@ -120,31 +135,31 @@ fieldset legend {
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close {
     width: 24px;
-    height: 26px;
+    height: 24px;
     border: 1px solid white;
+    border-radius: 1px;
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close:hover {
-	border: 1px solid #a40000;
-} 
-.yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close:before {	
-	content: url(icon-close.png);
+    border: 1px solid #a40000;
+}
+.yui3-skin-sam .yui3-panel .yui3-widget-hd .yui3-button-close:before {
+    content: url(icon-close.png);
     font-size: 23px;
     color: #A40000;
-
-	vertical-align: middle;
-
-	margin-top: 0px;
-	width: 19px;
-	height: 28px;
+    vertical-align: middle;
+    margin-top: 0px;
+    width: 20px;
+    height: 27px;
 }
 .yui3-skin-sam .yui3-panel .yui3-widget-bd {
     padding: 10px 15px 20px;
 }
 .yui3-skin-sam .yui3-dd-draggable .yui3-widget-hd {
-    cursor:move;
+    cursor: move;
 }
 
 /* Button style */
+
 .yui3-button {
     border: none;
     box-shadow: none;
@@ -154,6 +169,7 @@ fieldset legend {
 }
 
 /** RedCMS Buttons (base on YUI2 Buttons for styling) */
+
 .yui3-redcms-button {
     display: inline-block;
     vertical-align: text-bottom;
@@ -162,7 +178,7 @@ fieldset legend {
     border-color: gray;
     background: url(sprite.png) repeat-x 0 0;
     margin: auto 0;
-    cursor:pointer;
+    cursor: pointer;
 }
 .yui3-redcms-button span {
     border-width: 0 1px;
@@ -187,12 +203,13 @@ fieldset legend {
 }
 .yui3-redcms-button:hover {
     border-color: #7D98B8;
-    background-position: 0 -1300px;	
+    background-position: 0 -1300px;
 }
 
 /* Loading style */
+
 .yui3-skin-sam .yui3-redcms-loading,
-.yui3-skin-sam .yui3-overlay-window  .yui3-redcms-loading {
+.yui3-skin-sam .yui3-overlay-window .yui3-redcms-loading {
     background: url(loading.gif) no-repeat scroll center center;
     min-height: 100px;
     min-width: 100px;
@@ -201,33 +218,39 @@ fieldset legend {
     background: none;
 }
 .yui3-redcms-loading-overlay {
-    position:relative;
+    position: relative;
 }
-.yui3-redcms-loading-overlay div{
+.yui3-redcms-loading-overlay div {
     position: absolute;
     width: 100%;
-    background: rgb(211, 211, 211);/* Fallback for web browsers that doesn't support RGBa */
-    background: rgba(255, 255, 255, 0.8); /* RGBa with 0.6 opacity */
-    background-image:url('loading.gif');
-    background-repeat:no-repeat;
-    background-position-x: center; 
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300); /* For IE 5.5 - 7*/
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300)"; /* For IE 8*/
+    background: rgb(211, 211, 211);
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgba(255, 255, 255, 0.8);
+    /* RGBa with 0.6 opacity */
+    background-image: url('loading.gif');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300);
+    /* For IE 5.5 - 7*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#D3D3D300, endColorstr=#D3D3D300)";
+    /* For IE 8*/
     background-position-y: 50px;
 }
 
 /* Inputex styles */
+
 .yui3-skin-sam div.inputEx-label {
     padding-top: 7px;
 }
 .yui3-skin-sam .inputEx-Button {
     border: none;
     padding: 7px 15px;
-    background:#a40000;
+    background: #a40000;
     color: white;
     margin-top: 10px;
     font-size: 15px;
     margin-right: 5px;
+    border-radius: 4px;
 }
 .yui3-skin-sam .inputEx-Button + .inputEx-Button {
     background: lightgray;
@@ -238,10 +261,13 @@ fieldset legend {
 }
 
 /* Tinymce */
+
 .defaultSkin td.mceToolbar {
     background: none !important;
 }
-.defaultSkin .mceButton, .defaultSkin .mceSplitButton a.mceAction, .defaultSkin .mceSplitButton a.mceOpen{
+.defaultSkin .mceButton,
+.defaultSkin .mceSplitButton a.mceAction,
+.defaultSkin .mceSplitButton a.mceOpen {
     border: 1px solid transparent !important;
 }
 .yui3-skin-sam .defaultSkin .mceSeparator {
@@ -251,7 +277,7 @@ fieldset legend {
 }
 .yui3-skin-sam .defaultSkin .mceStatusbar {
     background: white;
-    height: 12px;    
+    height: 12px;
 }
 .yui3-skin-sam .defaultSkin .mceStatusbar a.mceResize {
     background-position-y: -8px;
@@ -261,13 +287,14 @@ fieldset legend {
     display: none;
 }
 .defaultSkin .mceListBox .mceText {
-	border-right: 0 !important;
+    border-right: 0 !important;
 }
 .defaultSkin .mceListBox .mceOpen {
-	border-left: 0 !important;
+    border-left: 0 !important;
 }
 
 /* RedCMS MsgBox styles */
+
 .yui3-skin-sam .yui3-redcms-msgbox {
     border: 1px solid lightgray;
     padding: 15px 10px 10px 60px;
@@ -284,33 +311,38 @@ fieldset legend {
     background: url(icon-warning-48.png) no-repeat scroll 5px 5px;
 }
 .yui3-skin-sam .yui3-redcms-msgbox-hidden {
-    display:none;
+    display: none;
 }
+
 /* Over menu styles */
+
 .yui3-skin-sam .yui3-overmenu {
     position: absolute;
-    z-index: 10000; 
+    z-index: 10000;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > div > ul > li {
     margin: 0;
-    float: right;   
-    display:inline;
+    /* float: right; */
+    /*display: inline-block;*/
 }
-.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content{
+.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content {
     background: none;
     border: none;
     margin: 4px 5px 0 0;
+}
+.yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul {
+    display: flex;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > div > li > a,
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > li > a {
     margin: 0;
     background: white;
     border-radius: 34px;
-    padding: 6px 12px 7px 3px;
+    padding: 6px 3px 7px 3px;
     border: none;
     margin-left: 1px;
     font-size: 0%;
-    width: 17px;
+    /* width: 17px; */
     height: 19px;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-menu-horizontal > .yui3-menu-content > ul > li.yui3-menuitem-active > a,
@@ -321,48 +353,54 @@ fieldset legend {
     font-size: 21px;
     margin: 0;
     color: #a40000;
+    width: 30px;
 }
 .yui3-skin-sam .yui3-overmenu-hidden {
-	display:none;
+    display: none;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-overmenu-small > div {
-	margin: 1px 2px 0 0 !important;	
+    margin: 1px 2px 0 0 !important;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-overmenu-small > div > ul > li > a {
-	width: 14px !important;
-	height: 16px !important;
-	padding: 4px 9px 4px 1px !important;
+    width: 14px !important;
+    height: 16px !important;
+    padding: 4px 9px 4px 1px !important;
 }
 .yui3-skin-sam .yui3-overmenu .yui3-overmenu-small > div > ul > li > a > i {
-	font-size: 18px !important;
+    font-size: 18px !important;
+    width: 23px!important;
 }
+
 /* Admin overlay */
+
 .yui3-skin-sam .redcms-admin-over {
-    box-shadow: inset 1px 1px 1px #580000,
-        inset -1px -1px 1px #580000; 
+    box-shadow: inset 1px 1px 1px #580000, inset -1px -1px 1px #580000;
 }
 
 /* Context menu styles */
+
 .yui3-skin-sam .yui3-contextmenu {
     position: absolute;
 }
 .yui3-skin-sam .yui3-contextmenu-hidden {
-    display:none;
+    display: none;
 }
-.yui3-menu-shadow {			
+.yui3-menu-shadow {
     position: absolute;
-    z-index: -1;		
+    z-index: -1;
     top: 2px;
     left: -3px;
     background-color: #000;
     opacity: .12;
-    filter: alpha(opacity=12);	/*	For IE since it doesn't implement the CSS3 "opacity" property. */
+    filter: alpha(opacity=12);
+    /*  For IE since it doesn't implement the CSS3 "opacity" property. */
     padding: 1px 3px 0 3px;
     width: 100%;
     height: 100%;
 }
 
 /* Admin Menu */
+
 .yui3-skin-sam .redcms-ft .yui3-redcmsnavmenu {
     position: fixed;
     top: 0;
@@ -375,7 +413,7 @@ fieldset legend {
     color: #a40000;
     padding: 4px 4px 0px 10px;
     font-weight: bold;
-    background: url(redagent-logo-25.png) no-repeat 10px 6px;  
+    background: url(redagent-logo-25.png) no-repeat 10px 6px;
     width: 21px;
     height: 32px;
 }
@@ -397,6 +435,7 @@ fieldset legend {
 }
 
 /* Custom Icons */
+
 .yui3-redcms-icon {
     width: 20px;
     height: 16px;
@@ -445,12 +484,14 @@ fieldset legend {
 .yui3-redcms-icon-swf {
     background: url(file-icons.png) no-repeat scroll 1px -602px;
 }
+
 /** ToolTip Styles **/
+
 .redcms-tooltip-content {
-    display:none;
+    display: none;
 }
 .yui3-redcms-tooltip {
-    position:absolute;
+    position: absolute;
 }
 .yui3-redcms-tooltip-content {
     border: 1px solid #580000;
@@ -462,42 +503,48 @@ fieldset legend {
     max-width: 200px;
 }
 .yui3-redcms-tooltip-hidden {
-    visibility:hidden;
+    visibility: hidden;
 }
 
 /** MenuNav styles */
-.yui3-skin-sam .yui3-menuitem-content, 
+
+.yui3-skin-sam .yui3-menuitem-content,
 .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menuitem-content {
-    cursor:pointer;
+    cursor: pointer;
 }
-.yui3-skin-sam .yui3-menu-label, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-label, .yui3-skin-sam .yui3-menuitem-content, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menuitem-content {
+.yui3-skin-sam .yui3-menu-label,
+.yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-label,
+.yui3-skin-sam .yui3-menuitem-content,
+.yui3-skin-sam .yui3-menu .yui3-menu .yui3-menuitem-content {
     padding: 4px 1.5em;
 }
-.yui3-skin-sam .yui3-menu-content, .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-content {
-	border: 1px solid #a40000;
-	padding: 0;
+.yui3-skin-sam .yui3-menu-content,
+.yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-content {
+    border: 1px solid #a40000;
+    padding: 0;
 }
- .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-content {
-	padding: 4px 0;
+.yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-content {
+    padding: 4px 0;
 }
-
 .yui3-skin-sam .yui3-menu-label-active,
 .yui3-skin-sam .yui3-menu-label-menuvisible,
 .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-label-active,
 .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menu-label-menuvisible,
 .yui3-skin-sam .yui3-menuitem-active .yui3-menuitem-content,
 .yui3-skin-sam .yui3-menu .yui3-menu .yui3-menuitem-active .yui3-menuitem-content {
-	background: #a40000;
-	color: white;
+    background: #a40000;
+    color: white;
 }
+
 /** RedCMS Accordion styles */
+
 .yui3-redcms-accordion-item {
-    height:0;
+    height: 0;
     overflow: hidden;
 }
 .yui3-redcms-accordion-bd {
     font-weight: bolder;
-    border-bottom: 2px groove grey;	
+    border-bottom: 2px groove grey;
     padding: 4px;
     padding: 6px 24px;
 }
@@ -506,7 +553,7 @@ fieldset legend {
     background: url(sprite.png) no-repeat scroll 6px -344px;
     padding: 6px 24px;
     display: block;
-    margin:0;
+    margin: 0;
     border-top: 1px solid lightgray;
     text-decoration: none;
     color: inherit;
@@ -515,7 +562,7 @@ fieldset legend {
     background: url(sprite.png) no-repeat scroll 5px -394px;
 }
 .yui3-redcms-accordion-title:hover {
-	background-color: #eee
+    background-color: #eee
 }
 .yui3-redcms-accordion-item {
     margin: 0 12px;
@@ -531,12 +578,13 @@ fieldset legend {
 }
 
 /** RedCMS Conversation styles */
+
 .redcms-conversation .redcms-conversation-title {
     padding: 6px 8px 5px;
 }
 .redcms-conversation-title img {
-	float: left;
-	margin: -4px 6px 0 0px;
+    float: left;
+    margin: -4px 6px 0 0px;
 }
 .redcms-conversation .redcms-conversation-title h2 {
     margin: 0;
@@ -592,57 +640,60 @@ fieldset legend {
     margin: 10px 20px 10px 61px;
     border: 1px solid lightgray;
 }
-
 .redcms-conversation-replyfield .redcms-icon {
-	display: none;
+    display: none;
 }
-
 .redcms-conversation-replyfield .redcms-conversation-title {
     background: none
 }
 .redcms-conversation-replyfield .redcms-conversation-title h1 {
-	font-size: inherit
+    font-size: inherit
 }
 .redcms-conversation-replyfield .redcms-conversation-content {
-	padding: 8px 5px 5px 54px;
+    padding: 8px 5px 5px 54px;
 }
 .redcms-conversation-replyfield .redcms-conversation-footer {
     border: none;
 }
 
 /** Redcms Conversation Styles: reader */
+
 .yui3-redcms-conversation-reader {
     border: 1px solid gray;
     margin: 0;
 }
 .yui3-redcms-conversation-reader .redcms-icon {
-	display: inline-block;
-	margin-left: -50px;    
-	width: 42px;    padding-left: 8px;    
-	padding-top: 15px;
+    display: inline-block;
+    margin-left: -50px;
+    width: 42px;
+    padding-left: 8px;
+    padding-top: 15px;
 }
 .yui3-redcms-conversation-reader-hd {
     font-weight: bolder;
     padding: 7px 5px 5px 12px;
 }
 .yui3-redcms-conversation-reader-item {
-	background-color: white;
-	border-top: 1px solid lightgray;
-	cursor:pointer;
-	padding: 2px 2px 2px 50px;
+    background-color: white;
+    border-top: 1px solid lightgray;
+    cursor: pointer;
+    padding: 2px 2px 2px 50px;
 }
 .yui3-redcms-conversation-reader-item:hover {
-	background-color: #eee;
+    background-color: #eee;
 }
 
 /** RedCMS Conversation styles :small icons */
+
 .yui3-redcms-conversation-reader .redcms-icon span {
     background-image: url(conversation-sprite-small.png);
     height: 31px;
     width: 25px;
     margin: 0 0 0 4px;
 }
+
 /** RedCMS Icon Styles */
+
 .redcms-icon span {
     float: left;
 }
@@ -654,23 +705,25 @@ fieldset legend {
 }
 
 /** RedCMS Hierarchy display */
+
 .redcms-bd-title {
-    font-weight:bold;
+    font-weight: bold;
 }
 .redcms-bd-title .redcms-bd-title-item {
     display: inline-block;
 }
 .redcms-bd-title .redcms-bd-title-separator {
-    float:left;
+    float: left;
 }
 .redcms-bd-title .redcms-bd-title-separator:after {
-    content:"//";
-    padding:0 3px;
+    content: "//";
+    padding: 0 3px;
 }
 
 /* Treeview */
+
 .yui3-redcms-loading.yui3-redcms-treeview-content {
-    font-size:0;
+    font-size: 0;
 }
 .yui3-js-enabled .yui3-treeview-hidden,
 .yui3-js-enabled .yui3-treeview-loading {
@@ -680,82 +733,65 @@ fieldset legend {
     list-style: none;
 }
 .yui3-js-enabled .yui3-treenode-label {
-	text-decoration: none;   
+    text-decoration: none;
 }
-
 .yui3-js-enabled .yui3-treenode-collapsed .yui3-treenode-content {
     display: none;
 }
 .yui3-skin-sam .yui3-treeview li {
-	margin: 0;
+    margin: 0;
 }
 .yui3-skin-sam .yui3-treeview {
-	font-size: 13px;
+    font-size: 13px;
 }
-
 .yui3-skin-sam .yui3-treenode {
-	background: url("treeview-sprite-filler.png") repeat-y scroll transparent;
+    background: url("treeview-sprite-filler.png") repeat-y scroll transparent;
 }
-
 .yui3-skin-sam .yui3-treenode.yui3-treenode-last {
-	background: none;
+    background: none;
 }
-
 .yui3-skin-sam .yui3-treenode .yui3-treenode-label {
-	display: block;
-	padding-top: 5px;
-	background: url("treeview-sprite-ruler.gif") no-repeat scroll 0 -55px transparent;
+    display: block;
+    padding-top: 5px;
+    background: url("treeview-sprite-ruler.gif") no-repeat scroll 0 -55px transparent;
 }
-
 .yui3-skin-sam .yui3-treenode.yui3-treenode-last > .yui3-treenode-label {
-	background: url("treeview-sprite-ruler.gif") no-repeat scroll 0 -125px transparent;
+    background: url("treeview-sprite-ruler.gif") no-repeat scroll 0 -125px transparent;
 }
-
 .yui3-skin-sam .yui3-treeview a {
-	color: #000000;
+    color: #000000;
 }
-
 .yui3-skin-sam .yui3-treeview .yui3-treenode-content {
     padding-left: 22px;
 }
 .yui3-skin-sam .yui3-treeview .yui3-treenode .yui3-treenode-toggle-control {
-	background: url("treeview-sprite-control.gif") no-repeat scroll 0 -149px transparent;
-	padding-left: 22px;
+    background: url("treeview-sprite-control.gif") no-repeat scroll 0 -149px transparent;
+    padding-left: 22px;
 }
-
 .yui3-skin-sam .yui3-treeview .yui3-treenode .yui3-treenode-toggle-control:hover {
-	background-position: 0 -313px;
+    background-position: 0 -313px;
 }
-
 .yui3-skin-sam .yui3-treeview .yui3-treenode.yui3-treenode-collapsed .yui3-treenode-toggle-control {
-	background: url("treeview-sprite-control.gif") no-repeat scroll 0 -67px transparent;
+    background: url("treeview-sprite-control.gif") no-repeat scroll 0 -67px transparent;
 }
-
 .yui3-skin-sam .yui3-treeview .yui3-treenode.yui3-treenode-collapsed .yui3-treenode-toggle-control:hover {
-	background-position: 0 -231px;
+    background-position: 0 -231px;
 }
-
 .yui3-skin-sam .yui3-treeview .yui3-treenode.yui3-treenode-leaf .yui3-treenode-label {
-	padding-left: 22px;
+    padding-left: 22px;
 }
-
-
 .yui3-skin-sam .yui3-treenode .yui3-treenode-label .yui3-checkboxtreenode-checkbox {
-	padding-left: 20px;
+    padding-left: 20px;
 }
-
 .yui3-skin-sam .yui3-treenode .yui3-treenode-label .yui3-checkboxtreenode-checkbox.yui3-checkboxtreenode-checkbox-unchecked {
-	background: url("treeview-checkboxes.gif") no-repeat scroll 0 -3px transparent;
+    background: url("treeview-checkboxes.gif") no-repeat scroll 0 -3px transparent;
 }
-
 .yui3-skin-sam .yui3-treenode .yui3-treenode-label .yui3-checkboxtreenode-checkbox.yui3-checkboxtreenode-checkbox-halfchecked {
-	background: url("treeview-checkboxes.gif") no-repeat scroll 0 -66px transparent;
+    background: url("treeview-checkboxes.gif") no-repeat scroll 0 -66px transparent;
 }
-
 .yui3-skin-sam .yui3-treenode .yui3-treenode-label .yui3-checkboxtreenode-checkbox.yui3-checkboxtreenode-checkbox-checked {
-	background: url("treeview-checkboxes.gif") no-repeat scroll 0 -131px transparent;
+    background: url("treeview-checkboxes.gif") no-repeat scroll 0 -131px transparent;
 }
-
 .yui3-skin-sam .yui3-treeview li a:hover {
-	background-color: #eee !important; 
+    background-color: #eee !important;
 }

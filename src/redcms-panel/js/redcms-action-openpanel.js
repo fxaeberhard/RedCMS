@@ -7,7 +7,9 @@
 YUI.add('redcms-panel', function(Y) {
 
 	var OpenPanelAction,
-		CONTENT_BOX = 'contentBox', BODY = 'body', CLICK = 'click',
+		CONTENT_BOX = 'contentBox',
+		BODY = 'body',
+		CLICK = 'click',
 		OPENPANELACTIONCLASSES = 'yui3-redcms-loading';
 
 	OpenPanelAction = Y.Base.create("redcms-panel", Y.Widget, [Y.RedCMS.RedCMSWidget], {
@@ -28,8 +30,8 @@ YUI.add('redcms-panel', function(Y) {
 					params = paramsString ? Y.JSON.parse(paramsString) : [];
 
 				this._overlay = new Y.RedCMS.Panel({
-					headerContent: target.get("text")
-				})
+						headerContent: target.get("text")
+					})
 					.render()
 					.load(target.getAttribute('href'), params)
 					.on("success", function() {
@@ -58,7 +60,7 @@ YUI.add('redcms-panel', function(Y) {
 		},
 		load: function(href, params) {
 			this.getStdModNode(BODY).addClass(OPENPANELACTIONCLASSES);
-			Y.io(href, {//Then request its content to the server
+			Y.io(href, { //Then request its content to the server
 				data: params,
 				on: {
 					success: function(id, o) {
@@ -89,7 +91,7 @@ YUI.add('redcms-panel', function(Y) {
 			this.fire("loaded");
 		},
 		_onSelect: function(selectedItem) {
-			var subscribers = this.getEvent('redcms:select').subscribers;
+			var subscribers = this.getEvent('redcms:select')._subscribers;
 			if (subscribers && Y.Object.size(subscribers) > 0) {
 				this.fire("redcms:select", selectedItem);
 				this.destroy();
@@ -112,13 +114,10 @@ YUI.add('redcms-panel', function(Y) {
 			width: {
 				value: 900
 			},
-			x: {
-				valueFn: function() {
-					return Y.DOM.winWidth() / 2 - 450;
+			align: {
+				value: {
+					points: [Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.TC]
 				}
-			},
-			y: {
-				value: 30
 			},
 			modal: {
 				value: true
@@ -134,7 +133,23 @@ YUI.add('redcms-panel', function(Y) {
 			},
 			focusOn: {
 				value: []
+			},
+			alignOn: {
+				value: [{
+					node: Y.one('win'),
+					eventName: 'resize'
+				}]
 			}
+			// constrain: { value: true },
+			// centered: { value: true },
+			// x: {
+			//     valueFn: function() {
+			//         return Y.DOM.winWidth() / 2 - 450;
+			//     }
+			// },
+			// y: {
+			//     value: 30
+			// },
 			//hideOn: [{
 			//        node: Y.one("document"),
 			//        eventName: "key",

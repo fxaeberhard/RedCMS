@@ -38,7 +38,8 @@ class RedCMS {
 		'smtpPassword' => '',
 		'version' => '0.2.2',
 		'cacheEnabled' => false,
-		'stylesheets' => []
+		'stylesheets' => [],
+		'pageTemplate' => 'page-default.tpl'
 	];
 
 	/*	 * *************************************All utilities objects ****************** */
@@ -83,7 +84,7 @@ class RedCMS {
 
 		$cParam = $this->paramManager->next();
 
-		if ($cParam && ($cParam == 'fr' || $cParam == 'en')) { // First retrive the lang of the current page if available
+		if ($cParam && in_array($cParam, $this->config['availableLang'])) { // First retrive the lang of the current page if available
 			$this->lang = $cParam;
 			$cParam = $this->paramManager->next(); // Then retrieves the page parameter 
 		} else {
@@ -132,8 +133,7 @@ class RedCMS {
 		
 	}
 
-// A private constructor; prevents direct creation of object
-
+	// A private constructor; prevents direct creation of object
 	public static function getInstance() {   // The singleton method
 		return RedCMS::get();
 	}
@@ -156,4 +156,8 @@ class RedCMS {
 		return $rows[0][0];
 	}
 
+	/** Utilities */
+	public static function isLocalhost() {
+		return in_array($_SERVER['SERVER_NAME'], array('127.0.0.1','localhost'));
+	}
 }

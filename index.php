@@ -6,20 +6,19 @@
 require('redcms-include.php');
 
 $config = [
-	'pageTemplate' => 'page-default.tpl',
 	'adminMail' => 'fx@red-agent.com',
 	'windowTitleSuffix' => ' - RedCMS',
 	'stylesheets' => ["src/redcms-base/assets/sample.css"]
-		//'googleAnalyticsId' => 'UA-12224039-2',
+	//'googleAnalyticsId' => 'UA-12224039-2',
+	// 'pageTemplate' => 'page-default.tpl',
 ];
 
 $redCMS = RedCMS::get();
 
 //$redCMS->init($config, 'mysql:host=localhost;dbname=redcms;', 'root', '');
-
-if ($_SERVER['SERVER_NAME'] == 'localhost') {
-	$redConfig['path'] = '/RedCMS/';
-	$redCMS->init($config, 'mysql:host=localhost;dbname=redcms;', 'root', '');
+if (RedCMS::isLocalhost()) {
+	$config['path'] = '/edsa-Work/RedCMS/';
+	$redCMS->init($config, 'mysql:host=localhost;dbname=redcms_smag;', 'root', '');
 } else {
 	$redCMS->init($config, 'mysql:host=cajx.myd.infomaniak.com;dbname=cajx_redagentcom4;', 'cajx_redadmin', '78hzu45e');
 }
