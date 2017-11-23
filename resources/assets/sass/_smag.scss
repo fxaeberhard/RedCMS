@@ -1,0 +1,402 @@
+/*
+ * Base structure
+ */
+$blue: #E3EBF4;
+$darkblue: #c8d7ea;
+$darkerblue: #337ab7; // $darkerblue: #2662ad;
+$darkestblue: #024b8a;
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	font-family: 'Open Sans', sans-serif;
+	// font-size: 13px;
+	@media (max-width: $screen-sm-max) {
+		background: $blue;
+		padding-top: 64px;
+	}
+	@media (min-width: $screen-md-min) {
+		padding: 6px 6px 5px 296px;
+	}
+}
+
+h1 {
+	font-size: 1.5rem;
+	color: $darkestblue;
+}
+
+h2 {
+	font-size: 1.3rem;
+	color: $darkestblue;
+}
+
+.left {
+	display: inline-block; // overflow: hidden;
+	float: left;
+
+	.menu {
+		.navbar {
+			border-radius: 0;
+			margin: 0;
+			border: none;
+
+			.navbar-nav {
+				float: none;
+				margin: 0;
+
+				> li {
+					float: none;
+					overflow: visible;
+
+					a {
+						padding: 4px 35px 3px;
+					}
+				}
+
+				.dropdown li a {
+					padding: 4px 50px 3px 35px;
+				}
+
+				li a {
+					color: black;
+					font-size: 91%;
+
+					&:hover {
+						overflow: visible;
+						background: transparentize(white,.4);
+						position: relative;
+
+						&::after {
+							content: '';
+							background: url("../images/smag-clipart-syringue-2-i.gif") no-repeat;
+							position: absolute;
+							top: 4px;
+							left: -8px;
+							width: 44px;
+							height: 26px;
+						}
+					}
+
+					&.active {
+						font-weight: bold;
+					}
+				}
+			}
+		}
+
+		.dropdown-menu {
+			left: 100%;
+			top: 0;
+		}
+	}
+	@media (max-width: $screen-sm-max) {
+		transform: translateX(-100vw);
+		transition: 0.3s ease-in-out;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		background: rgba(255, 255, 255, 0.9);
+		z-index: 4;
+		min-height: 100%;
+		padding-top: 60px;
+
+		.menu-open & {
+			transform: none;
+		}
+		// .menu .navbar .navbar-nav li a {
+		// color: white;
+		// }
+		.menu .navbar .navbar-nav {
+			.dropdown {
+				.dropdown-menu {
+					display: none!important;
+					opacity: 1!important;
+				}
+
+				&.open .dropdown-menu {
+					display: block!important;
+				}
+
+				li > a {
+					padding-left: 60px;
+				}
+			}
+		}
+	}
+	@media (min-width: $screen-md-min) {
+		width: 290px;
+		margin-left: -290px;
+
+		.hd {
+			background: transparent url("../images/smag-menu-title-principal.gif") no-repeat;
+			height: 48px;
+		}
+
+		.navbar {
+			background: transparent url("../images/smag-menu-foot.gif") repeat-y;
+		}
+
+		.ft {
+			background: transparent url("../images/smag-menu-back.gif") no-repeat;
+			height: 19px;
+		}
+	}
+}
+
+.right {
+	display: inline-block;
+	float: left;
+	background: $blue;
+	width: 100%;
+
+	.top {
+		height: 61px;
+		background: white url("../images/smag-banner-img.jpg") no-repeat top right;
+		padding: 13px 0 0 5px;
+		font-size: 0.8rem;
+		margin-bottom: 5px;
+		border-bottom: 2px solid black;
+
+		h1 {
+			color: black;
+			font-size: 1.7rem;
+			letter-spacing: -0.05rem;
+			line-height: 0.9rem;
+			line-height: 21px;
+			font-size: 23px;
+			margin: 0;
+			letter-spacing: -1px;
+			font-weight: 700;
+		}
+
+		.sub {
+			width: 116px;
+			/* background: transparent url(smag-banner-logo.gif); */
+			letter-spacing: 0.1px;
+			// padding-top: 13px;
+			// padding-left: 2px;
+			font-size: 10px;
+			line-height: 11px;
+			padding-bottom: 2px;
+		}
+	}
+
+	.bread {
+		background: white;
+		border: 2px solid black;
+		border-bottom-right-radius: 20px;
+		border-left: none;
+		margin: 0 0 15px -18px;
+		display: inline-block;
+		font-weight: bold;
+		font-size: 12px;
+		font-style: italic;
+		padding: 4px 16px 5px 10px;
+	}
+
+	.body {
+		padding: 8px 16px;
+		min-height: calc(100vh - 126px);
+	}
+
+	.footer {
+		> div {
+			float: right;
+			display: inline-block;
+			background: white;
+			border: 2px solid black;
+			border-top-left-radius: 20px;
+			border-right: none;
+			font-size: 11px;
+			font-style: italic;
+			line-height: 12px;
+			padding: 3px 7px 3px 10px;
+			margin: 0 0 5px;
+			max-width: 90%;
+		}
+	}
+	@media (max-width: $screen-sm-max) {
+		.top {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+	}
+	@media (min-width: $screen-md-min) {
+		border: 2px solid black;
+
+		.top {
+			border: 2px solid black;
+			margin: 5px;
+		}
+
+		.hamburger {
+			display: none;
+		}
+
+		.body {
+			min-height: calc(100vh - 13.7rem);
+		}
+
+		.footer {
+			margin: 0 -2.5px 10px 0;
+		}
+	}
+}
+/**
+ * Hambuger
+ */
+
+.hamburger {
+	float: right;
+	z-index: 5;
+	position: fixed;
+	top: 12px;
+	right: 10px;
+	width: 40px;
+	height: 30px; // position: relative;
+	// margin: 50px auto;
+	transform: rotate(0deg);
+	transition: 0.5s ease-in-out;
+	cursor: pointer;
+
+	span {
+		display: block;
+		position: absolute;
+		height: 8px;
+		width: 100%;
+		background: #5eb4dc;
+		box-shadow: 0 0 1px 1px white;
+		opacity: 1;
+		left: 0;
+		transform: rotate(0deg);
+		transition: 0.25s ease-in-out;
+
+		&:nth-child(1) {
+			top: 0;
+			transform-origin: left center;
+		}
+
+		&:nth-child(2) {
+			top: 12px;
+			transform-origin: left center;
+		}
+
+		&:nth-child(3) {
+			top: 24px;
+			transform-origin: left center;
+		}
+	}
+
+	.menu-open & {
+		span:nth-child(1) {
+			transform: rotate(45deg);
+			top: -3px;
+			left: 6px;
+		}
+
+		span:nth-child(2) {
+			width: 0;
+			opacity: 0;
+		}
+
+		span:nth-child(3) {
+			transform: rotate(-45deg);
+			top: 25px;
+			left: 6px;
+		}
+	}
+}
+
+.calendar {
+	.event {
+		.description {}
+	}
+}
+
+.fullcalendar {
+	max-width: 500px;
+	margin: 0 auto;
+}
+/**
+ * White block with header
+ */
+
+.panel {
+	margin: 1rem 0;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+
+	> .panel-heading {
+		border-radius: 0;
+		background: $darkblue;
+		padding: 0.9rem 1rem 0.5rem;
+
+		> i {
+			float: left;
+			margin: 0.2rem 0.8rem 0 0;
+			color: #337ab7;
+		}
+
+		h3 {
+			font-size: 1.1rem;
+			margin: 0;
+		}
+
+		.sub {
+			color: lighten($text-color, 30);
+			font-size: 0.9rem;
+		}
+	}
+
+	> .panel-body {
+		border-radius: 0;
+		// &:empty {
+		//   padding: 0;
+		//
+		//   &::after,
+		//   &::before {
+		//     content: none;
+		//   }
+		// }
+	}
+}
+/**
+ * Activity on home page
+ */
+.activity {
+	a {
+		display: block;
+		padding: 0.6rem 1rem;
+
+		&:hover {
+			text-decoration: none;
+			background: lighten(gray, 40);
+		}
+
+		.fa {
+			float: left;
+			margin: 1rem 0.8rem 1rem 0;
+		}
+
+		span {
+			display: block;
+		}
+
+		.category {
+			color: gray;
+			font-size: 0.7rem;
+			text-transform: uppercase;
+		}
+
+		.title {
+			padding: 0.1rem 0 0.15rem;
+		}
+
+		.sub {
+			color: gray;
+			font-size: 0.8rem;
+		}
+	}
+}

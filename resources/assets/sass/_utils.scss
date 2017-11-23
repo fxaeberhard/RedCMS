@@ -1,0 +1,173 @@
+/**
+ * Browser overrides
+ */
+
+iframe {
+	border: none;
+}
+/**
+ * Utilities
+ */
+
+.debug,
+.debug-fixed {
+	display: none!important;
+}
+
+.debug-mode .debug {
+	display: block!important;
+}
+
+.breakpoint {
+	position: fixed;
+	top: 6px;
+	left: 100px;
+	color: pink;
+	z-index: 3;
+}
+/**
+ *
+ */
+
+[data-model-id] {
+	position: relative;
+}
+
+[data-block-id] {
+	min-height: 40px;
+}
+
+[data-model=Text] {
+	img {
+		max-width: 100%;
+		height: auto;
+		@media (max-width: 430px) {
+			float: none !important;
+		}
+	}
+}
+
+img[data-toggle="upload"] {
+	max-width: 80px;
+}
+/**
+ * Loader
+ */
+
+.loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.7);
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.loader {
+	font-size: 8px;
+	position: relative;
+	text-indent: -9999em;
+	border-top: 1.1em solid transparentize(#0099FF, 0.2);
+	border-right: 1.1em solid transparentize(#0099FF, 0.2);
+	border-bottom: 1.1em solid transparentize(#0099FF, 0.2);
+	border-left: 1.1em solid #ffffff;
+	transform: translateZ(0);
+	animation: spin 1.1s infinite linear;
+
+	button & {
+		// margin-top: 3px;
+		font-size: 4px;
+	}
+
+	&,
+	&:after {
+		border-radius: 50%;
+		width: 6em;
+		height: 6em;
+	}
+}
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+/**
+ * Modal
+ */
+.modal-title {
+	font-size: 25px;
+}
+
+.modal-body {
+	> .loader {
+		margin: 30px auto;
+	}
+
+	iframe {
+		border: 0;
+		width: 100%;
+		height: 70vh;
+	}
+}
+/**
+ * Map
+ */
+
+.map {
+	position: relative;
+	width: 100%;
+	padding-bottom: 56.25%;
+	//16/9
+	@media (min-width: $screen-lg-min) {
+		height: 610px;
+	}
+
+	> * {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+	}
+}
+/**
+ * Tiny mce
+ */
+
+figure.image {
+	display: inline-block;
+	border: none;
+	background: none;
+	margin: 0 2px 0 1px;
+}
+
+figure.align-left {
+	float: left;
+}
+
+figure.align-right {
+	float: right;
+}
+
+figure.image img {
+	margin: 0;
+}
+
+figure.image figcaption {
+	margin: 0 0 2px;
+	text-align: left;
+	font-size: 78%;
+}

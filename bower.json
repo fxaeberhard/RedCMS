@@ -1,12 +1,12 @@
 {
-  "name": "redcms",
-  "homepage": "redcms.red-agent.com",
+  "name": "julie",
   "authors": [
     "Francois-Xavier Aeberhard <fx@red-agent.com>"
   ],
   "description": "",
   "main": "",
   "license": "MIT",
+  "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -15,7 +15,13 @@
     "tests"
   ],
   "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "bootstrap-validator": "^0.11.9",
+    "tinymce": "^4.5.7",
     "font-awesome": "^4.7.0",
-    "yui": "^3.18.1"
+    "datetimepicker": "^2.5.4",
+    "jquery-ui-sortable": "*",
+    "fullcalendar": "^3.6.2",
+    "autosize": "^4.0.0"
   }
 }

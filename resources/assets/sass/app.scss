@@ -1,0 +1,19 @@
+/*
+* Variables
+*/
+$fa-font-path: "../bower_components/font-awesome/fonts/";
+$gray-lightest: lighten(black, 97%) !default; // #eee
+$grid-float-breakpoint: 992px;
+$redred: #0099FF; //
+/*
+*
+*/
+@import "../../../public/bower_components/font-awesome/scss/font-awesome";
+@import "bootstrap";
+$text-color-light: lighten($text-color, 40%); // lighten the text some for contrast
+@import "base";
+@import "fonts";
+@import "form";
+@import "utils";
+@import "helpers";
+@import "smag";

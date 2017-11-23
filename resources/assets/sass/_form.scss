@@ -1,0 +1,267 @@
+$red: #a94442;
+$focusred: #843534;
+
+form {
+	padding-top: 1.5rem;
+	margin: 0 1rem;
+}
+
+.form-control {
+	border: none;
+	border-bottom: 1px solid $text-color-light;
+	border-radius: 0;
+	box-shadow: none;
+	padding: 0;
+	height: 2.7rem; // materialcss: 3rem
+	background: transparent;
+
+	.has-error & {
+		border-bottom: 1px solid $red; // #26a69a
+		box-shadow: none;
+
+		&+label,
+		&+label+span {
+			color: $red;
+		}
+	}
+
+	&:focus {
+		border-bottom: 1px solid $redred; // #26a69a
+		box-shadow: 0 1px 0 0 $redred;
+
+		&+label,
+		&+label+span {
+			color: $redred;
+		}
+
+		.has-error & {
+			border-color: $red;
+			box-shadow: 0 1px 0 0 $red;
+
+			&+label,
+			&+label+span {
+				color: $red;
+			}
+		}
+	}
+}
+
+textarea.form-control {
+	padding: 0.8rem 0;
+	resize: none;
+	min-height: 3rem;
+
+	&:after {
+		content: " ";
+		display: table;
+	}
+}
+
+textarea.autoresize {
+	overflow-y: hidden;
+}
+
+.help-block {
+	font-style: italic;
+	margin: 0;
+	font-size: 0.9rem;
+	transition: 0.15s;
+	color: $text-color-light; // lighten the text some for contrast
+
+	&:before {
+		display: inline-block;
+		font: normal normal normal 14px/1 FontAwesome;
+		font-size: inherit;
+		text-rendering: auto;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		content: "\f05a";
+		font-size: 125%;
+		margin: 4px 2px 1px 3px;
+		vertical-align: bottom;
+	}
+}
+
+.with-errors.help-block {
+	&:before {
+		content: '';
+	}
+}
+
+form .row {
+	// margin: 1.5rem -15px 2.5rem;
+	margin-bottom: 0;
+	// .form-group {
+	// margin: 0;
+	// }
+	// &:after,
+	// &:before {
+	//   content: '';
+	//   display: none;
+	// }
+}
+
+.form-group,
+.has-float-label {
+	display: block;
+	position: relative;
+	margin: 0 0 2rem;
+	// > span,
+	> label {
+		position: absolute;
+		font-size: 80%;
+		color: $text-color-light;
+		transition: all ease-in-out 0.15s;
+		top: -.7em;
+		z-index: 3;
+		line-height: 1;
+		padding: 0 1px;
+	}
+	// .has-float-label .form-control::-webkit-input-placeholder {
+	//   opacity: 1;
+	//   -webkit-transition: all 0.2s;
+	//   transition: all 0.2s;
+	// }
+	//
+	// .has-float-label .form-control::-moz-placeholder {
+	//   opacity: 1;
+	//   transition: all 0.2s;
+	// }
+	//
+	// .has-float-label .form-control:-ms-input-placeholder {
+	//   opacity: 1;
+	//   transition: all 0.2s;
+	// }
+	.form-control::placeholder {
+		opacity: 1;
+		transition: all 0.2s;
+	}
+	// .form-control:placeholder-shown:not(:focus)::-webkit-input-placeholder {
+	//   opacity: 0;
+	// }
+	//
+	// .form-control:placeholder-shown:not(:focus)::-moz-placeholder {
+	//   opacity: 0;
+	// }
+	//
+	// .form-control:placeholder-shown:not(:focus):-ms-input-placeholder {
+	//   opacity: 0;
+	// }
+	.form-control:placeholder-shown:not(:focus)::placeholder {
+		opacity: 0;
+	}
+
+	.form-control.empty:not(:focus)+*,
+	.form-control:placeholder-shown:not(:focus)+* {
+		font-size: 1rem;
+		// opacity: 0.6;
+		top: 0.9em;
+		font-weight: 400;
+	}
+	// .form-control:placeholder-shown+* {
+	//   font-size: 80%!important;
+	//   top: -.7em!important;
+	// }
+}
+// .input-group {
+// .has-float-label {
+// display: table-cell;
+// .form-control {
+//   border-radius: 4px;
+// }
+//
+// &:not(:last-child) .form-control {
+//   border-bottom-right-radius: 0;
+//   border-top-right-radius: 0;
+// }
+//
+// &:not(:first-child) .form-control {
+//   border-bottom-left-radius: 0;
+//   border-top-left-radius: 0;
+//   margin-left: -1px;
+// }
+// }
+// }
+/**
+ * Tinymce
+ */
+// .mce-panel {
+// background: none;
+// }
+
+.mce-tinymce {
+	margin-top: 0.5rem;
+	border-radius: 0;
+	width: 99.9%;
+	border-left: 0!important;
+	border-top: 0!important;
+	border-right: 0!important;
+	background: none!important;
+
+	.mce-toolbar-grp {
+		// border-radius: 0;
+		// border: 0!important;
+		// border-left-width: 1px;
+		// border-right-width: 1px;
+		background: none;
+
+		.mce-btn {
+			background: none;
+
+			&:hover {
+				background: $gray-lighter;
+			}
+		}
+	}
+
+	.mce-edit-area,
+	iframe {
+		// border-left: 0;
+		// border-right: 0;
+		// border-bottom-right-radius: 5px;
+		// border-bottom-left-radius: 5px;
+	}
+}
+
+.mce-menu {
+	position: fixed !important;
+	// Fix issue with drop down menu positioning in tinymce & bootstrap
+}
+
+#tinymce {
+	margin: 0 8px;
+	padding: 6px;
+	background: none;
+
+	.row {
+		background: #ccc;
+		display: flex;
+		flex-wrap: wrap;
+		margin: 0;
+	}
+
+	div[class*="col-"] {
+		background: #fff;
+		outline: 1px #888 dashed;
+		box-sizing: border-box;
+		position: relative;
+		float: left;
+		min-height: 22px;
+	}
+
+	.col-md-6,
+	.col-sm-6 {
+		width: 50%;
+		/* do not stack bootstrap columns in editor */
+	}
+
+	.col-md-4,
+	.col-sm-4 {
+		width: 33.3333%;
+	}
+
+	.col-md-3,
+	.col-sm-3 {
+		width: 25%;
+	}
+}
