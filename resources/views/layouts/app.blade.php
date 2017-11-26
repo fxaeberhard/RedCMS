@@ -68,7 +68,7 @@
 
         <div class="body">@yield('content')</div>
 
-        <div class="footer"><div>SMAG - Société des Médecins Anesthésistes Genevois - <a href="mailto:contact@smagonline.ch">contact@smagonline.ch</a> - Dernière mise à jour le 6 February 2017 - Visiteurs 347110</div></div>
+        <div class="footer"><div>SMAG - Société des Médecins Anesthésistes Genevois - <a href="mailto:contact@smagonline.ch">contact@smagonline.ch</a> <!-- - Dernière mise à jour le 6 February 2017 -->- Visiteurs 347110</div></div>
       <div>
 
 
