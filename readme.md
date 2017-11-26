@@ -1,28 +1,20 @@
 # Todo
 * Path pour la sous-hiérarchie (dans le titre de la page/ bread)
-* Créations d'une page => fermeture du popup
-* Création de page => redirect
-* Tinymce: add page links
 * Liste des pages inline
 * File modal XL
 * SELECT * FROM `texts` WHERE content_en LIKE '%../%'
+* Création de page => redirect
 * Redirect when page name is edited
+* Créations d'une page => fermeture du popup (+ selection dans dd)
 * Cron pour http://localhost/edsa-work/smag2/public/Congr%C3%A8s--Conf%C3%A9rences--Cours--Ateliers?import
-* Message erreur du login invalide
-* Pages
-** Adhésion
-*** Existing email error
-** Calendrier
-*** full calendar
-*** date de fin
-** Mode d'emploi Mettre à jour
-** Pv réunon du comité: check links
-** Boite à suggestion
-* comité visible par comité
+* Adhésion: Existing email error
+* Calendrier: full calendar
+* Boite à suggestion
 * mailing list
 * users counter
 * backups
-* [RTE]current format not display in toolbar
+* Tinymce: add page links
+* Tinymce: current format not display in toolbar
 
 #Done
 * Forumulaire d'adhésion

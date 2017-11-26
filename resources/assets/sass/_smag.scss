@@ -4,8 +4,8 @@
 $blue: #E3EBF4;
 $darkblue: #c8d7ea;
 $darkerblue: #337ab7; // $darkerblue: #2662ad;
-$darkestblue: #024b8a;
-/* Move down content because we have a fixed navbar that is 50px tall */
+$darkestblue: #024b8a; /* Move down content because we have a fixed navbar that is 50px tall */
+
 body {
 	font-family: 'Open Sans', sans-serif;
 	// font-size: 13px;
@@ -171,7 +171,7 @@ h2 {
 	width: 100%;
 
 	.top {
-		height: 61px;
+		height: 60px;
 		background: white url("../images/smag-banner-img.jpg") no-repeat top right;
 		padding: 13px 0 0 5px;
 		font-size: 0.8rem;
@@ -269,7 +269,6 @@ h2 {
 /**
  * Hambuger
  */
-
 .hamburger {
 	float: right;
 	z-index: 5;
@@ -344,7 +343,6 @@ h2 {
 /**
  * White block with header
  */
-
 .panel {
 	margin: 1rem 0;
 	border: none;
@@ -388,6 +386,7 @@ h2 {
 /**
  * Activity on home page
  */
+
 .activity {
 	a {
 		display: block;
