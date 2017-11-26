@@ -1,6 +1,6 @@
 <div class="menu">
 
-  <div class="hd"></div>
+  <div class="hd @if ($members) members @endif">Menu @if ($members)membres @endif</div>
 
   <div class="navbar">
     <ul class="nav navbar-nav" data-sortable="/MenuItem/Sort" data-sortable-handle=">  a">

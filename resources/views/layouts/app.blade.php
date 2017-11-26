@@ -45,9 +45,9 @@
 
       <div class="left">
         @foreach (App\Page::staticBlocks() as $i => $block)
-          @if ($i === 0 || Auth::check())
+          @if ($i == 0 || Auth::check())
           <div data-block-id="{{$block->id}}" __data-model="{{$block}}" __data-model-id="{{$block->block_id}}">
-            @include($block->view, ['pageBlock' => $block, 'block' => $block->block])
+            @include($block->view, ['pageBlock' => $block, 'block' => $block->block, 'members' => $i != 0])
           </div>
           @endif
         @endforeach

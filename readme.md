@@ -22,6 +22,7 @@
 * mailing list
 * users counter
 * backups
+* [RTE]current format not display in toolbar
 
 #Done
 * Forumulaire d'adhésion

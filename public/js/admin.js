@@ -56,6 +56,9 @@ jQuery(function($) {
 			$this.append(overlay)
 		})
 
+		/**
+		 * Sortable
+		 */
 		$(target).findIncludeSelf('[data-sortable]').each(function() {
 			$(this).sortable({
 				handle: $(this).data('sortable-handle'),

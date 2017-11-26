@@ -24,11 +24,11 @@ jQuery(function($) {
 	}).trigger('loaded.red.emptyinput')
 
 	// if ($.browser.mozilla) {
-	$(document).on('click', 'label', function(e) {
-		if (e.currentTarget === this && e.target.nodeName !== 'INPUT') {
-			$(this.control).click()
-		}
-	})
+	// 	$(document).on('click', 'label', function(e) {
+	// 		if (e.currentTarget === this && e.target.nodeName !== 'INPUT') {
+	// 			$(this.control).click()
+	// 		}
+	// 	})
 	// }
 
 })
